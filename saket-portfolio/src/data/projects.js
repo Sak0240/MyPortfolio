@@ -1,0 +1,42 @@
+export const PROJECTS = [
+  {
+    id: 1,
+    name: "Product Assistant RAG",
+    org: "Briowin — CatalogSage",
+    tagline: "Natural-language product search across a 300+ SKU catalog.",
+    flow: ["QUERY", "VALIDATION", "HYBRID SEARCH — FAISS + BM25", "RRF", "LLM", "VALIDATION", "ANSWER"],
+    tech: ["Python", "FastAPI", "LangGraph", "FAISS", "BM25", "OpenAI"],
+  },
+  {
+    id: 2,
+    name: "Agentic Compliance Copilot",
+    org: "KWAD Corporation",
+    tagline: "Multi-step agentic RAG for B2B transaction and compliance investigation.",
+    flow: ["INPUT", "CONDITIONAL ROUTING", "TENANT-ISOLATED RETRIEVAL", "GENERATION + CITATIONS", "GUARDRAILS", "HUMAN ESCALATION"],
+    tech: ["LangChain", "LangGraph", "Kubernetes", "Helm", "LangSmith"],
+  },
+  {
+    id: 3,
+    name: "Self-Hosted LLM Inference Platform",
+    org: "Personal project",
+    tagline: "GPU-accelerated model serving on AWS EKS.",
+    flow: ["REQUEST", "LOAD BALANCER", "vLLM WORKER — GPU", "RESPONSE"],
+    tech: ["AWS EKS", "Kubernetes", "Terraform", "Docker", "vLLM"],
+  },
+  {
+    id: 4,
+    name: "Review Summarizer & Sentiment",
+    org: "University project",
+    tagline: "NLP pipeline processing 10,000+ product reviews.",
+    flow: ["REVIEWS INPUT", "TEXT PREPROCESSING", "TF-IDF VECTORIZATION", "RANDOM FOREST CLASSIFICATION", "SUMMARY OUTPUT"],
+    tech: ["Python", "NLP", "TF-IDF", "Random Forest", "MySQL"],
+  },
+  {
+    id: 5,
+    name: "Cloud SQL Performance Analyzer",
+    org: "Personal project",
+    tagline: "Full-stack platform to analyze and optimize SQL queries.",
+    flow: ["QUERY INPUT", "EXECUTION PLAN ANALYSIS", "INDEX / JOIN OPTIMIZATION", "RECOMMENDATION OUTPUT"],
+    tech: ["Java", "Spring Boot", "React", "MySQL"],
+  },
+];
