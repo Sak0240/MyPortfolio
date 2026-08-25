@@ -47,7 +47,7 @@ export default function GlobalStyles() {
       .skill-tooltip { opacity: 0; visibility: hidden; transition: opacity 0.15s ease; }
       .skill-tag:hover .skill-tooltip { opacity: 1; visibility: visible; }
       @media (min-width: 1280px) {
-        .hero-shift-left { left: calc(103.5px - max(0px, (100vw - 1320px) / 2)); }
+        .hero-shift-left { left: 103.5px; }
       }
       .systems-grid {
         display: grid;
