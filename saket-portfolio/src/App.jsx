@@ -19,6 +19,7 @@ const KWAD_LOGO =
   "data:image/webp;base64,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";
 
 const RESUME_PDF = "resume.pdf";
+const BRIOWIN_LOGO = "Briowin.png";
 
 const GITHUB_REPO_URL = "https://github.com/Sak0240";
 const SOURCE_REPO_URL = "https://github.com/Sak0240/MyPortfolio";
@@ -839,6 +840,45 @@ function useInView(threshold = 0.3) {
   return [ref, inView];
 }
 
+function TypewriterLine({ text }) {
+  const [ref, inView] = useInView(0.6);
+  const [chars, setChars] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return;
+    let i = 0;
+    let cancelled = false;
+    function step() {
+      if (cancelled) return;
+      i += 1;
+      setChars(i);
+      if (i < text.length) setTimeout(step, 38);
+    }
+    const t = setTimeout(step, 250);
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+    };
+  }, [inView, text]);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        marginTop: 56,
+        fontFamily: "'IBM Plex Mono', monospace",
+        fontSize: 14.5,
+        color: TOKENS.textDim,
+        letterSpacing: "0.01em",
+      }}
+    >
+      <span style={{ color: TOKENS.teal }}>{"// "}</span>
+      {text.slice(0, chars)}
+      <span className="type-cursor" aria-hidden="true">▌</span>
+    </div>
+  );
+}
+
 function Reveal({ children, delay = 0 }) {
   const [ref, inView] = useInView(0.15);
   return (
@@ -869,6 +909,7 @@ function AnimatedLine({ text }) {
         opacity: inView ? 1 : 0,
         transform: inView ? "translateY(0)" : "translateY(10px)",
         transition: "opacity 0.9s ease 0.3s, transform 0.9s ease 0.3s",
+        animation: inView ? "quoteGlowPulse 3.5s ease-in-out 1.2s infinite" : "none",
         margin: "8px 0 0",
       }}
     >
@@ -1154,14 +1195,6 @@ function HeroPortrait() {
   );
 }
 
-function SocialIcon({ children }) {
-  return (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      {children}
-    </svg>
-  );
-}
-
 const SOCIAL_ICONS = [
   {
     href: GITHUB_REPO_URL,
@@ -1195,32 +1228,52 @@ const SOCIAL_ICONS = [
   },
 ];
 
+function SocialIconLink({ s, i, animated, isSequenced }) {
+  const [ref, inView] = useInView(0.5);
+  const flicker = isSequenced ? animated : inView;
+  return (
+    <a
+      ref={ref}
+      href={s.href}
+      target={s.external ? "_blank" : undefined}
+      rel={s.external ? "noreferrer" : undefined}
+      aria-label={s.label}
+      className="dock-link"
+      style={{
+        color: TOKENS.textFaint,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        opacity: isSequenced ? (animated ? 1 : 0) : 1,
+        transform: isSequenced ? (animated ? "translateY(0)" : "translateY(8px)") : "none",
+        transition: isSequenced
+          ? `color 0.2s ease, opacity 0.5s ease ${1.1 + i * 0.12}s, transform 0.5s ease ${1.1 + i * 0.12}s`
+          : "color 0.2s ease",
+      }}
+    >
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{ animation: flicker ? "logoFlicker 2.4s steps(8, end) 1" : "none" }}
+      >
+        {s.path}
+      </svg>
+    </a>
+  );
+}
+
 function SocialLinks({ animated }) {
   const isSequenced = animated !== undefined;
   return (
     <>
       {SOCIAL_ICONS.map((s, i) => (
-        <a
-          key={s.label}
-          href={s.href}
-          target={s.external ? "_blank" : undefined}
-          rel={s.external ? "noreferrer" : undefined}
-          aria-label={s.label}
-          className="dock-link"
-          style={{
-            color: TOKENS.textFaint,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            opacity: isSequenced ? (animated ? 1 : 0) : 1,
-            transform: isSequenced ? (animated ? "translateY(0)" : "translateY(8px)") : "none",
-            transition: isSequenced
-              ? `color 0.2s ease, opacity 0.5s ease ${1.1 + i * 0.12}s, transform 0.5s ease ${1.1 + i * 0.12}s`
-              : "color 0.2s ease",
-          }}
-        >
-          <SocialIcon>{s.path}</SocialIcon>
-        </a>
+        <SocialIconLink key={s.label} s={s} i={i} animated={animated} isSequenced={isSequenced} />
       ))}
     </>
   );
@@ -1299,12 +1352,19 @@ function InfraDiagram() {
       <DiagramArrow />
       <DiagramNode label="LangGraph" />
       <DiagramArrow />
+      <DiagramNode label="API Gateway / Ingress" />
+      <DiagramArrow />
       <DiagramNode label="Kubernetes" />
       <DiagramArrow />
-      <div style={{ display: "flex", gap: 10 }}>
-        <DiagramNode label="AWS / Azure" />
-        <DiagramNode label="CI/CD" />
-      </div>
+      <DiagramNode label="Docker Containers" />
+      <DiagramArrow />
+      <DiagramNode label="AWS / Azure" />
+      <DiagramArrow />
+      <DiagramNode label="Terraform" />
+      <DiagramArrow />
+      <DiagramNode label="CI/CD" />
+      <DiagramArrow />
+      <DiagramNode label="Monitoring" />
     </div>
   );
 }
@@ -1645,78 +1705,6 @@ function TimelineNode({ index, role, company, dates, subtitle, bullets, tags, lo
   );
 }
 
-function ConstellationNode({ label, x, y, delay }) {
-  const [ref, inView] = useInView(0.4);
-  return (
-    <div
-      ref={ref}
-      style={{
-        position: "absolute",
-        left: `${x}%`,
-        top: `${y}%`,
-        transform: "translate(-50%, -50%)",
-        opacity: inView ? 1 : 0,
-        transition: `opacity 0.6s ease ${delay}ms, transform 0.6s ease ${delay}ms`,
-      }}
-    >
-      <div
-        style={{
-          fontFamily: "'IBM Plex Mono', monospace",
-          fontSize: 12.5,
-          color: TOKENS.textDim,
-          border: "1px solid rgba(255,255,255,0.1)",
-          borderRadius: 20,
-          padding: "7px 16px",
-          background: "rgba(11,18,32,0.5)",
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
-          whiteSpace: "nowrap",
-          boxShadow: inView ? `0 0 18px ${TOKENS.teal}22` : "none",
-          transition: "box-shadow 0.6s ease",
-        }}
-      >
-        {label}
-      </div>
-    </div>
-  );
-}
-
-function InfraConstellation({ items }) {
-  const cols = 4;
-  const positions = items.map((label, i) => {
-    const row = Math.floor(i / cols);
-    const col = i % cols;
-    const rowItems = Math.min(cols, items.length - row * cols);
-    const xSpread = 100 / (rowItems + 1);
-    const jitterY = (i % 3) * 6 - 6;
-    return { label, x: xSpread * (col + 1), y: 18 + row * 34 + jitterY };
-  });
-  const rows = Math.ceil(items.length / cols);
-  return (
-    <div style={{ position: "relative", height: 60 + rows * 90, width: "100%" }}>
-      <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "visible" }} aria-hidden="true">
-        {positions.slice(1).map((p, i) => {
-          const prev = positions[i];
-          return (
-            <line
-              key={i}
-              x1={`${prev.x}%`}
-              y1={`${prev.y}%`}
-              x2={`${p.x}%`}
-              y2={`${p.y}%`}
-              stroke={TOKENS.border}
-              strokeWidth="1"
-            />
-          );
-        })}
-      </svg>
-      {positions.map((p, i) => (
-        <ConstellationNode key={p.label} label={p.label} x={p.x} y={p.y} delay={i * 60} />
-      ))}
-    </div>
-  );
-}
-
 export default function Portfolio() {
   const [navSolid, setNavSolid] = useState(false);
 
@@ -1784,10 +1772,14 @@ export default function Portfolio() {
           .social-dock { display: none; }
         }
         .dock-link:hover { color: ${TOKENS.teal}; }
+        @keyframes quoteGlowPulse {
+          0%, 100% { text-shadow: 0 0 12px ${TOKENS.teal}40; }
+          50% { text-shadow: 0 0 20px ${TOKENS.teal}80; }
+        }
         .skill-tooltip { opacity: 0; visibility: hidden; transition: opacity 0.15s ease; }
         .skill-tag:hover .skill-tooltip { opacity: 1; visibility: visible; }
         @media (min-width: 1280px) {
-          .hero-shift-left { left: calc(19px - max(0px, (100vw - 1320px) / 2)); }
+          .hero-shift-left { left: calc(103.5px - max(0px, (100vw - 1320px) / 2)); }
         }
         .systems-grid {
           display: grid;
@@ -1831,6 +1823,11 @@ export default function Portfolio() {
           50% { opacity: 1; transform: scale(1); }
         }
         .term-dot { animation: termDotPulse 1.8s ease-in-out infinite; }
+        @keyframes cursorBlink {
+          0%, 50% { opacity: 1; }
+          50.01%, 100% { opacity: 0; }
+        }
+        .type-cursor { animation: cursorBlink 0.9s step-end infinite; margin-left: 1px; }
         @keyframes logoFlicker {
           0% { opacity: 0; }
           8% { opacity: 1; }
@@ -2090,8 +2087,9 @@ export default function Portfolio() {
           <TimelineNode
             index={1}
             role="Software Engineer"
-            company="Briowin Private Limited (Startup)"
+            company="Briowin (Startup)"
             dates="Feb 2024 — Apr 2025"
+            logo={BRIOWIN_LOGO}
             subtitle="CatalogSage — AI-powered product catalog assistant"
             bullets={[
               "RAG assistant for natural-language search and recommendations across a 300+ SKU catalog — Python, FastAPI, LangGraph, OpenAI.",
@@ -2106,8 +2104,8 @@ export default function Portfolio() {
           <div
             style={{
               fontFamily: "'IBM Plex Mono', monospace",
-              fontSize: 12.5,
-              color: TOKENS.textFaint,
+              fontSize: 16,
+              color: TOKENS.textDim,
               paddingLeft: 46,
             }}
           >
@@ -2203,15 +2201,10 @@ export default function Portfolio() {
         <div style={{ marginTop: 14, marginBottom: 8 }}>
           <SceneText>
             <h2 style={{ fontSize: "clamp(30px, 4.4vw, 52px)", fontWeight: 550, letterSpacing: "-0.02em", color: TOKENS.text, margin: 0 }}>
-              Infrastructure.
+              The stack.
             </h2>
           </SceneText>
         </div>
-        <SceneText delay={100}>
-          <InfraConstellation
-            items={["AWS", "Azure", "Docker", "Kubernetes", "Helm", "Terraform", "Ansible", "GitHub Actions", "Prometheus", "Grafana", "CloudWatch"]}
-          />
-        </SceneText>
         <Reveal>
           <div>
             {skillGroups.map((g, i) => (
@@ -2253,6 +2246,7 @@ export default function Portfolio() {
             ))}
           </div>
         </Reveal>
+        <TypewriterLine text="learning never stops — always exploring what's next." />
       </section>
 
       <section id="contact" style={{ position: "relative", padding: "160px 32px 80px", maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
