@@ -2090,7 +2090,7 @@ export default function Portfolio() {
           <TimelineNode
             index={1}
             role="Software Engineer"
-            company="Briowin Private Limited"
+            company="Briowin Private Limited (Startup)"
             dates="Feb 2024 — Apr 2025"
             subtitle="CatalogSage — AI-powered product catalog assistant"
             bullets={[
