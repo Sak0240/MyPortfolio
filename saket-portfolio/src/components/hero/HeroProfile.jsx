@@ -48,10 +48,7 @@ export default function HeroProfile() {
           }}
         />
       </div>
-      <div
-        className="hero-shift-left"
-        style={{ display: "flex", flexDirection: "column", gap: 16, position: "relative" }}
-      >
+      <div style={{ display: "flex", flexDirection: "column", gap: 16, position: "relative", left: -90 }}>
         <SocialLinks animated={drawn} />
       </div>
     </div>
