@@ -565,7 +565,7 @@ function Shell() {
       } else if (cmd === "contact") {
         push({
           kind: "text",
-          text: "saketdeshmukh10@gmail.com\nlinkedin.com/in/saket-deshmukh",
+          text: "heyiamsaket@gmail.com\nlinkedin.com/in/saket-deshmukh",
         });
       } else if (cmd === "resume") {
         push({ kind: "text", text: "downloading resume..." });
@@ -1183,7 +1183,7 @@ const SOCIAL_ICONS = [
     ),
   },
   {
-    href: "mailto:saketdeshmukh10@gmail.com",
+    href: "mailto:heyiamsaket@gmail.com",
     external: false,
     label: "Email",
     path: (
@@ -2284,8 +2284,8 @@ export default function Portfolio() {
         </SceneText>
         <SceneText delay={240}>
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 16, fontFamily: "'IBM Plex Mono', monospace", fontSize: 13.5, marginBottom: 28 }}>
-            <a className="link" href="mailto:saketdeshmukh10@gmail.com">
-              saketdeshmukh10@gmail.com
+            <a className="link" href="mailto:heyiamsaket@gmail.com">
+              heyiamsaket@gmail.com
             </a>
             <a className="link" href="https://linkedin.com/in/saket-deshmukh" target="_blank" rel="noreferrer">
               linkedin.com/in/saket-deshmukh
