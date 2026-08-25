@@ -1873,10 +1873,14 @@ export default function Portfolio() {
           transition: "all 0.2s ease",
         }}
       >
-        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 17, color: TOKENS.text, display: "flex", alignItems: "center", gap: 10 }}>
+        <a
+          href="#hero"
+          className="plain"
+          style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 17, color: TOKENS.text, display: "flex", alignItems: "center", gap: 10 }}
+        >
           <SparkMark size={19} color={TOKENS.teal} />
           saket<span style={{ color: TOKENS.amber }}>.</span>dev
-        </span>
+        </a>
         <div style={{ display: "flex", alignItems: "center", gap: 22 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 28 }} className="hide-mobile">
             {NAV_ITEMS.map((s) => (
