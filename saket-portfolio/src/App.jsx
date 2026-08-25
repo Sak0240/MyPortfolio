@@ -444,6 +444,34 @@ function FlowDiagram({ steps, compact }) {
   );
 }
 
+function TerminalFrame({ children }) {
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setReady(true), 300);
+    return () => clearTimeout(t);
+  }, []);
+
+  return (
+    <div style={{ position: "relative" }}>
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: "-12%",
+          zIndex: -1,
+          background: `radial-gradient(circle, ${TOKENS.teal}33 0%, ${TOKENS.teal}00 70%)`,
+          opacity: ready ? 0.2 : 0,
+          animation: ready ? "termBreathe 4.5s ease-in-out infinite" : "none",
+          transition: "opacity 1.2s ease",
+          pointerEvents: "none",
+          willChange: "opacity",
+        }}
+      />
+      {children}
+    </div>
+  );
+}
+
 function Shell() {
   const [booted, setBooted] = useState(false);
   const [input, setInput] = useState("");
@@ -591,8 +619,10 @@ function Shell() {
   return (
     <div
       style={{
-        background: TOKENS.panel,
-        border: `1px solid ${TOKENS.border}`,
+        background: "rgba(11,18,32,0.55)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        border: "1px solid rgba(255,255,255,0.1)",
         borderRadius: 10,
         overflow: "hidden",
         boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
@@ -865,7 +895,7 @@ function RevealLogo({ src, alt }) {
         style={{
           height: 18,
           display: "block",
-          animation: inView ? "logoFlicker 1s steps(8, end) 1" : "none",
+          animation: inView ? "logoFlicker 2.4s steps(8, end) 1" : "none",
           opacity: inView ? 1 : 0,
         }}
       />
@@ -873,23 +903,6 @@ function RevealLogo({ src, alt }) {
   );
 }
 
-
-function SectionLabel({ children }) {
-  return (
-    <div
-      style={{
-        fontFamily: "'IBM Plex Mono', monospace",
-        fontSize: 12,
-        color: TOKENS.teal,
-        letterSpacing: "0.08em",
-        textTransform: "lowercase",
-        marginBottom: 14,
-      }}
-    >
-      // {children}
-    </div>
-  );
-}
 
 function Tag({ children }) {
   return (
@@ -940,7 +953,9 @@ function SkillTag({ children, definition }) {
           transform: "translateX(-50%)",
           width: 210,
           padding: "10px 12px",
-          background: TOKENS.panel,
+          background: "rgba(11,18,32,0.6)",
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
           border: `1px solid ${TOKENS.tealDim}`,
           borderRadius: 8,
           fontFamily: "'IBM Plex Sans', sans-serif",
@@ -1024,130 +1039,6 @@ function ExperienceCard({ role, company, dates, subtitle, bullets, tags, logo, c
   );
 }
 
-const RAIL_CONTENT = {
-  hero: {
-    // the hero renders profile + stack inline (see HeroRail below) so this
-    // stays empty — the fixed side rails pick back up from "about" onward.
-    left: null,
-    right: null,
-  },
-  about: {
-    left: { title: "PROFILE", variant: "plain", items: PROFILE_ITEMS },
-    right: { title: "GENAI STACK", variant: "stack", rows: STACK_ROWS },
-  },
-  experience: {
-    left: { title: "CAREER.LOG", variant: "log", items: ["kwad.corporation", "briowin.pvt"] },
-    right: { title: "GENAI STACK", variant: "stack", rows: STACK_ROWS },
-  },
-  education: {
-    left: { title: "EDUCATION", variant: "plain", items: ["B.E. COMPUTER ENG.", "2019 — 2023"] },
-    right: null,
-  },
-  systems: {
-    left: { title: "PATTERN", variant: "plain", items: ["RAG + AGENTS", "EVAL-DRIVEN"] },
-    right: null,
-  },
-  projects: {
-    left: { title: "SYSTEMS", variant: "log", items: ["product.assistant", "compliance.copilot", "inference.platform", "review.summarizer", "sql.analyzer"] },
-    right: null,
-  },
-  skills: {
-    left: null,
-    right: null,
-  },
-  contact: {
-    left: { title: "STATUS", variant: "plain", items: ["OPEN TO WORK", "GENAI ROLES"] },
-    right: null,
-  },
-};
-
-function useActiveSection(ids, defaultId) {
-  const [active, setActive] = useState(defaultId);
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(entry.target.id);
-        });
-      },
-      { rootMargin: "-40% 0px -50% 0px", threshold: 0 }
-    );
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
-  }, [ids.join(",")]);
-  return active;
-}
-
-function StackPanel({ config }) {
-  if (!config) return null;
-  return (
-    <div
-      key={config.title}
-      className="side-rail hide-mobile rail-fade"
-      style={{
-        position: "fixed",
-        right: 24,
-        top: "50%",
-        transform: "translateY(-50%)",
-        width: 158,
-        zIndex: 10,
-      }}
-    >
-      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10.5, color: TOKENS.textFaint, letterSpacing: "0.08em", marginBottom: 10 }}>
-        {config.title}
-      </div>
-      {config.rows.map(([label, val]) => (
-        <div key={label} style={{ marginBottom: 9 }}>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9.5, color: TOKENS.textFaint }}>{label}</div>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11.5, color: TOKENS.textDim }}>{val}</div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function SystemLogPanel({ config }) {
-  if (!config) return null;
-  return (
-    <div
-      key={config.title}
-      className="side-rail hide-mobile rail-fade"
-      style={{
-        position: "fixed",
-        left: 24,
-        top: "50%",
-        transform: "translateY(-50%)",
-        width: 150,
-        zIndex: 10,
-      }}
-    >
-      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10.5, color: TOKENS.textFaint, letterSpacing: "0.08em", marginBottom: 10 }}>
-        {config.title}
-      </div>
-      {config.variant === "log"
-        ? config.items.map((item, i) => (
-            <div key={item} style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 8 }}>
-              <span style={{ color: TOKENS.teal, fontFamily: "'IBM Plex Mono', monospace", fontSize: 10 }}>
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: TOKENS.textDim }}>{item}</span>
-              <span style={{ width: 5, height: 5, borderRadius: "50%", background: TOKENS.teal, marginLeft: "auto", flexShrink: 0 }} />
-            </div>
-          ))
-        : config.items.map((item) => (
-            <div
-              key={item}
-              style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: TOKENS.textDim, marginBottom: 7, letterSpacing: "0.03em" }}
-            >
-              {item}
-            </div>
-          ))}
-    </div>
-  );
-}
 
 function HeroProfile() {
   const [drawn, setDrawn] = useState(false);
@@ -1205,38 +1096,23 @@ function HeroProfile() {
   );
 }
 
-function HeroPortraitAccent() {
-  const [drawn, setDrawn] = useState(false);
+function HeroPortrait() {
+  const [active, setActive] = useState(false);
   useEffect(() => {
-    const t = setTimeout(() => setDrawn(true), 500);
+    const t = setTimeout(() => setActive(true), 200);
     return () => clearTimeout(t);
   }, []);
   return (
-    <svg
-      viewBox="0 0 220 140"
-      style={{ position: "absolute", right: "-6%", bottom: "6%", width: "58%", maxWidth: 130, pointerEvents: "none", zIndex: 2 }}
-      aria-hidden="true"
-    >
-      <path
-        d="M 4 118 H 150 V 12"
-        fill="none"
-        stroke={TOKENS.teal}
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeDasharray="270"
-        strokeDashoffset={drawn ? 0 : 270}
-        style={{ transition: "stroke-dashoffset 1.4s ease" }}
-      />
-      <circle cx="60" cy="118" r={drawn ? 3.5 : 0} fill={TOKENS.amber} style={{ transition: "r 0.3s ease 0.9s", filter: `drop-shadow(0 0 6px ${TOKENS.amber})` }} />
-      <circle cx="150" cy="12" r={drawn ? 4.5 : 0} fill={TOKENS.teal} style={{ transition: "r 0.3s ease 1.3s", filter: `drop-shadow(0 0 8px ${TOKENS.teal})` }} />
-    </svg>
-  );
-}
-
-function HeroPortrait() {
-  return (
     <div className="hero-col hero-col-right">
-      <div className="hero-portrait-frame">
+      <div
+        className="hero-portrait-frame"
+        style={{
+          opacity: active ? 1 : 0,
+          transform: active ? "translateY(0)" : "translateY(26px)",
+          filter: active ? "blur(0px)" : "blur(8px)",
+          transition: "opacity 2.2s cubic-bezier(0.16,1,0.3,1), transform 2.2s cubic-bezier(0.16,1,0.3,1), filter 2.2s ease",
+        }}
+      >
         <div
           aria-hidden="true"
           style={{
@@ -1262,7 +1138,6 @@ function HeroPortrait() {
             maskImage: "linear-gradient(to top, transparent 0%, black 8%)",
           }}
         />
-        <HeroPortraitAccent />
       </div>
       <div
         style={{
@@ -1359,79 +1234,6 @@ function MobileSocialDock() {
   );
 }
 
-function WaveText({ text }) {
-  const containerRef = useRef(null);
-  const letterRefs = useRef([]);
-  const rafRef = useRef(null);
-  const targetRef = useRef({ x: -9999, y: -9999 });
-
-  useEffect(() => {
-    const canHover = window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    if (!canHover) return undefined;
-
-    const apply = () => {
-      const rects = letterRefs.current;
-      const { x, y } = targetRef.current;
-      rects.forEach((el) => {
-        if (!el) return;
-        const r = el.getBoundingClientRect();
-        const cx = r.left + r.width / 2;
-        const cy = r.top + r.height / 2;
-        const dist = Math.hypot(cx - x, cy - y);
-        const radius = 140;
-        if (dist < radius) {
-          const strength = 1 - dist / radius;
-          const lift = strength * 14;
-          const scale = 1 + strength * 0.14;
-          el.style.transform = `translateY(${-lift}px) scale(${scale})`;
-          el.style.color = TOKENS.teal;
-        } else {
-          el.style.transform = "translateY(0) scale(1)";
-          el.style.color = TOKENS.text;
-        }
-      });
-      rafRef.current = null;
-    };
-
-    const onMove = (e) => {
-      targetRef.current = { x: e.clientX, y: e.clientY };
-      if (rafRef.current == null) rafRef.current = requestAnimationFrame(apply);
-    };
-    const onLeave = () => {
-      targetRef.current = { x: -9999, y: -9999 };
-      if (rafRef.current == null) rafRef.current = requestAnimationFrame(apply);
-    };
-
-    const el = containerRef.current;
-    el && el.addEventListener("mousemove", onMove);
-    el && el.addEventListener("mouseleave", onLeave);
-    return () => {
-      el && el.removeEventListener("mousemove", onMove);
-      el && el.removeEventListener("mouseleave", onLeave);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-  }, []);
-
-  letterRefs.current = [];
-
-  return (
-    <div ref={containerRef} style={{ display: "inline-block" }}>
-      {text.split("").map((ch, i) => (
-        <span
-          key={i}
-          ref={(el) => (letterRefs.current[i] = el)}
-          style={{
-            display: "inline-block",
-            transition: "transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), color 0.25s ease",
-            willChange: "transform",
-          }}
-        >
-          {ch === " " ? " " : ch}
-        </span>
-      ))}
-    </div>
-  );
-}
 
 function DiagramNode({ label }) {
   const [ref, inView] = useInView(0.6);
@@ -1531,58 +1333,19 @@ function SparkMark({ size = 18, color }) {
   );
 }
 
-function GlowArc() {
-  const [drawn, setDrawn] = useState(false);
-  useEffect(() => {
-    const t = setTimeout(() => setDrawn(true), 250);
-    return () => clearTimeout(t);
-  }, []);
-  return (
-    <svg
-      viewBox="0 0 600 300"
-      style={{
-        position: "absolute",
-        top: -20,
-        right: -40,
-        width: 480,
-        height: 240,
-        pointerEvents: "none",
-        opacity: 0.55,
-        zIndex: 0,
-      }}
-      aria-hidden="true"
-    >
-      <path
-        d="M 40 260 C 220 260, 340 220, 540 40"
-        fill="none"
-        stroke={TOKENS.amber}
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeDasharray="640"
-        strokeDashoffset={drawn ? 0 : 640}
-        style={{ transition: "stroke-dashoffset 1.8s ease" }}
-      />
-      <circle
-        cx="540"
-        cy="40"
-        r={drawn ? 5 : 0}
-        fill={TOKENS.amber}
-        style={{ transition: "r 0.4s ease 1.6s", filter: `drop-shadow(0 0 8px ${TOKENS.amber})` }}
-      />
-    </svg>
-  );
-}
-
 function ProjectSnapshot({ project }) {
   const [open, setOpen] = useState(false);
   return (
     <div
       className="project-snapshot"
       style={{
-        border: `1px solid ${open ? TOKENS.tealDim : TOKENS.border}`,
+        border: `1px solid ${open ? TOKENS.tealDim : "rgba(255,255,255,0.1)"}`,
         borderRadius: 10,
         marginBottom: 16,
-        background: TOKENS.panel,
+        background: "rgba(11,18,32,0.5)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
         transition: "border-color 0.2s ease",
       }}
     >
@@ -1645,10 +1408,317 @@ function ProjectSnapshot({ project }) {
   );
 }
 
+function SceneText({ children, delay = 0, y = 26, style }) {
+  const [ref, inView] = useInView(0.2);
+  return (
+    <div
+      ref={ref}
+      style={{
+        opacity: inView ? 1 : 0,
+        transform: inView ? "translateY(0)" : `translateY(${y}px)`,
+        filter: inView ? "blur(0px)" : "blur(8px)",
+        transition: `opacity 1s cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform 1s cubic-bezier(0.16,1,0.3,1) ${delay}ms, filter 1s ease ${delay}ms`,
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function SceneEyebrow({ children }) {
+  return (
+    <div
+      style={{
+        fontFamily: "'IBM Plex Mono', monospace",
+        fontSize: 12,
+        letterSpacing: "0.16em",
+        textTransform: "uppercase",
+        color: TOKENS.teal,
+        marginBottom: 22,
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+      }}
+    >
+      <span aria-hidden="true" style={{ width: 26, height: 1, background: TOKENS.tealDim }} />
+      {children}
+    </div>
+  );
+}
+
+function SceneNumber({ n }) {
+  return (
+    <span
+      aria-hidden="true"
+      style={{
+        fontFamily: "'IBM Plex Mono', monospace",
+        fontSize: 12,
+        color: TOKENS.textFaint,
+        letterSpacing: "0.1em",
+      }}
+    >
+      SCENE {n}
+    </span>
+  );
+}
+
+function GridField() {
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 0,
+        pointerEvents: "none",
+        backgroundImage: `
+          linear-gradient(${TOKENS.border}22 1px, transparent 1px),
+          linear-gradient(90deg, ${TOKENS.border}22 1px, transparent 1px)
+        `,
+        backgroundSize: "56px 56px",
+        maskImage: "radial-gradient(ellipse 90% 70% at 50% 0%, black 0%, transparent 75%)",
+        WebkitMaskImage: "radial-gradient(ellipse 90% 70% at 50% 0%, black 0%, transparent 75%)",
+        opacity: 0.6,
+      }}
+    />
+  );
+}
+
+function SceneGlow({ x = "50%", y = "0%", size = 700, color, opacity = 0.16 }) {
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        position: "absolute",
+        left: x,
+        top: y,
+        width: size,
+        height: size,
+        transform: "translate(-50%, -50%)",
+        background: `radial-gradient(circle, ${color || TOKENS.teal} 0%, transparent 70%)`,
+        opacity,
+        filter: "blur(10px)",
+        pointerEvents: "none",
+        zIndex: 0,
+      }}
+    />
+  );
+}
+
+function BigStatement({ items }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "clamp(10px, 3vw, 26px)" }}>
+      {items.map((line, i) => (
+        <SceneText key={i} delay={i * 90} y={34}>
+          <div
+            style={{
+              fontSize: i === 0 ? "clamp(34px, 6.2vw, 84px)" : "clamp(30px, 5.6vw, 76px)",
+              fontWeight: 550,
+              lineHeight: 1.02,
+              letterSpacing: "-0.02em",
+              color: line.accent ? TOKENS.teal : TOKENS.text,
+              textShadow: line.accent ? `0 0 30px ${TOKENS.teal}40` : "none",
+            }}
+          >
+            {line.text}
+          </div>
+        </SceneText>
+      ))}
+    </div>
+  );
+}
+
+function BuildItem({ index, title, text }) {
+  return (
+    <SceneText delay={index * 70}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "56px 1fr",
+          gap: 20,
+          padding: "28px 0",
+          borderTop: `1px solid ${TOKENS.border}`,
+          alignItems: "baseline",
+        }}
+      >
+        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 13, color: TOKENS.teal }}>
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <div>
+          <div
+            style={{
+              fontSize: "clamp(22px, 3vw, 34px)",
+              fontWeight: 550,
+              color: TOKENS.text,
+              letterSpacing: "-0.01em",
+              marginBottom: 8,
+            }}
+          >
+            {title}
+          </div>
+          <p style={{ color: TOKENS.textDim, fontSize: 14.5, lineHeight: 1.7, maxWidth: 620, margin: 0 }}>{text}</p>
+        </div>
+      </div>
+    </SceneText>
+  );
+}
+
+function TimelineNode({ index, role, company, dates, subtitle, bullets, tags, logo, companyUrl, last }) {
+  return (
+    <SceneText delay={index * 100} y={30}>
+      <div style={{ position: "relative", display: "grid", gridTemplateColumns: "22px 1fr", gap: 24 }}>
+        <div style={{ position: "relative", display: "flex", justifyContent: "center" }}>
+          <span
+            aria-hidden="true"
+            style={{
+              width: 11,
+              height: 11,
+              borderRadius: "50%",
+              background: TOKENS.panel,
+              border: `2px solid ${index === 0 ? TOKENS.teal : TOKENS.borderStrong}`,
+              boxShadow: index === 0 ? `0 0 12px ${TOKENS.teal}` : "none",
+              marginTop: 6,
+              zIndex: 1,
+            }}
+          />
+          {!last && (
+            <span
+              aria-hidden="true"
+              style={{ position: "absolute", top: 17, bottom: -56, width: 1, background: TOKENS.border }}
+            />
+          )}
+        </div>
+        <div style={{ paddingBottom: 56 }}>
+          {logo && (
+            <div style={{ marginBottom: 12 }}>
+              {companyUrl ? (
+                <a href={companyUrl} target="_blank" rel="noreferrer" style={{ display: "inline-block" }}>
+                  <RevealLogo src={logo} alt={`${company} logo`} />
+                </a>
+              ) : (
+                <RevealLogo src={logo} alt={`${company} logo`} />
+              )}
+            </div>
+          )}
+          <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8, marginBottom: 4 }}>
+            <div style={{ fontSize: "clamp(19px, 2.4vw, 26px)", fontWeight: 600, color: TOKENS.text }}>
+              {role}{" "}
+              <span style={{ color: TOKENS.textDim, fontWeight: 400, fontSize: "0.7em" }}>
+                ·{" "}
+                {companyUrl ? (
+                  <a
+                    href={companyUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ color: TOKENS.textDim, textDecoration: "none", borderBottom: `1px solid ${TOKENS.border}` }}
+                  >
+                    {company}
+                  </a>
+                ) : (
+                  company
+                )}
+              </span>
+            </div>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: TOKENS.textFaint, whiteSpace: "nowrap" }}>
+              {dates}
+            </div>
+          </div>
+          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12.5, color: TOKENS.amber, marginBottom: 14 }}>
+            {subtitle}
+          </div>
+          <ul style={{ margin: 0, paddingLeft: 18, color: TOKENS.textDim, fontSize: 14.5, lineHeight: 1.75 }}>
+            {bullets.map((b, i) => (
+              <li key={i} style={{ marginBottom: 7 }}>
+                {b}
+              </li>
+            ))}
+          </ul>
+          <div style={{ marginTop: 14 }}>
+            {tags.map((t) => (
+              <Tag key={t}>{t}</Tag>
+            ))}
+          </div>
+        </div>
+      </div>
+    </SceneText>
+  );
+}
+
+function ConstellationNode({ label, x, y, delay }) {
+  const [ref, inView] = useInView(0.4);
+  return (
+    <div
+      ref={ref}
+      style={{
+        position: "absolute",
+        left: `${x}%`,
+        top: `${y}%`,
+        transform: "translate(-50%, -50%)",
+        opacity: inView ? 1 : 0,
+        transition: `opacity 0.6s ease ${delay}ms, transform 0.6s ease ${delay}ms`,
+      }}
+    >
+      <div
+        style={{
+          fontFamily: "'IBM Plex Mono', monospace",
+          fontSize: 12.5,
+          color: TOKENS.textDim,
+          border: "1px solid rgba(255,255,255,0.1)",
+          borderRadius: 20,
+          padding: "7px 16px",
+          background: "rgba(11,18,32,0.5)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          whiteSpace: "nowrap",
+          boxShadow: inView ? `0 0 18px ${TOKENS.teal}22` : "none",
+          transition: "box-shadow 0.6s ease",
+        }}
+      >
+        {label}
+      </div>
+    </div>
+  );
+}
+
+function InfraConstellation({ items }) {
+  const cols = 4;
+  const positions = items.map((label, i) => {
+    const row = Math.floor(i / cols);
+    const col = i % cols;
+    const rowItems = Math.min(cols, items.length - row * cols);
+    const xSpread = 100 / (rowItems + 1);
+    const jitterY = (i % 3) * 6 - 6;
+    return { label, x: xSpread * (col + 1), y: 18 + row * 34 + jitterY };
+  });
+  const rows = Math.ceil(items.length / cols);
+  return (
+    <div style={{ position: "relative", height: 60 + rows * 90, width: "100%" }}>
+      <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "visible" }} aria-hidden="true">
+        {positions.slice(1).map((p, i) => {
+          const prev = positions[i];
+          return (
+            <line
+              key={i}
+              x1={`${prev.x}%`}
+              y1={`${prev.y}%`}
+              x2={`${p.x}%`}
+              y2={`${p.y}%`}
+              stroke={TOKENS.border}
+              strokeWidth="1"
+            />
+          );
+        })}
+      </svg>
+      {positions.map((p, i) => (
+        <ConstellationNode key={p.label} label={p.label} x={p.x} y={p.y} delay={i * 60} />
+      ))}
+    </div>
+  );
+}
+
 export default function Portfolio() {
   const [navSolid, setNavSolid] = useState(false);
-  const activeSection = useActiveSection(["hero", "about", "experience", "education", "systems", "projects", "skills", "contact"], "hero");
-  const rail = RAIL_CONTENT[activeSection] || RAIL_CONTENT.hero;
 
   useEffect(() => {
     const onScroll = () => setNavSolid(window.scrollY > 40);
@@ -1675,8 +1745,7 @@ export default function Portfolio() {
         color: TOKENS.text,
       }}
     >
-      <SystemLogPanel config={rail.left} />
-      <StackPanel config={rail.right} />
+      <GridField />
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
         * { box-sizing: border-box; }
@@ -1729,6 +1798,14 @@ export default function Portfolio() {
         @media (min-width: 860px) {
           .systems-grid { grid-template-columns: 1.4fr 1fr; align-items: start; }
         }
+        .about-scene-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+        @media (min-width: 900px) {
+          .about-scene-grid { grid-template-columns: 1.5fr 1fr; align-items: center; gap: 48px; }
+        }
         .about-grid {
           display: grid;
           grid-template-columns: 1.3fr 1fr;
@@ -1744,6 +1821,10 @@ export default function Portfolio() {
         .term-scroll { scrollbar-width: thin; scrollbar-color: ${TOKENS.borderStrong} transparent; height: 320px; }
         @media (min-width: 1280px) {
           .term-scroll { height: 262px; }
+        }
+        @keyframes termBreathe {
+          0%, 100% { opacity: 0.14; }
+          50% { opacity: 0.28; }
         }
         @keyframes termDotPulse {
           0%, 100% { opacity: 0.35; transform: scale(0.85); }
@@ -1853,7 +1934,6 @@ export default function Portfolio() {
         }}
       >
         <div style={{ padding: "32px 32px 20px", maxWidth: 1320, margin: "0 auto", position: "relative", width: "100%" }}>
-          <GlowArc />
           <div className="hero-grid" style={{ position: "relative", zIndex: 1 }}>
             <HeroProfile />
 
@@ -1888,7 +1968,9 @@ export default function Portfolio() {
               </p>
               <AnimatedLine text={'"If AI replaces me, at least I\u2019ll be the one who built it."'} />
               <div style={{ marginTop: 20 }}>
-                <Shell />
+                <TerminalFrame>
+                  <Shell />
+                </TerminalFrame>
               </div>
               <MobileSocialDock />
             </div>
@@ -1898,192 +1980,234 @@ export default function Portfolio() {
         </div>
       </header>
 
-      <section style={{ padding: "40px 32px 56px", maxWidth: 1160, margin: "0 auto", textAlign: "center" }}>
-        <h2
-          style={{
-            fontFamily: "'IBM Plex Mono', monospace",
-            fontWeight: 600,
-            fontSize: "clamp(26px, 5vw, 50px)",
-            lineHeight: 1.35,
-            letterSpacing: "0.01em",
-            color: TOKENS.text,
-            margin: 0,
-            cursor: "default",
-          }}
-        >
-          <WaveText text="ESCAPE THE HYPE" />
-          <br />
-          <WaveText text="ENTER THE PRODUCTION" />
-        </h2>
+      <section id="about" style={{ position: "relative", padding: "160px 32px", maxWidth: 1200, margin: "0 auto" }}>
+        <SceneGlow y="10%" size={780} opacity={0.14} />
+        <SceneNumber n="01" />
+        <div className="about-scene-grid" style={{ marginTop: 18 }}>
+          <BigStatement
+            items={[
+              { text: "I build systems" },
+              { text: "that think." },
+              { text: "retrieve." },
+              { text: "reason." },
+              { text: "ship." },
+            ]}
+          />
+          <SceneText delay={500}>
+            <div style={{ fontSize: 16, lineHeight: 1.85, color: TOKENS.textDim, maxWidth: 460 }}>
+              <p style={{ margin: "0 0 18px" }}>
+                I'm Saket, a Software Engineer based in Pune, India, with 2.5+ years of experience building
+                production-grade software, cloud infrastructure, and GenAI systems.
+              </p>
+              <p style={{ margin: "0 0 18px" }}>
+                I hold a Bachelor of Engineering in Computer Engineering from Savitribai Phule Pune
+                University. My work spans DevOps, cloud engineering, LLMs, and RAG, combining software
+                engineering with AI and infrastructure.
+              </p>
+              <p style={{ margin: "0 0 18px" }}>
+                I've worked on Agentic RAG, hybrid retrieval, LLM inference, Kubernetes, AWS, Azure,
+                Terraform, Docker, and CI/CD. I enjoy building AI systems that are grounded, secure,
+                observable, scalable, and cost-efficient.
+              </p>
+              <p style={{ margin: 0 }}>
+                Outside work, I build side projects and explore AI, cloud engineering, and distributed
+                systems.
+              </p>
+            </div>
+          </SceneText>
+        </div>
       </section>
 
-      <section id="about" style={{ padding: "56px 32px", maxWidth: 900, margin: "0 auto" }}>
-        <SectionLabel>about</SectionLabel>
-        <Reveal>
-          <h2
-            style={{
-              fontSize: "clamp(24px, 3vw, 32px)",
-              fontWeight: 600,
-              lineHeight: 1.3,
-              margin: "0 0 18px",
-              color: TOKENS.text,
-              maxWidth: 640,
-            }}
-          >
-            I build AI systems that survive contact with production.
-          </h2>
-          <p style={{ fontSize: 16, lineHeight: 1.85, color: TOKENS.textDim, margin: 0, maxWidth: 640 }}>
-            Two and a half years in, I've shipped agentic RAG pipelines handling live compliance and
-            financial data, hybrid retrieval systems ranking real product catalogs, and the Kubernetes
-            plumbing that keeps them running. I care less about demos that work once and more about
-            systems that stay grounded, observable, and cheap to run at 2am.
-          </p>
-        </Reveal>
+      <section style={{ position: "relative", padding: "100px 32px 40px", maxWidth: 900, margin: "0 auto" }}>
+        <SceneEyebrow>what i build</SceneEyebrow>
+        <BuildItem
+          index={0}
+          title="RAG"
+          text="Retrieval-augmented pipelines that ground every answer in real documents and data — not the model's memory."
+        />
+        <BuildItem
+          index={1}
+          title="Agentic AI"
+          text="Multi-step graphs with conditional routing, retrieval, generation, validation, and human-in-the-loop escalation for complex or high-risk queries."
+        />
+        <BuildItem
+          index={2}
+          title="LLM Infrastructure"
+          text="Self-hosted inference on GPU workers, deployed and scaled through Kubernetes, Docker, and infrastructure-as-code."
+        />
+        <BuildItem
+          index={3}
+          title="Hybrid Retrieval"
+          text="FAISS for semantic search and BM25 for keyword search, merged with Reciprocal Rank Fusion — catching what either method misses alone."
+        />
+        <BuildItem
+          index={4}
+          title="Evaluation"
+          text="TruLens for groundedness and relevance, LangSmith for tracing — every answer measured before it ships."
+        />
+        <BuildItem
+          index={5}
+          title="Guardrails"
+          text="Input and output checks that keep unsupported or unsafe responses from ever reaching a user."
+        />
       </section>
 
-      <section id="experience" style={{ padding: "20px 32px 60px", maxWidth: 900, margin: "0 auto" }}>
-        <SectionLabel>experience</SectionLabel>
-        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12.5, color: TOKENS.textFaint, margin: "-6px 0 26px" }}>
+      <section id="experience" style={{ position: "relative", padding: "140px 32px 40px", maxWidth: 900, margin: "0 auto" }}>
+        <SceneNumber n="03" />
+        <div style={{ marginTop: 14, marginBottom: 12 }}>
+          <SceneText>
+            <h2 style={{ fontSize: "clamp(30px, 4.4vw, 52px)", fontWeight: 550, letterSpacing: "-0.02em", color: TOKENS.text, margin: 0 }}>
+              Where it was built.
+            </h2>
+          </SceneText>
+        </div>
+        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12.5, color: TOKENS.textFaint, margin: "0 0 56px" }}>
           same request-time shape as{" "}
           <a className="link" href="#systems">
             → systems
           </a>
         </p>
         <div style={{ position: "relative" }}>
-          <div
-            aria-hidden="true"
-            style={{ position: "absolute", left: 5, top: 10, bottom: 10, width: 1, background: TOKENS.border }}
+          <TimelineNode
+            index={0}
+            role="AI Engineer"
+            company="KWAD Corporation"
+            dates="Apr 2025 — Present"
+            logo={KWAD_LOGO}
+            companyUrl="https://kwad.in/"
+            subtitle="AI Compliance & Financial Operations Copilot"
+            bullets={[
+              "Agentic RAG system (LangChain + LangGraph) for natural-language investigation of B2B transaction and compliance data — conditional routing, retrieval, generation, human-in-the-loop escalation.",
+              "Tenant-isolated retrieval and grounded responses with source citations; input/output guardrails to keep unsupported or unsafe requests out.",
+              "Deployed on Kubernetes with Docker and Helm, GitHub Actions CI/CD, and LangSmith for tracing and evaluation.",
+            ]}
+            tags={["LangChain", "LangGraph", "Kubernetes", "Helm", "GitHub Actions", "LangSmith"]}
           />
-          <div style={{ position: "relative", paddingLeft: 26 }}>
-            <span
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                left: 0,
-                top: 8,
-                width: 11,
-                height: 11,
-                borderRadius: "50%",
-                background: TOKENS.panel,
-                border: `2px solid ${TOKENS.teal}`,
-                zIndex: 1,
-              }}
-            />
-            <ExperienceCard
-              role="AI Engineer"
-              company="KWAD Corporation"
-              dates="Apr 2025 — Present"
-              logo={KWAD_LOGO}
-              companyUrl="https://kwad.in/"
-              subtitle="AI Compliance & Financial Operations Copilot"
-              bullets={[
-                "Agentic RAG system (LangChain + LangGraph) for natural-language investigation of B2B transaction and compliance data — conditional routing, retrieval, generation, human-in-the-loop escalation.",
-                "Tenant-isolated retrieval and grounded responses with source citations; input/output guardrails to keep unsupported or unsafe requests out.",
-                "Deployed on Kubernetes with Docker and Helm, GitHub Actions CI/CD, and LangSmith for tracing and evaluation.",
-              ]}
-              tags={["LangChain", "LangGraph", "Kubernetes", "Helm", "GitHub Actions", "LangSmith"]}
-            />
-          </div>
-          <div style={{ position: "relative", paddingLeft: 26 }}>
-            <span
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                left: 0,
-                top: 8,
-                width: 11,
-                height: 11,
-                borderRadius: "50%",
-                background: TOKENS.panel,
-                border: `2px solid ${TOKENS.borderStrong}`,
-                zIndex: 1,
-              }}
-            />
-            <ExperienceCard
-              role="Software Engineer"
-              company="Briowin Private Limited"
-              dates="Feb 2024 — Apr 2025"
-              subtitle="CatalogSage — AI-powered product catalog assistant"
-              bullets={[
-                "RAG assistant for natural-language search and recommendations across a 300+ SKU catalog — Python, FastAPI, LangGraph, OpenAI.",
-                "Hybrid retrieval combining FAISS semantic search and BM25 keyword search, merged with Reciprocal Rank Fusion.",
-                "Evaluation pipeline with TruLens measuring groundedness, context relevance, and answer relevance; Dockerized for deterministic CI.",
-              ]}
-              tags={["FastAPI", "FAISS", "BM25", "RRF", "TruLens", "Docker"]}
-            />
-          </div>
+          <TimelineNode
+            index={1}
+            role="Software Engineer"
+            company="Briowin Private Limited"
+            dates="Feb 2024 — Apr 2025"
+            subtitle="CatalogSage — AI-powered product catalog assistant"
+            bullets={[
+              "RAG assistant for natural-language search and recommendations across a 300+ SKU catalog — Python, FastAPI, LangGraph, OpenAI.",
+              "Hybrid retrieval combining FAISS semantic search and BM25 keyword search, merged with Reciprocal Rank Fusion.",
+              "Evaluation pipeline with TruLens measuring groundedness, context relevance, and answer relevance; Dockerized for deterministic CI.",
+            ]}
+            tags={["FastAPI", "FAISS", "BM25", "RRF", "TruLens", "Docker"]}
+            last
+          />
         </div>
-      </section>
-
-      <section id="education" style={{ padding: "0 32px 40px", maxWidth: 900, margin: "0 auto" }}>
-        <SectionLabel>education</SectionLabel>
-        <Reveal>
+        <SceneText delay={150}>
           <div
             style={{
-              border: `1px solid ${TOKENS.border}`,
-              borderRadius: 10,
-              padding: "16px 20px",
-              background: TOKENS.panel,
-              display: "flex",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-              gap: 8,
+              fontFamily: "'IBM Plex Mono', monospace",
+              fontSize: 12.5,
+              color: TOKENS.textFaint,
+              paddingLeft: 46,
             }}
           >
-            <div>
-              <div style={{ fontSize: 16, fontWeight: 600, color: TOKENS.text, marginBottom: 4 }}>
-                B.E. in Computer Engineering
-              </div>
-              <div style={{ color: TOKENS.textDim, fontSize: 14 }}>
-                Savitribai Phule Pune University · Pune, India
-              </div>
-            </div>
-            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: TOKENS.textFaint, whiteSpace: "nowrap" }}>
-              2019 — 2023
-            </div>
+            B.E. Computer Engineering · Savitribai Phule Pune University · 2019 — 2023
           </div>
-        </Reveal>
+        </SceneText>
       </section>
 
-      <section id="systems" style={{ padding: "20px 32px 72px", maxWidth: 980, margin: "0 auto" }}>
-        <SectionLabel>systems</SectionLabel>
-        <Reveal>
-          <h2 style={{ fontSize: "clamp(22px, 2.6vw, 30px)", fontWeight: 600, lineHeight: 1.25, margin: "0 0 14px", color: TOKENS.text }}>
-            What I build: RAG, agentic workflows, and the inference layer under them.
-          </h2>
-          <p style={{ color: TOKENS.textDim, fontSize: 15, lineHeight: 1.75, margin: "0 0 36px", maxWidth: 640 }}>
+      <section id="systems" style={{ position: "relative", padding: "160px 32px 60px", maxWidth: 1000, margin: "0 auto" }}>
+        <SceneGlow x="20%" y="20%" size={640} opacity={0.12} />
+        <SceneNumber n="04" />
+        <div style={{ marginTop: 14, marginBottom: 18 }}>
+          <SceneText>
+            <h2 style={{ fontSize: "clamp(30px, 4.4vw, 52px)", fontWeight: 550, letterSpacing: "-0.02em", color: TOKENS.text, margin: 0 }}>
+              How it all connects.
+            </h2>
+          </SceneText>
+        </div>
+        <SceneText delay={100}>
+          <p style={{ color: TOKENS.textDim, fontSize: 16, lineHeight: 1.8, margin: "0 0 48px", maxWidth: 640 }}>
             The same request-time shape underneath a RAG assistant or an agentic workflow — validated in,
             validated out, nothing reaching a model or a user ungrounded.
           </p>
-          <div className="systems-grid">
-            <div>
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: TOKENS.textFaint, letterSpacing: "0.08em", marginBottom: 16 }}>
-                REQUEST-TIME PIPELINE
-              </div>
-              <ArchitectureDiagram />
+        </SceneText>
+        <div className="systems-grid">
+          <SceneText delay={150}>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: TOKENS.textFaint, letterSpacing: "0.08em", marginBottom: 16 }}>
+              REQUEST-TIME PIPELINE
             </div>
-            <div>
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: TOKENS.textFaint, letterSpacing: "0.08em", marginBottom: 16 }}>
-                DEPLOYMENT
-              </div>
-              <InfraDiagram />
+            <ArchitectureDiagram />
+          </SceneText>
+          <SceneText delay={250}>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: TOKENS.textFaint, letterSpacing: "0.08em", marginBottom: 16 }}>
+              DEPLOYMENT
             </div>
-          </div>
+            <InfraDiagram />
+          </SceneText>
+        </div>
+        <SceneText delay={300}>
           <DecisionLog />
-        </Reveal>
+        </SceneText>
       </section>
 
-      <section id="projects" style={{ padding: "20px 32px 60px", maxWidth: 900, margin: "0 auto" }}>
-        <SectionLabel>projects</SectionLabel>
-        {PROJECTS.map((p, i) => (
+      <section id="projects" style={{ position: "relative", padding: "160px 32px 40px", maxWidth: 980, margin: "0 auto" }}>
+        <SceneNumber n="05" />
+        <div style={{ marginTop: 14, marginBottom: 56 }}>
+          <SceneText>
+            <h2 style={{ fontSize: "clamp(30px, 4.4vw, 52px)", fontWeight: 550, letterSpacing: "-0.02em", color: TOKENS.text, margin: "0 0 12px" }}>
+              Self-Hosted LLM Inference Platform
+            </h2>
+          </SceneText>
+          <SceneText delay={100}>
+            <p style={{ color: TOKENS.textDim, fontSize: 16, lineHeight: 1.8, margin: "0 0 32px", maxWidth: 620 }}>
+              GPU-accelerated model serving on AWS EKS — for the cases where routing to a third-party API
+              isn't the right call on cost, latency, or data residency.
+            </p>
+          </SceneText>
+          <SceneText delay={200}>
+            <div
+              style={{
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: 12,
+                padding: "32px 28px",
+                background: "rgba(11,18,32,0.5)",
+                backdropFilter: "blur(16px)",
+                WebkitBackdropFilter: "blur(16px)",
+                boxShadow: `0 30px 80px -20px ${TOKENS.teal}18, 0 8px 32px rgba(0,0,0,0.25)`,
+              }}
+            >
+              <FlowDiagram steps={["REQUEST", "LOAD BALANCER", "vLLM WORKER — GPU", "RESPONSE"]} />
+              <div style={{ marginTop: 18 }}>
+                {["AWS EKS", "Kubernetes", "Terraform", "Docker", "vLLM"].map((t) => (
+                  <Tag key={t}>{t}</Tag>
+                ))}
+              </div>
+            </div>
+          </SceneText>
+        </div>
+        <SceneText delay={100}>
+          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: TOKENS.textFaint, letterSpacing: "0.08em", marginBottom: 16 }}>
+            MORE SYSTEMS
+          </div>
+        </SceneText>
+        {PROJECTS.filter((p) => p.id !== 3).map((p, i) => (
           <Reveal key={p.id} delay={i * 60}>
             <ProjectSnapshot project={p} />
           </Reveal>
         ))}
       </section>
 
-      <section id="skills" style={{ padding: "20px 32px 60px", maxWidth: 900, margin: "0 auto" }}>
-        <SectionLabel>skills</SectionLabel>
+      <section id="skills" style={{ position: "relative", padding: "160px 32px 60px", maxWidth: 980, margin: "0 auto" }}>
+        <SceneNumber n="06" />
+        <div style={{ marginTop: 14, marginBottom: 8 }}>
+          <SceneText>
+            <h2 style={{ fontSize: "clamp(30px, 4.4vw, 52px)", fontWeight: 550, letterSpacing: "-0.02em", color: TOKENS.text, margin: 0 }}>
+              Infrastructure.
+            </h2>
+          </SceneText>
+        </div>
+        <SceneText delay={100}>
+          <InfraConstellation
+            items={["AWS", "Azure", "Docker", "Kubernetes", "Helm", "Terraform", "Ansible", "GitHub Actions", "Prometheus", "Grafana", "CloudWatch"]}
+          />
+        </SceneText>
         <Reveal>
           <div>
             {skillGroups.map((g, i) => (
@@ -2127,21 +2251,39 @@ export default function Portfolio() {
         </Reveal>
       </section>
 
-      <section id="contact" style={{ padding: "40px 32px 80px", maxWidth: 900, margin: "0 auto" }}>
-        <SectionLabel>contact</SectionLabel>
-        <Reveal>
-        <div
-          style={{
-            border: `1px solid ${TOKENS.border}`,
-            borderRadius: 10,
-            padding: "26px 24px",
-            background: TOKENS.panel,
-          }}
-        >
-          <p style={{ fontSize: 15, color: TOKENS.textDim, margin: "0 0 18px", lineHeight: 1.7 }}>
-            Open to conversations about GenAI engineering roles and interesting RAG/agentic problems.
-          </p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 14, fontFamily: "'IBM Plex Mono', monospace", fontSize: 13.5 }}>
+      <section id="contact" style={{ position: "relative", padding: "160px 32px 80px", maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
+        <SceneGlow size={820} opacity={0.18} />
+        <SceneText>
+          <h2
+            style={{
+              fontSize: "clamp(32px, 5.4vw, 64px)",
+              fontWeight: 550,
+              letterSpacing: "-0.02em",
+              lineHeight: 1.08,
+              color: TOKENS.text,
+              margin: "0 0 6px",
+            }}
+          >
+            Have a system worth building?
+          </h2>
+        </SceneText>
+        <SceneText delay={120}>
+          <h2
+            style={{
+              fontSize: "clamp(32px, 5.4vw, 64px)",
+              fontWeight: 550,
+              letterSpacing: "-0.02em",
+              lineHeight: 1.08,
+              color: TOKENS.teal,
+              textShadow: `0 0 30px ${TOKENS.teal}40`,
+              margin: "0 0 40px",
+            }}
+          >
+            Let's build it.
+          </h2>
+        </SceneText>
+        <SceneText delay={240}>
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 16, fontFamily: "'IBM Plex Mono', monospace", fontSize: 13.5, marginBottom: 28 }}>
             <a className="link" href="mailto:saketdeshmukh10@gmail.com">
               saketdeshmukh10@gmail.com
             </a>
@@ -2149,16 +2291,7 @@ export default function Portfolio() {
               linkedin.com/in/saket-deshmukh
             </a>
           </div>
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 12,
-              marginTop: 18,
-              paddingTop: 18,
-              borderTop: `1px solid ${TOKENS.border}`,
-            }}
-          >
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 12 }}>
             <a
               href={RESUME_PDF}
               download="Saket_Deshmukh_Resume.pdf"
@@ -2169,7 +2302,7 @@ export default function Portfolio() {
                 textDecoration: "none",
                 border: `1px solid ${TOKENS.amberDim}`,
                 borderRadius: 6,
-                padding: "6px 14px",
+                padding: "8px 16px",
               }}
             >
               download resume ↓
@@ -2185,18 +2318,32 @@ export default function Portfolio() {
                 textDecoration: "none",
                 border: `1px solid ${TOKENS.border}`,
                 borderRadius: 6,
-                padding: "6px 14px",
+                padding: "8px 16px",
               }}
             >
               source code ↗
             </a>
+            <a
+              href={GITHUB_REPO_URL}
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: 12.5,
+                color: TOKENS.textDim,
+                textDecoration: "none",
+                border: `1px solid ${TOKENS.border}`,
+                borderRadius: 6,
+                padding: "8px 16px",
+              }}
+            >
+              github ↗
+            </a>
           </div>
-        </div>
-        </Reveal>
+        </SceneText>
         <div
           style={{
-            marginTop: 40,
-            textAlign: "center",
+            marginTop: 64,
             fontFamily: "'IBM Plex Mono', monospace",
             fontSize: 11.5,
             color: TOKENS.textFaint,
