@@ -40,6 +40,12 @@ export default function GlobalStyles() {
         .social-dock { display: none; }
       }
       .dock-link:hover { color: ${TOKENS.teal}; }
+      @keyframes scrollHintBounce {
+        0%, 100% { transform: translateY(0); opacity: 0.6; }
+        50% { transform: translateY(6px); opacity: 1; }
+      }
+      .scroll-hint-arrow { animation: scrollHintBounce 1.8s ease-in-out infinite; }
+      .scroll-hint:hover { color: ${TOKENS.teal}; }
       @keyframes quoteGlowPulse {
         0%, 100% { text-shadow: 0 0 12px ${TOKENS.teal}40; }
         50% { text-shadow: 0 0 20px ${TOKENS.teal}80; }

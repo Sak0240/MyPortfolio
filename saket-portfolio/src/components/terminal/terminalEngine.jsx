@@ -111,7 +111,12 @@ export const HELP_TEXT = [
   "skills         technical skills",
   "contact        get in touch",
   "resume         download resume",
+  "ls             list site sections",
+  "echo <text>    echo text back",
   "clear          clear the terminal",
+  "",
+  "↑ / ↓  cycle through command history",
+  "tab    autocomplete a command",
   "",
   "or just type a question in plain english.",
 ].join("\n");

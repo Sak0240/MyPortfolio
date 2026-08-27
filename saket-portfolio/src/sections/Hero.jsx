@@ -3,6 +3,7 @@ import HeroProfile from "../components/hero/HeroProfile";
 import HeroPortrait from "../components/hero/HeroPortrait";
 import { MobileSocialDock } from "../components/hero/SocialLinks";
 import AnimatedLine from "../components/shared/AnimatedLine";
+import ScrollHint from "../components/shared/ScrollHint";
 import TerminalFrame from "../components/terminal/TerminalFrame";
 import Shell from "../components/terminal/Shell";
 
@@ -64,6 +65,7 @@ export default function Hero() {
           <HeroPortrait />
         </div>
       </div>
+      <ScrollHint />
     </header>
   );
 }
