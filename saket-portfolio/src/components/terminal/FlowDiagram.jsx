@@ -9,11 +9,11 @@ export default function FlowDiagram({ steps, compact }) {
             className="flow-node"
             style={{
               fontFamily: "'IBM Plex Mono', monospace",
-              fontSize: compact ? 11.5 : 12,
+              fontSize: compact ? 10 : 12,
               color: TOKENS.textDim,
               border: `1px solid ${TOKENS.border}`,
               borderRadius: 6,
-              padding: compact ? "5px 9px" : "6px 11px",
+              padding: compact ? "3px 7px" : "6px 11px",
               display: "inline-block",
               animationDelay: `${i * 90}ms`,
             }}
@@ -25,8 +25,9 @@ export default function FlowDiagram({ steps, compact }) {
               style={{
                 color: TOKENS.textFaint,
                 fontFamily: "'IBM Plex Mono', monospace",
-                fontSize: compact ? 11 : 12,
-                padding: "1px 0 1px 10px",
+                fontSize: compact ? 10 : 12,
+                lineHeight: compact ? 1 : 1.4,
+                padding: compact ? "0 0 0 8px" : "1px 0 1px 10px",
               }}
             >
               │

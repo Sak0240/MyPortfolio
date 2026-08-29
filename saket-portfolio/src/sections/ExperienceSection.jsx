@@ -11,7 +11,7 @@ export default function ExperienceSection() {
       <div style={{ marginTop: 14, marginBottom: 12 }}>
         <SceneText>
           <h2 style={{ fontSize: "clamp(30px, 4.4vw, 52px)", fontWeight: 550, letterSpacing: "-0.02em", color: TOKENS.text, margin: 0 }}>
-            Where it was built.
+            Where it was shipped.
           </h2>
         </SceneText>
       </div>

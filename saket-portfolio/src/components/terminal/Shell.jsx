@@ -85,6 +85,11 @@ export default function Shell() {
         });
         const target = document.getElementById("about");
         if (target) target.scrollIntoView({ behavior: "smooth" });
+      } else if (cmd === "work") {
+        push({
+          kind: "text",
+          text: "I'm currently working with KWAD Corporation as an AI Engineer, focusing on building and deploying production-grade AI solutions with LLMs, RAG, MLOps, and cloud infrastructure.",
+        });
       } else if (cmd === "help") {
         push({ kind: "text", text: HELP_TEXT });
       } else if (cmd === "clear") {

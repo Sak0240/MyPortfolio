@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { TOKENS } from "../../theme";
+import { KWAD_LOGO } from "../../data/assets";
 import { SocialLinks } from "./SocialLinks";
 
 export default function HeroProfile() {
@@ -17,6 +18,12 @@ export default function HeroProfile() {
         <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 15, fontWeight: 600, color: TOKENS.teal, marginBottom: 10, letterSpacing: "0.01em" }}>
           GENAI ENGINEER
         </div>
+        <img
+          src={KWAD_LOGO}
+          alt="KWAD Corporation"
+          className="profile-kwad-logo"
+          style={{ height: 16, display: "block", marginBottom: 10 }}
+        />
         <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12.5, color: TOKENS.textDim, marginBottom: 6 }}>PUNE, INDIA</div>
         <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12.5, color: TOKENS.textDim }}>2.5+ YEARS</div>
       </div>

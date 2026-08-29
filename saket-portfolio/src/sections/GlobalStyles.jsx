@@ -110,6 +110,11 @@ export default function GlobalStyles() {
         72% { opacity: 1; }
         100% { opacity: 1; }
       }
+      @keyframes kwadLogoPulse {
+        0%, 100% { opacity: 0.65; filter: drop-shadow(0 0 0px ${TOKENS.teal}00); }
+        50% { opacity: 1; filter: drop-shadow(0 0 6px ${TOKENS.teal}80); }
+      }
+      .profile-kwad-logo { animation: kwadLogoPulse 2.6s ease-in-out infinite; }
       @keyframes railFade {
         from { opacity: 0; }
         to { opacity: 1; }

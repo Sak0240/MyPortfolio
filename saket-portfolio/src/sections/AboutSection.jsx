@@ -23,21 +23,21 @@ export default function AboutSection() {
           <div style={{ fontSize: 16, lineHeight: 1.85, color: TOKENS.textDim, maxWidth: 460 }}>
             <p style={{ margin: "0 0 18px" }}>
               I'm Saket, a Software Engineer based in Pune, India, with 2.5+ years of experience building
-              production-grade software, cloud infrastructure, and GenAI systems.
+              production-grade software, cloud infrastructure, GenAI, and MLOps systems.
             </p>
             <p style={{ margin: "0 0 18px" }}>
               I hold a Bachelor of Engineering in Computer Engineering from Savitribai Phule Pune
-              University. My work spans DevOps, cloud engineering, LLMs, and RAG, combining software
-              engineering with AI and infrastructure.
+              University. My work spans Software Engineering, Cloud Engineering, GenAI, MLOps, LLMs, and
+              RAG, combining AI with scalable and reliable infrastructure.
             </p>
             <p style={{ margin: "0 0 18px" }}>
-              I've worked on Agentic RAG, hybrid retrieval, LLM inference, Kubernetes, AWS, Azure,
+              I've worked with Agentic RAG, hybrid retrieval, LLM inference, MLOps, Kubernetes, AWS, Azure,
               Terraform, Docker, and CI/CD. I enjoy building AI systems that are grounded, secure,
-              observable, scalable, and cost-efficient.
+              observable, scalable, and cost-efficient, with a strong focus on reliable model deployment
+              and production operations.
             </p>
             <p style={{ margin: 0 }}>
-              Outside work, I build side projects and explore AI, cloud engineering, and distributed
-              systems.
+              Outside work, I build side projects and explore LLMOps, Cloud, and Infrastructure.
             </p>
           </div>
         </SceneText>

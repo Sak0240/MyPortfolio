@@ -94,12 +94,13 @@ export const BOOT_LINES = [
   { prompt: "$", text: "whoami", speed: 30, pause: 300 },
   { text: "saket deshmukh — genai / ai engineer", color: TOKENS.text, pause: 120 },
   { text: "pune, india · 2.5+ years in production llm systems", color: TOKENS.textDim, pause: 320 },
-  { prompt: "$", text: "more", speed: 30, pause: 300 },
-  { text: "type 'more' to see the rest of the site, or ask a question about my work.", color: TOKENS.textDim, pause: 500 },
+  { prompt: "$", text: "work", speed: 30, pause: 300 },
+  { text: "I'm currently working with KWAD Corporation as an AI Engineer, focusing on building and deploying production-grade AI solutions with LLMs, RAG, MLOps, and cloud infrastructure.", color: TOKENS.textDim, pause: 500 },
 ];
 
 export const HELP_TEXT = [
   "more           see the rest of the site",
+  "work           what I'm currently working on",
   "about          who I am",
   "experience     work history",
   "projects       list projects",

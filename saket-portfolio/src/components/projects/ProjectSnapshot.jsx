@@ -59,13 +59,18 @@ export default function ProjectSnapshot({ project }) {
       </button>
       <div
         style={{
-          maxHeight: open ? 600 : 0,
+          maxHeight: open ? 900 : 0,
           opacity: open ? 1 : 0,
           overflow: "hidden",
           transition: "max-height 0.3s ease, opacity 0.25s ease",
         }}
       >
         <div style={{ padding: "0 22px 20px" }}>
+          {project.description && (
+            <p style={{ color: TOKENS.textDim, fontSize: 14, lineHeight: 1.75, margin: "0 0 18px" }}>
+              {project.description}
+            </p>
+          )}
           <FlowDiagram steps={project.flow} />
           <div style={{ marginTop: 14 }}>
             {project.tech.map((t) => (
