@@ -17,36 +17,17 @@ import ScoreBar from "./ScoreBar";
 import FlowDiagram from "./FlowDiagram";
 import Tag from "../shared/Tag";
 
-const KNOWN_COMMANDS = [
-  "help",
-  "about",
-  "experience",
-  "skills",
-  "contact",
-  "resume",
-  "projects",
-  "project",
-  "ls",
-  "echo",
-  "whoami",
-  "clear",
-];
-
 export default function Shell() {
   const [booted, setBooted] = useState(false);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [history, setHistory] = useState([]);
   const scrollRef = useRef(null);
-  const inputRef = useRef(null);
   const idRef = useRef(0);
   const nextId = () => {
     idRef.current += 1;
     return idRef.current;
   };
-  const cmdHistoryRef = useRef([]);
-  const historyIndexRef = useRef(-1);
-  const draftRef = useRef("");
 
   const push = useCallback((entry) => {
     setHistory((h) => [...h, { id: nextId(), ...entry }]);
@@ -91,15 +72,20 @@ export default function Shell() {
       const trimmed = raw.trim();
       if (!trimmed) return;
       push({ kind: "cmd", text: trimmed });
-      cmdHistoryRef.current.push(trimmed);
-      historyIndexRef.current = -1;
-      draftRef.current = "";
 
       const lower = trimmed.toLowerCase();
       const tokens = lower.split(/\s+/);
       const cmd = tokens[0];
 
-      if (cmd === "help") {
+      if (cmd === "more") {
+        push({
+          kind: "text",
+          text: "scrolling down to the rest of the site — experience, projects, skills, and how to reach me.",
+          color: TOKENS.teal,
+        });
+        const target = document.getElementById("about");
+        if (target) target.scrollIntoView({ behavior: "smooth" });
+      } else if (cmd === "help") {
         push({ kind: "text", text: HELP_TEXT });
       } else if (cmd === "clear") {
         setHistory([]);
@@ -170,21 +156,6 @@ export default function Shell() {
           ].join("\n"),
           color: TOKENS.teal,
         });
-      } else if (lower.startsWith("sudo rm")) {
-        push({
-          kind: "text",
-          text: "nice try. this system is production — nothing gets deleted without a PR and a review.",
-          color: "#D96B5C",
-        });
-      } else if (cmd === "ls") {
-        push({
-          kind: "text",
-          text: ["about.md", "experience.log", "projects/", "skills.json", "systems/", "contact.sh", "resume.pdf"].join("\n"),
-        });
-      } else if (cmd === "echo") {
-        push({ kind: "text", text: trimmed.slice(5) || " " });
-      } else if (cmd === "whoami") {
-        push({ kind: "text", text: "saket deshmukh — genai / ai engineer" });
       } else {
         runAsk(trimmed);
       }
@@ -230,16 +201,7 @@ export default function Shell() {
         </span>
       </div>
 
-      <div
-        ref={scrollRef}
-        className="term-scroll"
-        style={{ padding: "16px 22px", overflowY: "auto" }}
-        onClick={(e) => {
-          const selection = window.getSelection();
-          if (selection && selection.toString().length > 0) return;
-          if (inputRef.current) inputRef.current.focus();
-        }}
-      >
+      <div ref={scrollRef} className="term-scroll" style={{ padding: "16px 22px", overflowY: "auto" }}>
         <TypedLines lines={BOOT_LINES} onDone={() => setBooted(true)} />
 
         {booted && (
@@ -371,32 +333,8 @@ export default function Shell() {
             >
               <span style={{ color: TOKENS.amber, fontFamily: "'IBM Plex Mono', monospace", fontSize: 13.5 }}>$</span>
               <input
-                ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                  const cmds = cmdHistoryRef.current;
-                  if (e.key === "ArrowUp") {
-                    e.preventDefault();
-                    if (cmds.length === 0) return;
-                    if (historyIndexRef.current === -1) draftRef.current = input;
-                    const nextIndex = Math.min(historyIndexRef.current + 1, cmds.length - 1);
-                    historyIndexRef.current = nextIndex;
-                    setInput(cmds[cmds.length - 1 - nextIndex]);
-                  } else if (e.key === "ArrowDown") {
-                    e.preventDefault();
-                    if (historyIndexRef.current === -1) return;
-                    const nextIndex = historyIndexRef.current - 1;
-                    historyIndexRef.current = nextIndex;
-                    setInput(nextIndex === -1 ? draftRef.current : cmds[cmds.length - 1 - nextIndex]);
-                  } else if (e.key === "Tab") {
-                    e.preventDefault();
-                    const word = input.trim().toLowerCase();
-                    if (!word) return;
-                    const match = KNOWN_COMMANDS.find((c) => c.startsWith(word));
-                    if (match) setInput(match + " ");
-                  }
-                }}
                 placeholder="type help, or ask a question..."
                 disabled={busy}
                 style={{
@@ -409,23 +347,6 @@ export default function Shell() {
                   fontSize: 13.5,
                 }}
               />
-              <button
-                type="submit"
-                disabled={busy}
-                style={{
-                  background: "transparent",
-                  border: `1px solid ${TOKENS.amberDim}`,
-                  color: TOKENS.amber,
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  fontSize: 12,
-                  padding: "5px 12px",
-                  borderRadius: 6,
-                  cursor: "pointer",
-                  opacity: busy ? 0.5 : 1,
-                }}
-              >
-                run
-              </button>
             </form>
           </div>
         )}

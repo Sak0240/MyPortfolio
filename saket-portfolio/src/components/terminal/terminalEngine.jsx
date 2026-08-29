@@ -40,12 +40,7 @@ export function normalizeScores(scored) {
   }));
 }
 
-export const SUGGESTIONS = [
-  "help",
-  "projects",
-  "What's your experience with RAG?",
-  "sudo hire saket",
-];
+export const SUGGESTIONS = ["more"];
 
 export function firstSentences(text, count) {
   const sentences = text.match(/[^.]+\./g) || [text];
@@ -99,11 +94,12 @@ export const BOOT_LINES = [
   { prompt: "$", text: "whoami", speed: 30, pause: 300 },
   { text: "saket deshmukh — genai / ai engineer", color: TOKENS.text, pause: 120 },
   { text: "pune, india · 2.5+ years in production llm systems", color: TOKENS.textDim, pause: 320 },
-  { prompt: "$", text: "help", speed: 30, pause: 300 },
-  { text: "type a command, or just ask a question about my work.", color: TOKENS.textDim, pause: 500 },
+  { prompt: "$", text: "more", speed: 30, pause: 300 },
+  { text: "type 'more' to see the rest of the site, or ask a question about my work.", color: TOKENS.textDim, pause: 500 },
 ];
 
 export const HELP_TEXT = [
+  "more           see the rest of the site",
   "about          who I am",
   "experience     work history",
   "projects       list projects",
@@ -111,12 +107,7 @@ export const HELP_TEXT = [
   "skills         technical skills",
   "contact        get in touch",
   "resume         download resume",
-  "ls             list site sections",
-  "echo <text>    echo text back",
   "clear          clear the terminal",
-  "",
-  "↑ / ↓  cycle through command history",
-  "tab    autocomplete a command",
   "",
   "or just type a question in plain english.",
 ].join("\n");

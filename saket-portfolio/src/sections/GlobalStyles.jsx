@@ -11,7 +11,7 @@ export default function GlobalStyles() {
       a.plain { color: ${TOKENS.text}; text-decoration: none; }
       a.link { color: ${TOKENS.teal}; text-decoration: none; border-bottom: 1px solid ${TOKENS.tealDim}; }
       a.link:hover { border-color: ${TOKENS.teal}; }
-      @media (max-width: 1400px) {
+      @media (max-width: 1280px) {
         .hide-mobile { display: none !important; }
       }
       .hero-grid {
