@@ -79,5 +79,13 @@ export const CORPUS = [
     text:
       "Saket built a full-stack SQL performance analysis platform using Java, Spring Boot, React, and MySQL to analyze and optimize SQL queries across large datasets. He designed RESTful APIs for query execution, execution plan analysis, and optimization recommendations using indexing, joins, normalization, and query restructuring. The result was roughly a 30% improvement in query execution performance through indexing strategies and execution plan analysis, built on clean architecture principles.",
   },
+  {
+    id: "DOC-11",
+    tag: "project",
+    title: "AI platform for clinical record processing",
+    keywords: ["clinical", "medical", "grounding", "grounded", "healthcare", "embryologist", "lab", "ocr", "vision", "litellm", "pgvector", "sqlalchemy", "pydantic", "fastapi", "postgresql", "ecs", "human review", "hallucination", "verification"],
+    text:
+      "At KWAD Corporation, Saket built a full-stack AI platform in Python (FastAPI, Pydantic v2, async SQLAlchemy, PostgreSQL) that extracts and reasons over clinical documents — scans, spreadsheets, handwriting, and multi-language records — for embryologists and lab managers. A multi-provider LLM orchestration layer via LiteLLM handles schema-forced structured output, RAG using pgvector, and vision-model transcription for scanned or handwritten documents. Because LLMs can generate information not actually present in a document, every extracted value is checked by a deterministic grounding-verification layer that confirms the model's cited source text and page actually exist in the original document — unverifiable values are marked ungrounded rather than trusted. Extracted data then goes through human review, where a reviewer can accept, edit, or reject it before it's committed to the patient system. It's deployed on AWS ECS with Docker and S3, with CI coverage gates (mypy, ruff, pytest).",
+  },
 ];
 

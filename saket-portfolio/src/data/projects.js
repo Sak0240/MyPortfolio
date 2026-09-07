@@ -1,13 +1,13 @@
 export const PROJECTS = [
   {
-    id: 1,
-    name: "Product Assistant RAG",
-    org: "Briowin — CatalogSage",
-    tagline: "Natural-language product search across a 300+ SKU catalog.",
+    id: 6,
+    name: "AI Platform for Clinical Record Processing",
+    org: "KWAD Corporation",
+    tagline: "AI platform that extracts and verifies clinical data from scans, spreadsheets, and handwritten records.",
     description:
-      "A RAG assistant for CatalogSage, Briowin's AI-powered product catalog tool, built with Python, FastAPI, LangGraph, and OpenAI. It combines FAISS semantic search with BM25 keyword search, merged via Reciprocal Rank Fusion, to power natural-language search and recommendations across a 300+ SKU catalog. The LangGraph workflow handles conditional routing, retrieval, generation, output validation, and graceful fallback end-to-end.",
-    flow: ["QUERY", "VALIDATION", "HYBRID SEARCH — FAISS + BM25", "RRF", "LLM", "VALIDATION", "ANSWER"],
-    tech: ["Python", "FastAPI", "LangGraph", "FAISS", "BM25", "OpenAI"],
+      "A full-stack AI platform built in Python (FastAPI, Pydantic v2, async SQLAlchemy, PostgreSQL) that extracts and reasons over clinical documents — scans, spreadsheets, handwriting, and multi-language records — for embryologists and lab managers. A multi-provider LLM orchestration layer via LiteLLM handles schema-forced structured output, RAG over pgvector, and vision-model transcription for scanned or handwritten documents. Every extracted value is checked by a deterministic grounding-verification layer against its exact source span before a human reviewer confirms it, deployed on AWS ECS with Docker, S3, and CI coverage gates (mypy, ruff, pytest).",
+    flow: ["DOCUMENT INPUT", "OCR / VISION TRANSCRIPTION", "LLM STRUCTURED EXTRACTION", "GROUNDING VERIFICATION", "HUMAN REVIEW", "COMMIT TO SYSTEM"],
+    tech: ["Python", "FastAPI", "Pydantic v2", "SQLAlchemy", "PostgreSQL", "LiteLLM", "pgvector", "AWS ECS", "Docker"],
   },
   {
     id: 2,
@@ -20,14 +20,14 @@ export const PROJECTS = [
     tech: ["LangChain", "LangGraph", "Kubernetes", "Helm", "LangSmith"],
   },
   {
-    id: 3,
-    name: "Self-Hosted LLM Inference Platform",
-    org: "Personal project",
-    tagline: "GPU-accelerated model serving on AWS EKS.",
+    id: 1,
+    name: "Product Assistant RAG",
+    org: "Briowin — CatalogSage",
+    tagline: "Natural-language product search across a 300+ SKU catalog.",
     description:
-      "A self-hosted LLM inference platform on AWS EKS, using vLLM for GPU-accelerated model serving behind a load balancer. Terraform provisions the underlying VPC, IAM, and Kubernetes infrastructure, with Docker packaging the serving layer. Built for cases where routing to a third-party API isn't the right call on cost, latency, or data residency.",
-    flow: ["REQUEST", "LOAD BALANCER", "vLLM WORKER — GPU", "RESPONSE"],
-    tech: ["AWS EKS", "Kubernetes", "Terraform", "Docker", "vLLM"],
+      "A RAG assistant for CatalogSage, Briowin's AI-powered product catalog tool, built with Python, FastAPI, LangGraph, and OpenAI. It combines FAISS semantic search with BM25 keyword search, merged via Reciprocal Rank Fusion, to power natural-language search and recommendations across a 300+ SKU catalog. The LangGraph workflow handles conditional routing, retrieval, generation, output validation, and graceful fallback end-to-end.",
+    flow: ["QUERY", "VALIDATION", "HYBRID SEARCH — FAISS + BM25", "RRF", "LLM", "VALIDATION", "ANSWER"],
+    tech: ["Python", "FastAPI", "LangGraph", "FAISS", "BM25", "OpenAI"],
   },
   {
     id: 4,
@@ -38,6 +38,16 @@ export const PROJECTS = [
       "An NLP pipeline that automatically summarizes customer product reviews and classifies sentiment, built using Python. It processes 10,000+ reviews with text preprocessing, TF-IDF vectorization, and a Random Forest classifier reaching roughly 90% accuracy, with MySQL storing the data — cutting manual review analysis effort by about 60%.",
     flow: ["REVIEWS INPUT", "TEXT PREPROCESSING", "TF-IDF VECTORIZATION", "RANDOM FOREST CLASSIFICATION", "SUMMARY OUTPUT"],
     tech: ["Python", "NLP", "TF-IDF", "Random Forest", "MySQL"],
+  },
+  {
+    id: 3,
+    name: "Self-Hosted LLM Inference Platform",
+    org: "Personal project",
+    tagline: "GPU-accelerated model serving on AWS EKS.",
+    description:
+      "A self-hosted LLM inference platform on AWS EKS, using vLLM for GPU-accelerated model serving behind a load balancer. Terraform provisions the underlying VPC, IAM, and Kubernetes infrastructure, with Docker packaging the serving layer. Built for cases where routing to a third-party API isn't the right call on cost, latency, or data residency.",
+    flow: ["REQUEST", "LOAD BALANCER", "vLLM WORKER — GPU", "RESPONSE"],
+    tech: ["AWS EKS", "Kubernetes", "Terraform", "Docker", "vLLM"],
   },
   {
     id: 5,

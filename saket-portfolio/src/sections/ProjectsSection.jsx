@@ -7,7 +7,7 @@ import Tag from "../components/shared/Tag";
 import FlowDiagram from "../components/terminal/FlowDiagram";
 import ProjectSnapshot from "../components/projects/ProjectSnapshot";
 
-const FEATURED = PROJECTS.find((p) => p.id === 2);
+const FEATURED = PROJECTS.find((p) => p.id === 6);
 
 export default function ProjectsSection() {
   return (
@@ -50,7 +50,7 @@ export default function ProjectsSection() {
           MORE SYSTEMS
         </div>
       </SceneText>
-      {PROJECTS.filter((p) => p.id !== 2).map((p, i) => (
+      {PROJECTS.filter((p) => p.id !== 6).map((p, i) => (
         <Reveal key={p.id} delay={i * 60}>
           <ProjectSnapshot project={p} />
         </Reveal>
