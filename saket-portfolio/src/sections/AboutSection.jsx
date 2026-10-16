@@ -1,26 +1,33 @@
-import { TOKENS } from "../theme";
+import { TOKENS, FONTS } from "../theme";
 import SceneGlow from "../components/shared/SceneGlow";
 import SceneNumber from "../components/shared/SceneNumber";
 import BigStatement from "../components/shared/BigStatement";
 import SceneText from "../components/shared/SceneText";
+import AnimatedLine from "../components/shared/AnimatedLine";
+import PortraitBlock from "../components/about/PortraitBlock";
+import TitleBlock from "../components/about/TitleBlock";
 
 export default function AboutSection() {
   return (
-    <section id="about" style={{ position: "relative", padding: "160px 32px", maxWidth: 1200, margin: "0 auto" }}>
-      <SceneGlow y="10%" size={780} opacity={0.14} />
-      <SceneNumber n="01" />
-      <div className="about-scene-grid" style={{ marginTop: 18 }}>
-        <BigStatement
-          items={[
-            { text: "I build systems" },
-            { text: "that think." },
-            { text: "retrieve." },
-            { text: "reason." },
-            { text: "ship." },
-          ]}
-        />
-        <SceneText delay={500}>
-          <div style={{ fontSize: 16, lineHeight: 1.85, color: TOKENS.textDim, maxWidth: 460 }}>
+    <section id="about" style={{ position: "relative", padding: "140px 32px 110px", maxWidth: 1200, margin: "0 auto" }}>
+      <SceneGlow x="92%" y="6%" size={560} opacity={0.14} />
+      <div style={{ position: "relative" }}>
+        <SceneNumber n="01" label="About" />
+        <div style={{ marginTop: 26 }}>
+          <BigStatement
+            items={[
+              { text: "I build systems" },
+              { text: "that think." },
+              { text: "retrieve." },
+              { text: "reason." },
+              { text: "ship.", accent: true },
+            ]}
+          />
+        </div>
+      </div>
+      <div className="about-split" style={{ position: "relative" }}>
+        <SceneText delay={200}>
+          <div style={{ fontFamily: FONTS.body, fontSize: 16.5, lineHeight: 1.85, color: TOKENS.textDim, maxWidth: 520 }}>
             <p style={{ margin: "0 0 18px" }}>
               I'm Saket, a Software Engineer based in Pune, India, with 2.5+ years of experience building
               production-grade software, cloud infrastructure, GenAI, and MLOps systems.
@@ -40,7 +47,12 @@ export default function AboutSection() {
               Outside work, I build side projects and explore LLMOps, Cloud, and Infrastructure.
             </p>
           </div>
+          <AnimatedLine text={'"If AI replaces me, at least I’ll be the one who built it."'} />
         </SceneText>
+        <div>
+          <PortraitBlock />
+          <TitleBlock />
+        </div>
       </div>
     </section>
   );

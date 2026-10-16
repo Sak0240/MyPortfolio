@@ -3,7 +3,7 @@ import SceneText from "../shared/SceneText";
 import RevealLogo from "../shared/RevealLogo";
 import Tag from "../shared/Tag";
 
-export default function TimelineNode({ index, role, company, dates, subtitle, bullets, tags, logo, companyUrl, last }) {
+export default function TimelineNode({ index, role, company, dates, subtitle, bullets, tags, logo, logoInvert, companyUrl, last }) {
   return (
     <SceneText delay={index * 100} y={30}>
       <div style={{ position: "relative", display: "grid", gridTemplateColumns: "22px 1fr", gap: 24 }}>
@@ -33,10 +33,10 @@ export default function TimelineNode({ index, role, company, dates, subtitle, bu
             <div style={{ marginBottom: 12 }}>
               {companyUrl ? (
                 <a href={companyUrl} target="_blank" rel="noreferrer" style={{ display: "inline-block" }}>
-                  <RevealLogo src={logo} alt={`${company} logo`} />
+                  <RevealLogo src={logo} alt={`${company} logo`} invert={logoInvert} />
                 </a>
               ) : (
-                <RevealLogo src={logo} alt={`${company} logo`} />
+                <RevealLogo src={logo} alt={`${company} logo`} invert={logoInvert} />
               )}
             </div>
           )}

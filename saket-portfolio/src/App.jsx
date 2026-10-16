@@ -5,9 +5,10 @@ import GlobalStyles from "./sections/GlobalStyles";
 import Nav from "./sections/Nav";
 import Hero from "./sections/Hero";
 import AboutSection from "./sections/AboutSection";
+import TerminalSection from "./sections/TerminalSection";
+import ProjectsSection from "./sections/ProjectsSection";
 import ExperienceSection from "./sections/ExperienceSection";
 import SystemsSection from "./sections/SystemsSection";
-import ProjectsSection from "./sections/ProjectsSection";
 import SkillsSection from "./sections/SkillsSection";
 import ContactSection from "./sections/ContactSection";
 
@@ -27,6 +28,8 @@ export default function Portfolio() {
         minHeight: "100vh",
         fontFamily: "'IBM Plex Sans', sans-serif",
         color: TOKENS.text,
+        position: "relative",
+        overflowX: "clip",
       }}
     >
       <GridField />
@@ -34,6 +37,7 @@ export default function Portfolio() {
       <Nav navSolid={navSolid} />
       <Hero />
       <AboutSection />
+      <TerminalSection />
       <ProjectsSection />
       <ExperienceSection />
       <SystemsSection />

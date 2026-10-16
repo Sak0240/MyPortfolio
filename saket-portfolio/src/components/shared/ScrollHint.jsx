@@ -42,7 +42,7 @@ export default function ScrollHint() {
       >
         scroll to explore
       </span>
-      <span aria-hidden="true" className="scroll-hint-arrow" style={{ fontSize: 16, lineHeight: 1, color: TOKENS.teal }}>
+      <span aria-hidden="true" className="scroll-hint-arrow" style={{ fontSize: 16, lineHeight: 1, color: TOKENS.amber }}>
         ↓
       </span>
     </a>

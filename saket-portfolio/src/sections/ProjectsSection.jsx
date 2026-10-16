@@ -1,6 +1,6 @@
 import { TOKENS } from "../theme";
 import { PROJECTS } from "../data/projects";
-import SceneEyebrow from "../components/shared/SceneEyebrow";
+import SceneNumber from "../components/shared/SceneNumber";
 import SceneText from "../components/shared/SceneText";
 import Reveal from "../components/shared/Reveal";
 import Tag from "../components/shared/Tag";
@@ -12,7 +12,7 @@ const FEATURED = PROJECTS.find((p) => p.id === 6);
 export default function ProjectsSection() {
   return (
     <section id="projects" style={{ position: "relative", padding: "160px 32px 40px", maxWidth: 980, margin: "0 auto" }}>
-      <SceneEyebrow>projects i've shipped</SceneEyebrow>
+      <SceneNumber n="03" label="Projects I've shipped" />
       <div style={{ marginTop: 14, marginBottom: 56 }}>
         <SceneText>
           <h2 style={{ fontSize: "clamp(30px, 4.4vw, 52px)", fontWeight: 550, letterSpacing: "-0.02em", color: TOKENS.text, margin: "0 0 12px" }}>
@@ -25,17 +25,7 @@ export default function ProjectsSection() {
           </p>
         </SceneText>
         <SceneText delay={200}>
-          <div
-            style={{
-              border: "1px solid rgba(255,255,255,0.1)",
-              borderRadius: 12,
-              padding: "32px 28px",
-              background: "rgba(11,18,32,0.5)",
-              backdropFilter: "blur(16px)",
-              WebkitBackdropFilter: "blur(16px)",
-              boxShadow: `0 30px 80px -20px ${TOKENS.teal}18, 0 8px 32px rgba(0,0,0,0.25)`,
-            }}
-          >
+          <div className="bp-card" style={{ padding: "32px 28px" }}>
             <FlowDiagram steps={FEATURED.flow} compact />
             <div style={{ marginTop: 18 }}>
               {FEATURED.tech.map((t) => (

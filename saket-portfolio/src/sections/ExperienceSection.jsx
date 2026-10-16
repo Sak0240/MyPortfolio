@@ -7,7 +7,7 @@ import TimelineNode from "../components/experience/TimelineNode";
 export default function ExperienceSection() {
   return (
     <section id="experience" style={{ position: "relative", padding: "140px 32px 40px", maxWidth: 900, margin: "0 auto" }}>
-      <SceneNumber n="03" />
+      <SceneNumber n="04" label="Experience" />
       <div style={{ marginTop: 14, marginBottom: 12 }}>
         <SceneText>
           <h2 style={{ fontSize: "clamp(30px, 4.4vw, 52px)", fontWeight: 550, letterSpacing: "-0.02em", color: TOKENS.text, margin: 0 }}>
@@ -28,6 +28,7 @@ export default function ExperienceSection() {
           company="KWAD Corporation"
           dates="Apr 2025 — Present"
           logo={KWAD_LOGO}
+          logoInvert
           companyUrl="https://kwad.in/"
           subtitle="AI Compliance & Financial Operations Copilot"
           bullets={[

@@ -1,19 +1,21 @@
-import { TOKENS } from "../../theme";
+import { TOKENS, FONTS } from "../../theme";
 import SceneText from "./SceneText";
 
 export default function BigStatement({ items }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "clamp(10px, 3vw, 26px)" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "clamp(2px, 0.6vw, 8px)" }}>
       {items.map((line, i) => (
         <SceneText key={i} delay={i * 90} y={34}>
           <div
             style={{
-              fontSize: i === 0 ? "clamp(34px, 6.2vw, 84px)" : "clamp(30px, 5.6vw, 76px)",
-              fontWeight: 550,
-              lineHeight: 1.02,
-              letterSpacing: "-0.02em",
-              color: line.accent ? TOKENS.teal : TOKENS.text,
-              textShadow: line.accent ? `0 0 30px ${TOKENS.teal}40` : "none",
+              fontFamily: FONTS.display,
+              fontVariationSettings: '"wdth" 110',
+              textTransform: "uppercase",
+              fontSize: "clamp(32px, 6vw, 76px)",
+              fontWeight: 800,
+              lineHeight: 1.0,
+              letterSpacing: "-0.015em",
+              color: line.accent ? TOKENS.amber : TOKENS.ink,
             }}
           >
             {line.text}

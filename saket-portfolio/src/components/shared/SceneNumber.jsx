@@ -1,17 +1,24 @@
-import { TOKENS } from "../../theme";
+import { TOKENS, FONTS } from "../../theme";
 
-export default function SceneNumber({ n }) {
+export default function SceneNumber({ n, label }) {
   return (
     <span
       aria-hidden="true"
       style={{
-        fontFamily: "'IBM Plex Mono', monospace",
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 10,
+        fontFamily: FONTS.mono,
         fontSize: 12,
-        color: TOKENS.textFaint,
-        letterSpacing: "0.1em",
+        color: TOKENS.textDim,
+        letterSpacing: "0.16em",
+        textTransform: "uppercase",
       }}
     >
-      SCENE {n}
+      <span style={{ width: 8, height: 8, background: TOKENS.amber, display: "inline-block" }} />
+      FIG. {n}
+      {label ? <span style={{ color: TOKENS.textFaint }}>— {label}</span> : null}
+      <span style={{ width: 54, height: 1, background: TOKENS.ink, display: "inline-block" }} />
     </span>
   );
 }

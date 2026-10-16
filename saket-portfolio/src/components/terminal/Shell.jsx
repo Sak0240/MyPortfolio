@@ -83,7 +83,7 @@ export default function Shell() {
           text: "scrolling down to the rest of the site — experience, projects, skills, and how to reach me.",
           color: TOKENS.teal,
         });
-        const target = document.getElementById("about");
+        const target = document.getElementById("projects");
         if (target) target.scrollIntoView({ behavior: "smooth" });
       } else if (cmd === "work") {
         push({
@@ -177,13 +177,11 @@ export default function Shell() {
   return (
     <div
       style={{
-        background: "rgba(11,18,32,0.55)",
-        backdropFilter: "blur(16px)",
-        WebkitBackdropFilter: "blur(16px)",
-        border: "1px solid rgba(255,255,255,0.1)",
-        borderRadius: 10,
+        background: TOKENS.panel,
+        border: `1px solid ${TOKENS.ink}`,
+        borderRadius: 3,
         overflow: "hidden",
-        boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
+        boxShadow: `7px 7px 0 ${TOKENS.ink}`,
       }}
     >
       <div
@@ -192,14 +190,14 @@ export default function Shell() {
           alignItems: "center",
           gap: 8,
           padding: "10px 14px",
-          borderBottom: `1px solid ${TOKENS.border}`,
+          borderBottom: `1px solid ${TOKENS.ink}`,
           background: TOKENS.panelAlt,
         }}
       >
         <div style={{ display: "flex", gap: 6 }}>
-          <span className="term-dot" style={{ width: 10, height: 10, borderRadius: "50%", background: "#4A4F54", animationDelay: "0s" }} />
-          <span className="term-dot" style={{ width: 10, height: 10, borderRadius: "50%", background: "#4A4F54", animationDelay: "0.3s" }} />
-          <span className="term-dot" style={{ width: 10, height: 10, borderRadius: "50%", background: "#4A4F54", animationDelay: "0.6s" }} />
+          <span className="term-dot" style={{ width: 10, height: 10, borderRadius: "50%", background: TOKENS.textFaint, animationDelay: "0s" }} />
+          <span className="term-dot" style={{ width: 10, height: 10, borderRadius: "50%", background: TOKENS.textFaint, animationDelay: "0.3s" }} />
+          <span className="term-dot" style={{ width: 10, height: 10, borderRadius: "50%", background: TOKENS.textFaint, animationDelay: "0.6s" }} />
         </div>
         <span style={{ marginLeft: 8, fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: TOKENS.textDim }}>
           saket@genai:~$
@@ -312,12 +310,12 @@ export default function Shell() {
                   disabled={busy}
                   style={{
                     background: "transparent",
-                    border: `1px solid ${TOKENS.border}`,
-                    color: TOKENS.textDim,
+                    border: `1px solid ${TOKENS.ink}`,
+                    color: TOKENS.ink,
                     fontFamily: "'IBM Plex Mono', monospace",
                     fontSize: 11.5,
                     padding: "5px 10px",
-                    borderRadius: 6,
+                    borderRadius: 999,
                     cursor: busy ? "default" : "pointer",
                     opacity: busy ? 0.5 : 1,
                   }}

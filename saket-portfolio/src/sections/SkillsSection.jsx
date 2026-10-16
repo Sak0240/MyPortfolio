@@ -11,7 +11,7 @@ import TypewriterLine from "../components/shared/TypewriterLine";
 export default function SkillsSection() {
   return (
     <section id="skills" style={{ position: "relative", padding: "160px 32px 60px", maxWidth: 980, margin: "0 auto" }}>
-      <SceneNumber n="06" />
+      <SceneNumber n="06" label="Skills" />
       <div style={{ marginTop: 14, marginBottom: 8 }}>
         <SceneText>
           <h2 style={{ fontSize: "clamp(30px, 4.4vw, 52px)", fontWeight: 550, letterSpacing: "-0.02em", color: TOKENS.text, margin: 0 }}>

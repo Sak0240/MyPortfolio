@@ -1,4 +1,4 @@
-import { TOKENS } from "../theme";
+import { TOKENS, FONTS } from "../theme";
 import { NAV_ITEMS, GITHUB_REPO_URL } from "../data/links";
 import { RESUME_PDF } from "../data/assets";
 import SparkMark from "../components/shared/SparkMark";
@@ -13,9 +13,9 @@ export default function Nav({ navSolid }) {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "24px 40px",
-        borderBottom: `1px solid ${navSolid ? TOKENS.border : "transparent"}`,
-        background: navSolid ? "rgba(10,12,13,0.9)" : "transparent",
+        padding: "20px 40px",
+        borderBottom: `1px solid ${navSolid ? TOKENS.ink : "transparent"}`,
+        background: navSolid ? "rgba(244,242,238,0.92)" : "transparent",
         backdropFilter: "blur(6px)",
         transition: "all 0.2s ease",
       }}
@@ -23,9 +23,9 @@ export default function Nav({ navSolid }) {
       <a
         href="#hero"
         className="plain"
-        style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 17, color: TOKENS.text, display: "flex", alignItems: "center", gap: 10 }}
+        style={{ fontFamily: FONTS.mono, fontSize: 17, color: TOKENS.ink, display: "flex", alignItems: "center", gap: 10 }}
       >
-        <SparkMark size={19} color={TOKENS.teal} />
+        <SparkMark size={19} color={TOKENS.amber} />
         saket<span style={{ color: TOKENS.amber }}>.</span>dev
       </a>
       <div style={{ display: "flex", alignItems: "center", gap: 22 }}>
@@ -35,7 +35,7 @@ export default function Nav({ navSolid }) {
               key={s}
               href={`#${s}`}
               className="plain"
-              style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 14.5, color: TOKENS.textDim }}
+              style={{ fontFamily: FONTS.mono, fontSize: 14, color: TOKENS.textDim }}
             >
               {s}
             </a>
@@ -44,30 +44,13 @@ export default function Nav({ navSolid }) {
             href={GITHUB_REPO_URL}
             target="_blank"
             rel="noreferrer"
-            style={{
-              fontFamily: "'IBM Plex Mono', monospace",
-              fontSize: 14.5,
-              color: TOKENS.textDim,
-              textDecoration: "none",
-            }}
+            className="plain"
+            style={{ fontFamily: FONTS.mono, fontSize: 14, color: TOKENS.textDim }}
           >
             github ↗
           </a>
         </div>
-        <a
-          href={RESUME_PDF}
-          download="Saket_Deshmukh_Resume.pdf"
-          style={{
-            fontFamily: "'IBM Plex Mono', monospace",
-            fontSize: 14.5,
-            color: TOKENS.amber,
-            textDecoration: "none",
-            border: `1px solid ${TOKENS.amberDim}`,
-            borderRadius: 6,
-            padding: "8px 16px",
-            whiteSpace: "nowrap",
-          }}
-        >
+        <a href={RESUME_PDF} download="Saket_Deshmukh_Resume.pdf" className="pill-cta pill-sm">
           resume ↓
         </a>
       </div>

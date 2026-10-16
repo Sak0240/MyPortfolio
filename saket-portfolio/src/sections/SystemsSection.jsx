@@ -8,8 +8,8 @@ import DecisionLog from "../components/diagrams/DecisionLog";
 export default function SystemsSection() {
   return (
     <section id="systems" style={{ position: "relative", padding: "160px 32px 60px", maxWidth: 1000, margin: "0 auto" }}>
-      <SceneGlow x="20%" y="20%" size={640} opacity={0.12} />
-      <SceneNumber n="04" />
+      <SceneGlow x="96%" y="4%" size={520} opacity={0.12} />
+      <SceneNumber n="05" label="Systems" />
       <div style={{ marginTop: 14, marginBottom: 18 }}>
         <SceneText>
           <h2 style={{ fontSize: "clamp(30px, 4.4vw, 52px)", fontWeight: 550, letterSpacing: "-0.02em", color: TOKENS.text, margin: 0 }}>

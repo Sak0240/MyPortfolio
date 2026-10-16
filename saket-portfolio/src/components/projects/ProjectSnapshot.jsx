@@ -7,16 +7,10 @@ export default function ProjectSnapshot({ project }) {
   const [open, setOpen] = useState(false);
   return (
     <div
-      className="project-snapshot"
+      className="project-snapshot bp-card"
       style={{
-        border: `1px solid ${open ? TOKENS.tealDim : "rgba(255,255,255,0.1)"}`,
-        borderRadius: 10,
+        borderColor: open ? TOKENS.amber : TOKENS.ink,
         marginBottom: 16,
-        background: "rgba(11,18,32,0.5)",
-        backdropFilter: "blur(16px)",
-        WebkitBackdropFilter: "blur(16px)",
-        boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
-        transition: "border-color 0.2s ease",
       }}
     >
       <button
@@ -37,7 +31,7 @@ export default function ProjectSnapshot({ project }) {
         <div style={{ minWidth: 0 }}>
           <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
             <span style={{ fontSize: 16.5, fontWeight: 600, color: TOKENS.text }}>{project.name}</span>
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11.5, color: TOKENS.amberDim }}>
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11.5, color: TOKENS.amber }}>
               {project.org}
             </span>
           </div>

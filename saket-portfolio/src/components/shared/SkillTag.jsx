@@ -1,4 +1,4 @@
-import { TOKENS } from "../../theme";
+import { TOKENS, FONTS } from "../../theme";
 
 export default function SkillTag({ children, definition }) {
   return (
@@ -9,12 +9,13 @@ export default function SkillTag({ children, definition }) {
       <span
         style={{
           display: "inline-block",
-          border: `1px solid ${TOKENS.border}`,
-          color: TOKENS.textDim,
-          fontFamily: "'IBM Plex Mono', monospace",
+          border: `1px solid ${TOKENS.ink}`,
+          background: "rgba(255,255,255,0.6)",
+          color: TOKENS.ink,
+          fontFamily: FONTS.mono,
           fontSize: 11.5,
-          padding: "3px 9px",
-          borderRadius: 5,
+          padding: "3px 11px",
+          borderRadius: 999,
           cursor: "default",
         }}
       >
@@ -27,24 +28,21 @@ export default function SkillTag({ children, definition }) {
           bottom: "calc(100% + 9px)",
           left: "50%",
           transform: "translateX(-50%)",
-          width: 210,
+          width: 220,
           padding: "10px 12px",
-          background: "rgba(11,18,32,0.6)",
-          backdropFilter: "blur(16px)",
-          WebkitBackdropFilter: "blur(16px)",
-          border: `1px solid ${TOKENS.tealDim}`,
-          borderRadius: 8,
-          fontFamily: "'IBM Plex Sans', sans-serif",
+          background: TOKENS.ink,
+          borderRadius: 3,
+          fontFamily: FONTS.body,
           fontSize: 12.5,
           fontWeight: 400,
-          color: TOKENS.textDim,
+          color: TOKENS.bg,
           lineHeight: 1.5,
           textAlign: "left",
           textTransform: "none",
           letterSpacing: "normal",
           pointerEvents: "none",
           zIndex: 30,
-          boxShadow: "0 12px 28px rgba(0,0,0,0.45)",
+          boxShadow: `4px 4px 0 ${TOKENS.amber}`,
         }}
       >
         {definition}

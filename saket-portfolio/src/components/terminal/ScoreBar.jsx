@@ -6,7 +6,7 @@ export default function ScoreBar({ value }) {
       style={{
         width: 60,
         height: 4,
-        background: "rgba(79,195,183,0.15)",
+        background: "rgba(20,20,20,0.1)",
         borderRadius: 2,
         overflow: "hidden",
         flexShrink: 0,
