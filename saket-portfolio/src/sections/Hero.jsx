@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { TOKENS, FONTS } from "../theme";
 import BlueprintTitle from "../components/blueprint/BlueprintTitle";
 import { OrangeSphere, CircleRig, DotGrid, HatchBar, PixelMark, Square, Rule, Target } from "../components/blueprint/Decor";
+import OrbitLogos from "../components/blueprint/OrbitLogos";
 import { SocialLinks } from "../components/hero/SocialLinks";
 import ScrollHint from "../components/shared/ScrollHint";
 
@@ -91,7 +92,8 @@ export default function Hero() {
         <DotGrid cols={8} rows={6} style={{ right: 86, top: 64 }} />
         <Square size={16} style={{ right: 118, top: 118 }} />
         <Rule width={1} style={{ right: 112, top: 0, height: "100%", width: 1, opacity: 0.45 }} />
-        <CircleRig size={660} style={{ right: -350, top: "28%" }} />
+        <CircleRig size={660} spin style={{ right: -350, top: "28%" }} />
+        <OrbitLogos left="calc(100% + 20px)" top="calc(28% + 330px)" size="660px" />
         <Square size={16} style={{ right: 36, top: "calc(28% + 96px)" }} />
         <DotGrid cols={6} rows={4} style={{ right: 56, bottom: 60 }} />
       </div>

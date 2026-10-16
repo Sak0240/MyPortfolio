@@ -54,9 +54,6 @@ export default function ContactSection() {
             </a>
           </div>
         </SceneText>
-        <div style={{ marginTop: 70, fontFamily: FONTS.mono, fontSize: 11.5, color: TOKENS.textFaint }}>
-          no templates, no page builders — every pixel and every retrieval, hand-built.
-        </div>
       </div>
     </section>
   );

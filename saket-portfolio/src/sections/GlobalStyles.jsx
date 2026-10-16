@@ -104,6 +104,29 @@ export default function GlobalStyles() {
       }
 
       @keyframes rigSpin { to { transform: rotate(360deg); } }
+      @keyframes orbitSpin { to { transform: rotate(360deg); } }
+      @keyframes orbitCounter { to { transform: translate(-50%, -50%) rotate(-360deg); } }
+      .orbit { animation: orbitSpin 90s linear infinite; }
+      .orbit-badge {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 44px;
+        height: 44px;
+        padding: 9px;
+        border-radius: 50%;
+        background: #fff;
+        border: 1px solid ${ink};
+        box-shadow: 3px 3px 0 ${orange};
+        transform: translate(-50%, -50%);
+        animation: orbitCounter 90s linear infinite;
+        transition: width 0.2s ease, height 0.2s ease, padding 0.2s ease;
+      }
+      .orbit-badge:hover { width: 54px; height: 54px; padding: 11px; }
+      .orbit-wrap:hover .orbit, .orbit-wrap:hover .orbit-badge { animation-play-state: paused; }
+      @media (max-width: 600px) {
+        .orbit-badge { width: 36px; height: 36px; padding: 7px; }
+      }
 
       /* ---------- buttons, chips ---------- */
       .pill-cta {
@@ -236,7 +259,7 @@ export default function GlobalStyles() {
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .bp-letter, .bp-fill, .scroll-hint-arrow { animation: none !important; }
+        .bp-letter, .bp-fill, .scroll-hint-arrow, .orbit, .orbit-badge { animation: none !important; }
         .bp-fill { clip-path: none; }
       }
     `}</style>

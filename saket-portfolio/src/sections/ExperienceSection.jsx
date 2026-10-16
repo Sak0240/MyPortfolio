@@ -58,8 +58,10 @@ export default function ExperienceSection() {
         <div
           style={{
             fontFamily: "'IBM Plex Mono', monospace",
-            fontSize: 16,
-            color: TOKENS.textDim,
+            fontSize: 18,
+            fontWeight: 600,
+            color: TOKENS.amber,
+            letterSpacing: "0.01em",
             paddingLeft: 46,
           }}
         >
