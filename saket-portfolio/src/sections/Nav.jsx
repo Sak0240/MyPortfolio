@@ -2,10 +2,12 @@ import { TOKENS, FONTS } from "../theme";
 import { NAV_ITEMS, GITHUB_REPO_URL } from "../data/links";
 import { RESUME_PDF } from "../data/assets";
 import SparkMark from "../components/shared/SparkMark";
+import { openAsk } from "../components/ask/events";
 
 export default function Nav({ navSolid }) {
   return (
     <nav
+      className="site-nav"
       style={{
         position: "sticky",
         top: 0,
@@ -50,6 +52,15 @@ export default function Nav({ navSolid }) {
             github ↗
           </a>
         </div>
+        <button
+          type="button"
+          className="pill-ghost nav-ask"
+          onClick={() => openAsk()}
+          aria-label="Ask Saket's AI assistant"
+          style={{ cursor: "pointer" }}
+        >
+          ✦ ask ai
+        </button>
         <a href={RESUME_PDF} download="Saket_Deshmukh_Resume.pdf" className="pill-cta pill-sm">
           resume ↓
         </a>

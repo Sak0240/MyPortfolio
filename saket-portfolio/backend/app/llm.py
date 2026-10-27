@@ -31,6 +31,12 @@ SYSTEM_PROMPT = "\n".join(
         "improvements. Never call a prototype or planned feature deployed in production unless the CONTEXT says so.",
         "- If the CONTEXT says a project's status or metrics should be described only as actually built or measured, "
         "do not claim more than the CONTEXT states.",
+        "- Answer exactly the question that was asked, and nothing else. Do not add facts the question did not ask "
+        "for (for example awards, other projects or skills).",
+        "- If the question is about something other than Saket himself (a company, product or technology) and the "
+        "CONTEXT only describes Saket's own role or work with it, say plainly that the documents do not describe "
+        "that company/product/technology itself, then add at most one short sentence on what they do say about "
+        "Saket's work with it. Never present Saket's role as a description of the company.",
         "- If two passages conflict, briefly explain the uncertainty instead of choosing one.",
         "- If the CONTEXT does not contain the answer, reply with exactly: NOT_IN_DOCS",
         "",
@@ -98,17 +104,30 @@ def make_deepseek_completer(settings: Settings) -> Completer:
 
 
 _CITATION = re.compile(r"\[(DOC-\d{1,3})\]")
+_GROUPED_CITATION = re.compile(r"\[(DOC-\d{1,3}(?:\s*[,;]\s*DOC-\d{1,3})+)\]")
+_CITATIONS_WITH_SPACE = re.compile(r"[ \t]*(?:\[DOC-\d{1,3}\][ \t]*)+")
+
+
+def strip_citations(text: str) -> str:
+    """Removes [DOC-n] markers (and the space before them) from the text shown to visitors."""
+    out = _CITATIONS_WITH_SPACE.sub(lambda m: " " if m.end() < len(text) and text[m.end()] not in ".,;:!?)\n" else "", text)
+    out = re.sub(r"[ \t]+\n", "\n", out)
+    out = re.sub(r"[ \t]{2,}", " ", out)
+    return out.strip()
 
 
 def verify_answer(raw: str, allowed_ids: set[str]) -> str | None:
     """Return the answer if it is usable, else None (-> refusal).
 
     Drops citations to chunks that were never retrieved, then requires at least one real citation:
-    an answer that cites nothing from the context is treated as ungrounded.
+    an answer that cites nothing from the context is treated as ungrounded. The citations stay in the
+    returned text; the service strips them before the visitor sees it.
     """
     text = (raw or "").strip()
     if not text or "NOT_IN_DOCS" in text.upper():
         return None
+    # "[DOC-2, DOC-5]" -> "[DOC-2][DOC-5]"
+    text = _GROUPED_CITATION.sub(lambda m: "".join(f"[{d.strip()}]" for d in re.split(r"[,;]", m.group(1))), text)
     cleaned = _CITATION.sub(lambda m: m.group(0) if m.group(1) in allowed_ids else "", text)
     if not _CITATION.search(cleaned):
         return None

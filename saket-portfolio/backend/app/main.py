@@ -64,7 +64,7 @@ def create_app(
         if not limiter.allow(ip):
             return JSONResponse({"error": "too many requests"}, status_code=429)
 
-        result = await service.answer(body.question)
+        result = await service.answer(body.question, body.previous)
         background.add_task(events.record, result.event)
         if result.response is None:
             return JSONResponse({"error": result.error_message}, status_code=result.error_status or 502)

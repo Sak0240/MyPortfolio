@@ -44,7 +44,21 @@ def test_empty_or_stopword_only_queries_return_nothing(retriever):
 
 
 def test_overview_questions_retrieve_the_profile_summary(retriever):
-    for q in ("tell me about sake", "who is saket", "tell me more about saket", "describe saket", "saket"):
+    for q in (
+        "tell me about sake",
+        "who is saket",
+        "tell me more about saket",
+        "describe saket",
+        "saket",
+        "hey who is saket",
+        "hey, who is saket?",
+        "so who is saket",
+        "can you tell me about saket",
+        "hello tell me about him",
+        "who's saket",
+        "please introduce saket deshmukh",
+        "hey tell me more about saket please",
+    ):
         assert is_overview(q), q
         assert retriever.search(q, 3)[0].chunk.id == "DOC-1", q
     assert not is_overview("tell me about saket projects")

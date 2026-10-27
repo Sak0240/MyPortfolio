@@ -27,6 +27,16 @@ def test_the_right_chunk_is_usually_first(results):
     assert scores["mrr"] >= 0.7
 
 
+def test_every_suggested_question_is_answerable():
+    """The chips shown in the chat must never lead to a refusal."""
+    from backend.app.retrieval import is_grounded
+    from backend.app.suggestions import ALL_SUGGESTIONS
+
+    retriever = Retriever(load_chunks())
+    refused = [q for q in ALL_SUGGESTIONS if not is_grounded(q, retriever.search(q, 6))]
+    assert not refused, f"suggestions the documents cannot answer: {refused}"
+
+
 def test_off_topic_questions_are_all_refused(results):
     df, scores = results
     assert scores["refusal_accuracy"] == 1.0, list(df[(df["kind"] == "refuse") & ~df["ok"]]["q"])

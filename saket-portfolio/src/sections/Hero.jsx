@@ -5,6 +5,7 @@ import { OrangeSphere, CircleRig, DotGrid, HatchBar, PixelMark, Square, Rule, Ta
 import OrbitLogos from "../components/blueprint/OrbitLogos";
 import { SocialLinks } from "../components/hero/SocialLinks";
 import ScrollHint from "../components/shared/ScrollHint";
+import { openAsk } from "../components/ask/events";
 
 const iconProps = {
   width: 20,
@@ -174,8 +175,17 @@ export default function Hero() {
           ))}
         </div>
 
-        {/* CTA */}
-        <div style={{ marginTop: 40 }}>
+        {/* CTAs: the AI console first, then the page */}
+        <div style={{ marginTop: 40, display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: 18 }}>
+          <button type="button" className="ask-hero-btn" onClick={() => openAsk()}>
+            <span className="ask-spark" aria-hidden="true">
+              ✦
+            </span>
+            Ask Saket&apos;s AI
+            <kbd className="ask-kbd" aria-hidden="true">
+              Ctrl K
+            </kbd>
+          </button>
           <a href="#about" className="pill-cta">
             Know More About Me
             <svg className="cta-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

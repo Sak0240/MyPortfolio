@@ -30,15 +30,26 @@ class ChatRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")  # the client may send a question and nothing else
 
     question: str = Field(min_length=1, max_length=MAX_QUESTION)
+    # the visitor's previous question, so "tell me more" / "and his education?" can be understood
+    previous: str | None = Field(default=None, max_length=MAX_QUESTION)
+
+    @staticmethod
+    def _clean(v: str) -> str:
+        v = "".join(ch if ch.isprintable() or ch in "\n\t" else " " for ch in v)  # no control characters
+        return " ".join(v.split())
 
     @field_validator("question")
     @classmethod
-    def clean(cls, v: str) -> str:
-        v = "".join(ch if ch.isprintable() or ch in "\n\t" else " " for ch in v)  # no control characters
-        v = " ".join(v.split())
+    def clean_question(cls, v: str) -> str:
+        v = cls._clean(v)
         if not v:
             raise ValueError("question is empty")
         return v
+
+    @field_validator("previous")
+    @classmethod
+    def clean_previous(cls, v: str | None) -> str | None:
+        return (cls._clean(v) or None) if v is not None else None
 
 
 class Source(BaseModel):
@@ -52,6 +63,7 @@ class ChatResponse(BaseModel):
     answer: str
     sources: list[Source] = Field(default_factory=list)
     grounded: bool
+    suggestions: list[str] = Field(default_factory=list)  # questions the documents can answer, as next steps
 
 
 # ---------- analytics ----------

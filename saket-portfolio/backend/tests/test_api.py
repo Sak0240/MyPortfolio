@@ -19,7 +19,8 @@ def test_grounded_answer_is_returned_with_sources(client, llm, sink):
     assert r.status_code == 200
     body = r.json()
     assert body["grounded"] is True
-    assert "[DOC-2]" in body["answer"]
+    assert body["answer"] == "Saket built CatalogSage."  # citation verified, then hidden from the visitor
+    assert "DOC-" not in body["answer"]
     assert body["sources"][0]["id"] == "DOC-2"
     assert len(llm.calls) == 1
     assert sink.events[-1].outcome is Outcome.ANSWERED
@@ -28,7 +29,7 @@ def test_grounded_answer_is_returned_with_sources(client, llm, sink):
 
 def test_off_topic_question_is_refused_without_calling_the_model(client, llm, sink):
     body = ask(client, "what is the capital of France").json()
-    assert body == {"answer": REFUSAL, "sources": [], "grounded": False}
+    assert (body["answer"], body["sources"], body["grounded"]) == (REFUSAL, [], False)
     assert llm.calls == []
     assert sink.events[-1].outcome is Outcome.REFUSED_RETRIEVAL
 
@@ -73,7 +74,33 @@ def test_mixed_citations_keep_only_real_ones(make_client):
     from backend.tests.conftest import FakeLLM
 
     body = ask(make_client(FakeLLM("It answers questions [DOC-2][DOC-77].")), "what is catalogsage").json()
-    assert body["answer"] == "It answers questions [DOC-2]."
+    assert body["answer"] == "It answers questions."
+    assert body["grounded"] is True  # one real citation was enough; the invented one was dropped
+
+
+def test_visitors_never_see_citation_markers(make_client):
+    from backend.tests.conftest import FakeLLM
+
+    reply = "Saket is an engineer [DOC-1][DOC-3]. He studied in Pune [DOC-3]; he builds RAG [DOC-1, DOC-2].\n- one [DOC-2]\n- two [DOC-1]"
+    body = ask(make_client(FakeLLM(reply)), "what is catalogsage").json()
+    assert "DOC-" not in body["answer"]
+    assert body["answer"] == "Saket is an engineer. He studied in Pune; he builds RAG.\n- one\n- two"
+    assert body["sources"]  # the retrieval sources are still returned separately
+
+
+def test_grouped_citations_count_as_citations():
+    assert verify_answer("It works [DOC-1, DOC-2].", {"DOC-1", "DOC-2"}) == "It works [DOC-1][DOC-2]."
+    assert verify_answer("It works [DOC-1, DOC-9].", {"DOC-1"}) == "It works [DOC-1]."
+
+
+def test_strip_citations_handles_every_position():
+    from backend.app.llm import strip_citations
+
+    assert strip_citations("A [DOC-1] B") == "A B"
+    assert strip_citations("A[DOC-1]B") == "A B"
+    assert strip_citations("End [DOC-1][DOC-2]") == "End"
+    assert strip_citations("Sentence [DOC-1].") == "Sentence."
+    assert strip_citations("No citations here") == "No citations here"
 
 
 def test_bullet_lists_keep_their_line_breaks():

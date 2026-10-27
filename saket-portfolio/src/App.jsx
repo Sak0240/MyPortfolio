@@ -5,12 +5,13 @@ import GlobalStyles from "./sections/GlobalStyles";
 import Nav from "./sections/Nav";
 import Hero from "./sections/Hero";
 import AboutSection from "./sections/AboutSection";
-import TerminalSection from "./sections/TerminalSection";
+import AskSection from "./sections/AskSection";
 import ProjectsSection from "./sections/ProjectsSection";
 import ExperienceSection from "./sections/ExperienceSection";
 import SystemsSection from "./sections/SystemsSection";
 import SkillsSection from "./sections/SkillsSection";
 import ContactSection from "./sections/ContactSection";
+import AskConsole from "./components/ask/AskConsole";
 
 export default function Portfolio() {
   const [navSolid, setNavSolid] = useState(false);
@@ -37,12 +38,13 @@ export default function Portfolio() {
       <Nav navSolid={navSolid} />
       <Hero />
       <AboutSection />
-      <TerminalSection />
+      <AskSection />
       <ProjectsSection />
       <ExperienceSection />
       <SystemsSection />
       <SkillsSection />
       <ContactSection />
+      <AskConsole />
     </div>
   );
 }

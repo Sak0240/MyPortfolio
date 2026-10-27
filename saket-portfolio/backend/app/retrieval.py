@@ -102,20 +102,65 @@ SYNONYM_WEIGHT = 0.5  # synonyms help recall without outranking the words actual
 # "tell me about Saket" / "who is he" / "tell me more" have no topic words of their own, so they are
 # searched as a request for the profile summary (tolerates the typo "sake").
 _OVERVIEW = re.compile(
-    r"^(?:please\s+)?(?:(?:tell|talk|say)\s+(?:me\s+)?(?:more\s+|something\s+)?(?:about\s*)?"
-    r"|who\s+(?:is|was)\s+|what\s+about\s+|introduce\s+|describe\s+"
+    # optional chatty lead-in: "hey, ", "so ", "can you ", "i want to know "
+    r"^(?:(?:hey|hi|hello|hiya|yo|so|ok|okay|well|and|but|please|can\s+you|could\s+you|would\s+you|will\s+you"
+    r"|i\s+want\s+to\s+know|i'd\s+like\s+to\s+know|i\s+would\s+like\s+to\s+know)[\s,!.]*)*"
+    r"(?:(?:tell|talk|say)\s+(?:me\s+)?(?:more\s+|something\s+)?(?:about\s*)?"
+    r"|(?:who|what)(?:\s+(?:is|was)|['’]s)\s+|what\s+about\s+|introduce\s+|describe\s+"
     r"|(?:give\s+me\s+)?(?:an?\s+)?(?:overview|summary|intro(?:duction)?)\s+(?:of\s+|about\s+)?|about\s+)?"
     r"(?:mr\.?\s*)?(?:saket(?:\s+deshmukh)?|sake|saked|sket|him|he|this\s+(?:guy|person|developer|engineer))?"
-    r"\s*[?!.]*$",
+    r"(?:\s+(?:please|pls|thanks))?\s*[?!.]*$",
     re.IGNORECASE,
 )
-_OVERVIEW_HINT = re.compile(r"(?:saket|sake|sket|him|he|this|more|summary|overview|intro)", re.IGNORECASE)
+_OVERVIEW_HINT = re.compile(r"\b(?:saket|sake|saked|sket|him|he|this|more|summary|overview|intro)\b", re.IGNORECASE)
 OVERVIEW_TERMS = "summary engineer experience bachelor profile"
 
 
 def is_overview(query: str) -> bool:
     q = str(query).strip()
     return bool(q) and bool(_OVERVIEW.match(q)) and bool(_OVERVIEW_HINT.search(q))
+
+
+_FOLLOW_UP = re.compile(
+    r"^(?:(?:ok|okay|and|so|also|please)[\s,]+)*"
+    r"(?:(?:tell|say|explain|show)\s+(?:me\s+)?(?:a\s+)?(?:little\s+|bit\s+)*more(?:\s+(?:about\s+(?:that|it|this)|details?))?"
+    r"|more(?:\s+details?)?|go\s+on|continue|elaborate|what\s+else|anything\s+else|and\??|why\??|how\??)"
+    r"\s*[?!.]*$",
+    re.IGNORECASE,
+)
+
+
+_ORG_NOUN = re.compile(r"\b(?:company|companies|firm|organi[sz]ation|employer|startup|business)\b", re.IGNORECASE)
+_ABOUT_SAKET = re.compile(r"\b(?:saket|he|his|him|himself|you|your|yours)\b", re.IGNORECASE)
+
+
+def asks_about_organization(question: str) -> bool:
+    """"tell me about KWAD company": about the company itself, not about Saket's work there.
+
+    "which company does he work at" is about Saket (it mentions him) and does not count.
+    """
+    q = str(question)
+    return bool(_ORG_NOUN.search(q)) and not _ABOUT_SAKET.search(q)
+
+
+_REFERS_BACK = re.compile(
+    r"\b(?:it|its|that|this|those|these|them|they|one|ones|first|second|third|last|other|another|more|else|also"
+    r"|same|former|latter|there)\b",
+    re.IGNORECASE,
+)
+
+
+def refers_back(question: str) -> bool:
+    """Does the question point at something said earlier ("why did he choose it?", "the second one")?
+
+    Needed so an off-topic question ("capital of France") can never borrow the previous topic.
+    """
+    return bool(_REFERS_BACK.search(str(question)))
+
+
+def is_follow_up(question: str) -> bool:
+    """Bare continuations ("tell me more", "go on", "what else") that only make sense after an earlier question."""
+    return bool(_FOLLOW_UP.match(str(question).strip()))
 
 
 @dataclass(frozen=True)
