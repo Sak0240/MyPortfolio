@@ -12,7 +12,7 @@ const FEATURED = PROJECTS.find((p) => p.id === 6);
 export default function ProjectsSection() {
   return (
     <section id="projects" style={{ position: "relative", padding: "160px 32px 40px", maxWidth: 980, margin: "0 auto" }}>
-      <SceneNumber n="03" label="Projects I've shipped" />
+      <SceneNumber n="02" label="Projects I've shipped" />
       <div style={{ marginTop: 14, marginBottom: 56 }}>
         <SceneText>
           <h2 style={{ fontSize: "clamp(30px, 4.4vw, 52px)", fontWeight: 550, letterSpacing: "-0.02em", color: TOKENS.text, margin: "0 0 12px" }}>

@@ -10,7 +10,7 @@ export default function ContactSection() {
     <section id="contact" style={{ position: "relative", padding: "150px 32px 90px", maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
       <SceneGlow x="50%" y="46%" size={640} opacity={0.18} />
       <div style={{ position: "relative" }}>
-        <SceneNumber n="07" label="Contact" />
+        <SceneNumber n="06" label="Contact" />
         <SceneText>
           <h2
             style={{

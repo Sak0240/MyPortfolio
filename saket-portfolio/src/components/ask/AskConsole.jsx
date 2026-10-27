@@ -206,7 +206,7 @@ export default function AskConsole() {
     );
   }, [phase]);
 
-  // open from anywhere: hero button, nav, showcase card, Ctrl/Cmd+K, or a #ask link
+  // open from anywhere: hero button, nav, Ctrl/Cmd+K, or a #ask link
   useEffect(() => {
     const onOpen = (e) => openConsole(e.detail && e.detail.question, e.detail && e.detail.trigger);
     const onKey = (e) => {

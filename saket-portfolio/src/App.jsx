@@ -5,7 +5,6 @@ import GlobalStyles from "./sections/GlobalStyles";
 import Nav from "./sections/Nav";
 import Hero from "./sections/Hero";
 import AboutSection from "./sections/AboutSection";
-import AskSection from "./sections/AskSection";
 import ProjectsSection from "./sections/ProjectsSection";
 import ExperienceSection from "./sections/ExperienceSection";
 import SystemsSection from "./sections/SystemsSection";
@@ -38,7 +37,6 @@ export default function Portfolio() {
       <Nav navSolid={navSolid} />
       <Hero />
       <AboutSection />
-      <AskSection />
       <ProjectsSection />
       <ExperienceSection />
       <SystemsSection />

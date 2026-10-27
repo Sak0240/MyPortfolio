@@ -289,26 +289,6 @@ export default function GlobalStyles() {
       }
       @media (max-width: 700px) { .ask-kbd { display: none; } }
 
-      .ask-showcase {
-        border: 1px solid ${ink}; border-radius: 4px; background: ${TOKENS.panel};
-        box-shadow: 8px 8px 0 ${ink}; overflow: hidden;
-      }
-      .ask-showcase-bar {
-        display: flex; align-items: center; gap: 12px; padding: 10px 16px;
-        background: ${ink}; color: ${TOKENS.bg}; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px;
-      }
-      .ask-showcase-body { padding: 22px clamp(16px, 4vw, 30px) 28px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
-      .ask-showcase-label { margin: 0 0 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: ${TOKENS.textFaint}; }
-      .ask-showcase-line {
-        max-width: 100%; padding: 8px 12px; margin-left: -12px; border: 0; border-radius: 8px; cursor: pointer; text-align: left;
-        background: transparent; color: ${ink}; font-family: 'IBM Plex Mono', monospace; font-size: 15px; line-height: 1.5;
-        transition: background 0.15s ease, color 0.15s ease;
-      }
-      .ask-showcase-line span { color: ${orange}; margin-right: 6px; }
-      .ask-showcase-line:hover { background: ${TOKENS.panelAlt}; }
-      .ask-showcase-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 20px; margin-top: 22px; }
-      .ask-showcase-note { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: ${TOKENS.textFaint}; }
-
       /* ---------- the orange orb: the hero sphere grows and the conversation lives inside it ---------- */
       html.ask-open [data-hero-sphere] { visibility: hidden; } /* the orb is that sphere, taking over its place */
       .ask-root { position: fixed; inset: 0; z-index: 100; }
@@ -448,9 +428,6 @@ export default function GlobalStyles() {
       .ask-send:disabled { opacity: 0.3; cursor: not-allowed; }
       .ask-stage a:focus-visible, .ask-stage button:focus-visible { outline: 3px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 5px ${ink}; }
 
-      .ask-dots { display: inline-flex; gap: 6px; }
-      .ask-dots i { width: 10px; height: 10px; border-radius: 50%; background: ${TOKENS.textFaint}; }
-      .ask-showcase-bar .ask-dots i:first-child { background: ${orange}; }
 
       @media (max-width: 760px) {
         .ask-title { font-size: clamp(26px, 8vw, 38px); }
