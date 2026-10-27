@@ -20,3 +20,14 @@ def test_origin_rules():
     assert not s.origin_allowed("http://localhost")  # needs a port
     assert not s.origin_allowed("https://localhost:5173")
     assert not s.origin_allowed("")
+
+
+def test_the_production_site_and_github_pages_are_allowed_but_old_or_lookalike_domains_are_not():
+    from backend.app.config import get_settings
+
+    s = get_settings()
+    assert s.origin_allowed("https://saket-deshmukh-portfolio.vercel.app")
+    assert s.origin_allowed("https://sak0240.github.io")
+    assert not s.origin_allowed("https://saket-deshmukh-portfolio.vercel.app.evil.io")
+    assert not s.origin_allowed("https://saket-deshmukh-portfolio-evil.vercel.app")  # anyone can register look-alikes
+    assert not s.origin_allowed("http://saket-deshmukh-portfolio.vercel.app")

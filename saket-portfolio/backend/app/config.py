@@ -12,7 +12,7 @@ BACKEND_DIR = Path(__file__).resolve().parent.parent
 KNOWLEDGE_FILE = BACKEND_DIR / "data" / "knowledge.json"
 
 DEFAULT_ORIGINS = (
-    "https://my-portfolio-fawn-kappa-86.vercel.app",
+    "https://saket-deshmukh-portfolio.vercel.app",
     "https://sak0240.github.io",
 )
 # any local dev port (Vite moves to 5174+ when 5173 is busy)

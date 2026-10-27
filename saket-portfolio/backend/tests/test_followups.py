@@ -5,7 +5,7 @@ from backend.app.retrieval import is_follow_up
 from backend.app.schemas import ChatRequest
 from backend.app.suggestions import ALL_SUGGESTIONS, STARTERS, suggestions_for
 
-ORIGIN = {"Origin": "https://my-portfolio-fawn-kappa-86.vercel.app"}
+ORIGIN = {"Origin": "https://saket-deshmukh-portfolio.vercel.app"}
 
 
 def ask(client, question, previous=None):

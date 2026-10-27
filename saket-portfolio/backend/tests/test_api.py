@@ -2,7 +2,7 @@ from backend.app.llm import UpstreamError, verify_answer
 from backend.app.retrieval import REFUSAL
 from backend.app.schemas import Outcome
 
-ORIGIN = {"Origin": "https://my-portfolio-fawn-kappa-86.vercel.app"}
+ORIGIN = {"Origin": "https://saket-deshmukh-portfolio.vercel.app"}
 
 
 def ask(client, question, headers=None):
