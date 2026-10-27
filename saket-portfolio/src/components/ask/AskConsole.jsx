@@ -5,6 +5,9 @@ import { askQuestion, ChatError, RATE_LIMITED_TEXT, UNREACHABLE_TEXT } from "../
 import { OrangeSphere } from "../blueprint/Decor";
 import { OPEN_ASK_EVENT, STARTERS } from "./events";
 import RichText from "./RichText";
+import HowItWorks from "./HowItWorks";
+import HowRing from "./HowRing";
+import { STEPS, statusLine } from "./howData";
 import ScoreBar from "../terminal/ScoreBar";
 import FlowDiagram from "../terminal/FlowDiagram";
 import Tag from "../shared/Tag";
@@ -122,6 +125,8 @@ export default function AskConsole() {
   const [history, setHistory] = useState(load);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
+  const [trace, setTrace] = useState({ phase: "idle" }); // the journey shown in the "how this works" panel
+  const [showHow, setShowHow] = useState(false); // on screens without room beside the orb
   const orbRef = useRef(null);
   const dialogRef = useRef(null);
   const bodyRef = useRef(null);
@@ -245,9 +250,14 @@ export default function AskConsole() {
     async (question) => {
       busyRef.current = true;
       setBusy(true);
+      const started = performance.now();
+      setTrace({ phase: "running", question, step: 1 });
       try {
         const r = await askQuestion(question, lastQuestion.current);
         lastQuestion.current = question;
+        // the backend says which route the question really took; older backends only let us infer it
+        const route = r.route || (r.grounded ? "answered" : r.sources.length ? "refused_model" : "refused_retrieval");
+        setTrace({ phase: "done", question, route, sources: r.sources, ms: Math.round(performance.now() - started) });
         if (r.grounded && r.sources.length) push({ kind: "retrieval", items: withBars(r.sources).slice(0, 3) });
         push({
           kind: "answer",
@@ -257,6 +267,7 @@ export default function AskConsole() {
           suggestions: r.suggestions,
         });
       } catch (e) {
+        setTrace({ phase: "done", question, route: e instanceof ChatError && e.kind === "rate" ? "rate_limited" : "unreachable", sources: [] });
         push({ kind: "answer", error: true, fresh: true, text: e instanceof ChatError && e.kind === "rate" ? RATE_LIMITED_TEXT : UNREACHABLE_TEXT });
       } finally {
         busyRef.current = false;
@@ -275,10 +286,12 @@ export default function AskConsole() {
 
       if (lower === "clear") {
         setHistory([]);
+        setTrace({ phase: "idle" });
         lastQuestion.current = null;
         return;
       }
       push({ kind: "cmd", text });
+      setTrace({ phase: "local" }); // overwritten right away if this turns out to be a question for the AI
 
       if (cmd === "help") push({ kind: "out", text: HELP_TEXT });
       else if (COMMAND_QUESTIONS[lower]) ask(COMMAND_QUESTIONS[lower]);
@@ -322,6 +335,13 @@ export default function AskConsole() {
     return undefined;
   }, [phase, run]);
 
+  // while waiting, the light walks through the first steps; the real route replaces it when the answer arrives
+  useEffect(() => {
+    if (trace.phase !== "running") return undefined;
+    const id = setInterval(() => setTrace((t) => (t.phase === "running" && t.step < 5 ? { ...t, step: t.step + 1 } : t)), 380);
+    return () => clearInterval(id);
+  }, [trace.phase]);
+
   // focus the prompt when the console opens, and again whenever it is ready for the next question
   useEffect(() => {
     if (phase === "open" && !busy) inputRef.current?.focus({ preventScroll: true });
@@ -330,6 +350,11 @@ export default function AskConsole() {
   useEffect(() => {
     scrollToEnd();
   }, [history, busy, phase, scrollToEnd]);
+
+  // switching to / from the how-it-works list starts at its top
+  useEffect(() => {
+    if (bodyRef.current) bodyRef.current.scrollTop = 0;
+  }, [showHow]);
 
   const onDialogKeyDown = (e) => {
     if (e.key === "Escape") {
@@ -357,6 +382,11 @@ export default function AskConsole() {
   const questionChips = busy ? [] : lastAnswer?.suggestions?.length ? lastAnswer.suggestions : STARTERS;
   const fresh = history.length === 0;
   const g = geom;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  // the explanation is drawn around the orb's dashed ring: it needs room to the right of the circle
+  const panelFits = !g.mobile && vw - (g.cx + g.d * 0.55) - 52 >= 220;
+  const showInline = !panelFits && showHow;
   const stageStyle = g.mobile ? undefined : { left: g.cx - g.boxW / 2, top: g.cy - g.boxH / 2, width: g.boxW, height: g.boxH };
 
   return (
@@ -375,6 +405,8 @@ export default function AskConsole() {
         </div>
       </div>
 
+      {panelFits && <HowRing trace={trace} geom={g} vw={vw} vh={vh} reduced={reducedMotion()} />}
+
       <div
         ref={dialogRef}
         className={`ask-stage${g.mobile ? " ask-stage-m" : ""}`}
@@ -392,6 +424,18 @@ export default function AskConsole() {
             </h2>
           </div>
           <div className="ask-head-actions">
+            {!panelFits && (
+              <button
+                type="button"
+                className="ask-icon-btn"
+                onClick={() => setShowHow((v) => !v)}
+                aria-pressed={showHow}
+                aria-label="How this chatbot works"
+                title="How this works"
+              >
+                ?
+              </button>
+            )}
             {!fresh && (
               <button type="button" className="ask-icon-btn" onClick={() => run("clear")} aria-label="Start over" title="Start over">
                 ↺
@@ -403,8 +447,26 @@ export default function AskConsole() {
           </div>
         </header>
 
+        <div className="sr-only">
+          <p>How this chatbot works:</p>
+          <ol>
+            {STEPS.map((st) => (
+              <li key={st.title}>
+                {st.title}. {st.body}
+              </li>
+            ))}
+          </ol>
+          <p role="status">{statusLine(trace)}</p>
+        </div>
+
         <div ref={bodyRef} className="ask-body" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation">
-          {fresh && (
+          {showInline && (
+            <div className="ask-how-inline">
+              <HowItWorks trace={trace} reduced={reducedMotion()} />
+            </div>
+          )}
+
+          {!showInline && fresh && (
             <div className="ask-welcome">
               <p>
                 I&apos;ve read Saket&apos;s real resume and project notes, and I answer only from them. Ask in plain English, or run a
@@ -421,7 +483,7 @@ export default function AskConsole() {
             </div>
           )}
 
-          {history.map((e) => {
+          {!showInline && history.map((e) => {
             if (e.kind === "cmd") {
               return (
                 <div key={e.id} className={`ask-q${e.ask ? " ask-q-question" : ""}`}>

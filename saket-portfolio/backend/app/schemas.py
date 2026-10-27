@@ -64,6 +64,8 @@ class ChatResponse(BaseModel):
     sources: list[Source] = Field(default_factory=list)
     grounded: bool
     suggestions: list[str] = Field(default_factory=list)  # questions the documents can answer, as next steps
+    # which path the question took: answered | smalltalk | refused_retrieval | refused_model (shown in the "how it works" panel)
+    route: str = ""
 
 
 # ---------- analytics ----------

@@ -35,6 +35,7 @@ export async function askQuestion(question, previous) {
       sources: Array.isArray(data.sources) ? data.sources : [],
       grounded: Boolean(data.grounded),
       suggestions: Array.isArray(data.suggestions) ? data.suggestions : [],
+      route: typeof data.route === "string" ? data.route : "",
     };
   } catch (e) {
     throw e instanceof ChatError ? e : new ChatError("unreachable");

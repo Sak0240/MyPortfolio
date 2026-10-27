@@ -172,3 +172,12 @@ def test_analytics_failure_never_breaks_the_answer(retriever, llm):
 
     app = create_app(Settings(), llm, EventLog([Boom()]), retriever)
     assert ask(TestClient(app), "what is catalogsage").status_code == 200
+
+
+def test_every_response_says_which_route_the_question_took(make_client):
+    from backend.tests.conftest import FakeLLM
+
+    assert ask(make_client(FakeLLM()), "what is catalogsage").json()["route"] == "answered"
+    assert ask(make_client(FakeLLM()), "hi there").json()["route"] == "smalltalk"
+    assert ask(make_client(FakeLLM()), "what is the capital of France").json()["route"] == "refused_retrieval"
+    assert ask(make_client(FakeLLM("NOT_IN_DOCS")), "what is catalogsage").json()["route"] == "refused_model"

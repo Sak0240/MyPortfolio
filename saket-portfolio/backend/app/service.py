@@ -65,7 +65,7 @@ class ChatService:
 
         def reply(text: str, outcome: Outcome, hits: list[Hit] | None = None, **fields) -> ChatResult:
             suggestions = suggestions_for(hits, question) if hits else STARTERS
-            return ChatResult(event(outcome, hits), ChatResponse(answer=text, suggestions=suggestions, **fields))
+            return ChatResult(event(outcome, hits), ChatResponse(answer=text, suggestions=suggestions, route=outcome.value, **fields))
 
         chat = small_talk(question)
         if chat:

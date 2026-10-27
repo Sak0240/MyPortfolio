@@ -302,7 +302,7 @@ export default function GlobalStyles() {
       @keyframes askFade { from { opacity: 0; } to { opacity: 1; } }
       @keyframes askFadeOut { from { opacity: 1; } to { opacity: 0; } }
 
-      .ask-orb { position: absolute; border-radius: 50%; will-change: transform; transform-origin: 50% 50%; }
+      .ask-orb { position: absolute; z-index: 2; border-radius: 50%; will-change: transform; transform-origin: 50% 50%; }
       .ask-orb-inner {
         position: absolute; inset: 0; border-radius: 50%;
         box-shadow: 0 40px 90px -30px rgba(255, 90, 31, 0.65), 0 0 0 1px rgba(20, 20, 20, 0.9);
@@ -324,7 +324,7 @@ export default function GlobalStyles() {
       .ask-root.is-closing .ask-ripple { display: none; }
 
       .ask-stage {
-        position: absolute; display: flex; flex-direction: column; min-height: 0;
+        position: absolute; z-index: 3; display: flex; flex-direction: column; min-height: 0;
         color: ${ink};
         animation: askStageIn 0.5s ease 0.42s both;
       }
@@ -442,10 +442,96 @@ export default function GlobalStyles() {
         .site-nav .pill-sm { padding: 8px 14px; font-size: 13px; }
       }
 
+      /* ---------- "how this works": drawn around the orb's dashed ring (no box) ---------- */
+      .how-ring { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+      .ring-glow, .how-ring { --paper-glow: 0 0 5px #F4F2EE, 0 0 10px #F4F2EE, 0 0 18px #F4F2EE; }
+      .how-scrim { /* a soft paper cloud behind the text: no edges, so it reads as part of the page, not a box */
+        position: absolute; top: 0; bottom: 0;
+        background: radial-gradient(ellipse 62% 64% at 38% 50%, rgba(244, 242, 238, 0.97) 0%, rgba(244, 242, 238, 0.9) 48%, rgba(244, 242, 238, 0) 100%);
+        animation: askFade 0.9s ease 0.5s both;
+      }
+      .how-svg { position: absolute; inset: 0; overflow: visible; }
+      .how-arc { fill: none; stroke: rgba(20, 20, 20, 0.3); stroke-width: 2; stroke-dasharray: 3 6; stroke-linecap: round; transition: stroke 0.5s ease, stroke-width 0.5s ease; }
+      .how-arc.is-lit { stroke: ${orange}; stroke-width: 3.5; stroke-dasharray: none; }
+      .how-node { animation: howIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: calc(0.85s + var(--i) * 0.08s); }
+      .how-leader { stroke: rgba(20, 20, 20, 0.45); stroke-width: 1.2; }
+      .how-dot { fill: ${TOKENS.bg}; stroke: ${ink}; stroke-width: 1.8; transition: fill 0.35s ease, stroke 0.35s ease; }
+      .how-dot-text { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 700; fill: ${ink}; transition: fill 0.35s ease; }
+      .how-node.is-active .how-dot { fill: ${orange}; }
+      .how-node.is-active .how-dot-text, .how-node.is-done .how-dot-text { fill: #fff; }
+      .how-node.is-active .how-leader { stroke: ${orange}; stroke-width: 2; }
+      .how-node.is-done .how-dot { fill: ${ink}; }
+      .how-node.is-stop .how-dot { fill: ${orange}; stroke-width: 2.5; }
+      .how-node.is-stop .how-leader { stroke: ${orange}; stroke-width: 2; }
+      .how-node.is-skip .how-dot { stroke-dasharray: 3 3; stroke: rgba(20, 20, 20, 0.45); }
+      .how-node.is-skip .how-dot-text { fill: rgba(20, 20, 20, 0.5); }
+      .how-pulse { fill: none; stroke: ${orange}; stroke-width: 2.5; transform-box: fill-box; transform-origin: center; animation: howPulse 1.3s ease-out infinite; }
+      @keyframes howPulse { from { transform: scale(1); opacity: 0.9; } to { transform: scale(2.4); opacity: 0; } }
+      @keyframes howIn { from { opacity: 0; translate: -14px 0; } to { opacity: 1; translate: 0 0; } }
+
+      .how-head { position: absolute; text-shadow: var(--paper-glow); animation: howIn 0.55s ease 0.7s both; }
+      .how-kicker { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: ${orange}; font-weight: 600; }
+      .how-title { font-family: 'Archivo', 'Arial Black', sans-serif; font-variation-settings: "wdth" 108; font-weight: 800; text-transform: uppercase; font-size: 26px; line-height: 1; margin-top: 5px; color: ${ink}; letter-spacing: -0.01em; }
+      .how-label {
+        position: absolute; translate: 0 -50%; color: ${ink}; text-shadow: var(--paper-glow);
+        animation: howLabelIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: calc(0.9s + var(--i) * 0.08s);
+        transition: opacity 0.4s ease;
+      }
+      @keyframes howLabelIn { from { opacity: 0; transform: translateX(-14px); } to { opacity: 1; transform: none; } }
+      .how-label-title { font-family: 'IBM Plex Sans', sans-serif; font-size: 15px; font-weight: 600; line-height: 1.25; }
+      .how-label-title em {
+        font-style: normal; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 500; letter-spacing: 0.02em;
+        margin-left: 4px; padding: 1px 8px; border: 1px solid rgba(20, 20, 20, 0.35); border-radius: 999px; color: #4b4943; white-space: nowrap; text-shadow: none; background: rgba(244, 242, 238, 0.85);
+      }
+      .how-label-short { margin-top: 2px; font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; line-height: 1.35; color: #3b3833; }
+      .how-label-short.is-note { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 500; color: ${ink}; }
+      .how-label.is-idle { opacity: 0.78; }
+      .how-label.is-active .how-label-title em { border-color: ${orange}; color: ${ink}; background: #fff; }
+      .how-label.is-active .how-label-short { color: ${ink}; }
+      .how-label.is-stop .how-label-short { color: #8A1F0E; font-weight: 600; }
+      .how-label.is-stop .how-label-title em { border-color: ${orange}; background: #fff; }
+      .how-label.is-skip { opacity: 0.5; }
+      .how-status {
+        position: absolute; margin: 0; padding-left: 12px; border-left: 3px solid ${orange}; text-shadow: var(--paper-glow);
+        font-family: 'IBM Plex Sans', sans-serif; font-size: 13.5px; font-weight: 500; line-height: 1.4; color: ${ink};
+        animation: howIn 0.55s ease 1.5s both;
+      }
+      .ask-root.is-closing .how-ring { animation: askFadeOut 0.25s ease both; }
+
+      /* the same journey as a flat list on the orange, for screens with no room beside the orb */
+      .ask-how-inline { padding: 2px 2px 14px; }
+      .ask-how-inline .how-kicker { color: ${ink}; opacity: 0.85; }
+      .how-list-title { font-size: 26px; line-height: 1 !important; margin: 6px 0 16px; color: ${ink}; }
+      .how-steps { list-style: none; margin: 0; padding: 0; }
+      .how-step { position: relative; display: flex; gap: 12px; padding-bottom: 12px; }
+      .how-step:last-child { padding-bottom: 0; }
+      .how-step::before { content: ""; position: absolute; left: 11px; top: 26px; bottom: -1px; width: 2px; background: rgba(20, 20, 20, 0.35); transition: background 0.4s ease; }
+      .how-step:last-child::before { display: none; }
+      .how-step.is-done::before { background: ${ink}; }
+      .how-badge {
+        flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; line-height: 1;
+        font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; border: 1.5px solid ${ink}; color: ${ink}; background: ${TOKENS.bg};
+        transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+      }
+      .how-step.is-active .how-badge { background: #fff; transform: scale(1.18); animation: howBadgePulse 1.2s ease-in-out infinite; }
+      @keyframes howBadgePulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(20, 20, 20, 0.5); } 50% { box-shadow: 0 0 0 7px rgba(20, 20, 20, 0); } }
+      .how-step.is-done .how-badge { background: ${ink}; color: #fff; }
+      .how-step.is-stop .how-badge { background: #fff; color: ${ink}; box-shadow: 2px 2px 0 ${ink}; }
+      .how-step.is-skip .how-badge { border-style: dashed; opacity: 0.6; }
+      .how-step.is-skip { opacity: 0.6; }
+      .how-text { min-width: 0; }
+      .how-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+      .how-row strong { font-family: 'IBM Plex Sans', sans-serif; font-size: 15px; font-weight: 600; color: ${ink}; }
+      .how-row em { font-style: normal; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: ${ink}; border: 1px solid ${ink}; border-radius: 999px; padding: 1px 8px; background: rgba(244, 242, 238, 0.7); }
+      .how-text p { margin: 3px 0 0; font-family: 'IBM Plex Sans', sans-serif; font-size: 13.5px; line-height: 1.5; color: ${ink}; }
+      .how-text .how-note { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; overflow-wrap: anywhere; }
+      .how-step.is-stop .how-note { color: #6b1608; }
+      .how-list-status { margin: 14px 0 0; padding-left: 12px; border-left: 3px solid #fff; font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; font-weight: 600; line-height: 1.45; color: ${ink}; }
+
       @media (prefers-reduced-motion: reduce) {
         .bp-letter, .bp-fill, .scroll-hint-arrow, .orbit, .orbit-badge { animation: none !important; }
         .bp-fill { clip-path: none; }
-        .ask-spark, .ask-veil, .ask-ripple, .ask-ring, .ask-stage, .ask-starter, .ask-q, .ask-card, .ask-orb-inner, .chat-dots i { animation: none !important; }
+        .how-node, .how-label, .how-head, .how-status, .how-scrim, .how-pulse, .how-badge, .ask-spark, .ask-veil, .ask-ripple, .ask-ring, .ask-stage, .ask-starter, .ask-q, .ask-card, .ask-orb-inner, .chat-dots i { animation: none !important; }
         .ask-ring { opacity: 1; }
         html { scroll-behavior: auto; }
       }
