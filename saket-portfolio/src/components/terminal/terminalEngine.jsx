@@ -63,9 +63,9 @@ export function localAnswer(scored) {
 
 
 export function renderAnswer(text) {
-  const parts = text.split(/(\[DOC-\d\])/g);
+  const parts = text.split(/(\[DOC-\d+\])/g);
   return parts.map((p, i) => {
-    const m = p.match(/^\[DOC-(\d)\]$/);
+    const m = p.match(/^\[DOC-(\d+)\]$/);
     if (m) {
       return (
         <span

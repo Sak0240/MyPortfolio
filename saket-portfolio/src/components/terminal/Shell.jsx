@@ -3,6 +3,7 @@ import { TOKENS } from "../../theme";
 import { CORPUS } from "../../data/corpus";
 import { PROJECTS } from "../../data/projects";
 import { RESUME_PDF } from "../../data/assets";
+import { CHAT_API_URL } from "../../data/links";
 import {
   SUGGESTIONS,
   BOOT_LINES,
@@ -39,30 +40,24 @@ export default function Shell() {
     await new Promise((r) => setTimeout(r, 500));
     push({ kind: "retrieval", items: scored });
 
-    const context =
-      scored.length > 0
-        ? scored.map((c) => `[${c.id}] ${c.title}\n${c.text}`).join("\n\n")
-        : CORPUS.slice(0, 3).map((c) => `[${c.id}] ${c.title}\n${c.text}`).join("\n\n");
+    const chunks = (scored.length > 0 ? scored : CORPUS.slice(0, 3)).map((c) => ({ id: c.id, title: c.title, text: c.text }));
 
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 22000);
     try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
+      const response = await fetch(CHAT_API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-6",
-          max_tokens: 1000,
-          system:
-            "You are a grounded assistant answering questions on behalf of Saket Deshmukh, a GenAI engineer, for visitors to his portfolio site. Answer ONLY using the provided context chunks below, written in third person, in 2-4 concise sentences, confident and specific, no filler. Cite the chunk id inline like [DOC-1] right after any claim drawn from it. If the context doesn't cover the question, say so honestly and suggest what the visitor could ask instead, still in Saket's voice as described by his portfolio.\n\nCONTEXT:\n" +
-            context,
-          messages: [{ role: "user", content: q }],
-        }),
+        body: JSON.stringify({ question: q.slice(0, 300), chunks }),
+        signal: controller.signal,
       });
       if (!response.ok) throw new Error("api unavailable");
       const data = await response.json();
-      const textBlock = (data.content || []).find((b) => b.type === "text");
-      push({ kind: "answer", text: textBlock && textBlock.text ? textBlock.text.trim() : localAnswer(scored) });
+      push({ kind: "answer", text: data && data.answer ? data.answer.trim() : localAnswer(scored) });
     } catch (e) {
       push({ kind: "answer", text: localAnswer(scored) });
+    } finally {
+      clearTimeout(timer);
     }
     setBusy(false);
   }, [push]);
