@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { TOKENS } from "../../theme";
-import { CORPUS } from "../../data/corpus";
 import { PROJECTS } from "../../data/projects";
 import { RESUME_PDF } from "../../data/assets";
 import { CHAT_API_URL } from "../../data/links";
@@ -9,6 +8,8 @@ import {
   BOOT_LINES,
   HELP_TEXT,
   scoreChunks,
+  isGrounded,
+  REFUSAL,
   normalizeScores,
   localAnswer,
   renderAnswer,
@@ -36,19 +37,28 @@ export default function Shell() {
 
   const runAsk = useCallback(async (q) => {
     setBusy(true);
-    const scored = normalizeScores(scoreChunks(q)).slice(0, 3);
+    const hits = scoreChunks(q);
+
+    // Nothing relevant in Saket's documents -> refuse; the model is never asked.
+    if (!isGrounded(q, hits)) {
+      await new Promise((r) => setTimeout(r, 350));
+      push({ kind: "answer", text: REFUSAL });
+      setBusy(false);
+      return;
+    }
+
+    const scored = normalizeScores(hits).slice(0, 3);
     await new Promise((r) => setTimeout(r, 500));
     push({ kind: "retrieval", items: scored });
-
-    const chunks = (scored.length > 0 ? scored : CORPUS.slice(0, 3)).map((c) => ({ id: c.id, title: c.title, text: c.text }));
 
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 22000);
     try {
+      // Only the question is sent: the server retrieves from the knowledge base itself.
       const response = await fetch(CHAT_API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: q.slice(0, 300), chunks }),
+        body: JSON.stringify({ question: q.slice(0, 300) }),
         signal: controller.signal,
       });
       if (!response.ok) throw new Error("api unavailable");
@@ -244,7 +254,7 @@ export default function Shell() {
                         marginBottom: 6,
                       }}
                     >
-                      retrieval — hybrid score
+                      retrieval — BM25 score
                     </div>
                     {entry.items.map((c) => (
                       <div

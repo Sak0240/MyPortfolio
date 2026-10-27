@@ -1,34 +1,11 @@
 import { TOKENS } from "../../theme";
-import { CORPUS } from "../../data/corpus";
+import { KNOWLEDGE } from "../../data/knowledge";
+import { search, REFUSAL } from "../../lib/retrieval";
 
-export function tokenize(str) {
-  return str
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, " ")
-    .split(/\s+/)
-    .filter(Boolean);
-}
+export { isGrounded, REFUSAL } from "../../lib/retrieval";
 
 export function scoreChunks(query) {
-  const qTokens = tokenize(query);
-  if (qTokens.length === 0) return [];
-  return CORPUS.map((chunk) => {
-    const bodyTokens = tokenize(chunk.text + " " + chunk.title);
-    const kwSet = new Set(chunk.keywords);
-    let raw = 0;
-    qTokens.forEach((qt) => {
-      if (kwSet.has(qt)) raw += 2.2;
-      const bodyHits = bodyTokens.filter((bt) => bt === qt).length;
-      raw += bodyHits * 1.0;
-      chunk.keywords.forEach((kw) => {
-        if (kw.includes(qt) && qt.length > 3) raw += 0.6;
-      });
-    });
-    const norm = raw / Math.sqrt(bodyTokens.length + chunk.keywords.length);
-    return { ...chunk, rawScore: norm };
-  })
-    .sort((a, b) => b.rawScore - a.rawScore)
-    .filter((c) => c.rawScore > 0);
+  return search(query, KNOWLEDGE, 3);
 }
 
 export function normalizeScores(scored) {
@@ -42,25 +19,23 @@ export function normalizeScores(scored) {
 
 export const SUGGESTIONS = ["more"];
 
-export function firstSentences(text, count) {
-  const sentences = text.match(/[^.]+\./g) || [text];
-  return sentences.slice(0, count).join(" ").trim();
+function snippet(text, max = 340) {
+  const lines = text.split("\n").filter(Boolean);
+  const body = (lines.length > 1 ? lines.slice(1) : lines).join(" ").replace(/•\s*/g, "").trim();
+  return body.length > max ? body.slice(0, max).replace(/\s+\S*$/, "") + "…" : body;
 }
 
+// Offline fallback: no model, just the best-matching passages from Saket's own documents.
 export function localAnswer(scored) {
-  if (!scored || scored.length === 0) {
-    return "No live model connection right now, so here's what retrieval alone can surface — try one of the suggested questions, or reach out directly below.";
-  }
+  if (!scored || scored.length === 0) return REFUSAL;
   const top = scored[0];
-  const lead = `${firstSentences(top.text, 2)} [${top.id}]`;
+  const lead = `${snippet(top.text)} [${top.id}]`;
   if (scored.length > 1) {
     const second = scored[1];
-    const support = `${firstSentences(second.text, 1)} [${second.id}]`;
-    return `${lead} ${support}`;
+    return `${lead} ${snippet(second.text, 200)} [${second.id}]`;
   }
   return lead;
 }
-
 
 export function renderAnswer(text) {
   const parts = text.split(/(\[DOC-\d+\])/g);
