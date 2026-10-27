@@ -5,3 +5,9 @@ dist
 .env
 .env.local
 .vercel
+
+# python backend
+.venv
+__pycache__
+.pytest_cache
+*.pyc

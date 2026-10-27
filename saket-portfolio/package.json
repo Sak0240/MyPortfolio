@@ -6,9 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "ingest": "node scripts/ingest.mjs",
-    "prebuild": "node scripts/ingest.mjs"
+    "preview": "vite preview"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -16,8 +14,6 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",
-    "mammoth": "^1.13.0",
-    "pdf-parse": "^1.1.1",
     "vite": "^5.4.1"
   }
 }

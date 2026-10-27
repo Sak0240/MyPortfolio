@@ -20,7 +20,14 @@ This portfolio is a little different from a traditional resume. The terminal abo
 Most of the things you'll find here are projects I've built, technologies I've worked with, or problems I've enjoyed solving.
 
 
-If you'd like genuine live LLM generation on the deployed site later, that
-needs a small serverless backend (e.g. a Cloudflare Worker or Vercel function)
-to hold the API key server-side — GitHub Pages alone can't do this since it
-only serves static files. Happy to help set that up if you want it.
+## How it's built
+
+- **Frontend:** React 18 + Vite (`src/`), deployed to GitHub Pages and Vercel.
+- **Backend:** Python / FastAPI (`backend/`), deployed as a Vercel Python function (`api/index.py`). It
+  powers the terminal chatbot: BM25 retrieval over my resume and notes, a relevance gate that refuses
+  off-topic questions, DeepSeek constrained to the retrieved passages, and citation verification.
+- **Data pipeline:** `python -m backend.ingest` (pandas) turns `public/resume.pdf` and `knowledge/` into
+  `backend/data/knowledge.json`, validated with Pydantic.
+- **Quality:** a pytest suite plus a retrieval evaluation (hit@k, MRR, refusal accuracy) run in CI.
+
+See [`backend/README.md`](backend/README.md) for the architecture, commands and deployment notes.

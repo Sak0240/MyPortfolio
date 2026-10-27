@@ -1,41 +1,22 @@
 import { TOKENS } from "../../theme";
-import { KNOWLEDGE } from "../../data/knowledge";
-import { search, REFUSAL } from "../../lib/retrieval";
 
-export { isGrounded, smallTalk, REFUSAL } from "../../lib/retrieval";
+// Everything the chatbot knows lives in the Python backend (backend/data/knowledge.json, searched
+// server-side); the page only renders what the API returns.
 
-export function scoreChunks(query) {
-  return search(query, KNOWLEDGE, 3);
-}
+export const UNREACHABLE =
+  "The chat backend is unreachable right now, so I can't answer that. Please try again in a moment — the commands (help, projects, skills, contact) still work.";
 
-export function normalizeScores(scored) {
-  if (scored.length === 0) return [];
-  const max = scored[0].rawScore || 1;
-  return scored.map((c, i) => ({
+/** Adds a 0..1 bar length to the API's retrieval sources ({ id, title, score }). */
+export function normalizeScores(sources) {
+  if (!sources || sources.length === 0) return [];
+  const max = sources[0].score || 1;
+  return sources.map((c, i) => ({
     ...c,
-    displayScore: Math.min(0.98, 0.55 + (c.rawScore / max) * 0.4 - i * 0.03),
+    displayScore: Math.min(0.98, 0.55 + (c.score / max) * 0.4 - i * 0.03),
   }));
 }
 
 export const SUGGESTIONS = ["more"];
-
-function snippet(text, max = 340) {
-  const lines = text.split("\n").filter(Boolean);
-  const body = (lines.length > 1 ? lines.slice(1) : lines).join(" ").replace(/•\s*/g, "").trim();
-  return body.length > max ? body.slice(0, max).replace(/\s+\S*$/, "") + "…" : body;
-}
-
-// Offline fallback: no model, just the best-matching passages from Saket's own documents.
-export function localAnswer(scored) {
-  if (!scored || scored.length === 0) return REFUSAL;
-  const top = scored[0];
-  const lead = `${snippet(top.text)} [${top.id}]`;
-  if (scored.length > 1) {
-    const second = scored[1];
-    return `${lead} ${snippet(second.text, 200)} [${second.id}]`;
-  }
-  return lead;
-}
 
 export function renderAnswer(text) {
   const parts = text.split(/(\[DOC-\d+\])/g);

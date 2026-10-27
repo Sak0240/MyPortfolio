@@ -1,0 +1,8 @@
+-r requirements.txt
+# data pipeline + analytics
+pandas>=2.2
+pypdf==6.21.3  # pinned: `backend.ingest --check` in CI compares extracted text byte for byte
+python-docx>=1.1
+# running and testing locally
+uvicorn>=0.30
+pytest>=8

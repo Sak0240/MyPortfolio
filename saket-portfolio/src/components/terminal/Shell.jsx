@@ -7,12 +7,8 @@ import {
   SUGGESTIONS,
   BOOT_LINES,
   HELP_TEXT,
-  scoreChunks,
-  isGrounded,
-  smallTalk,
-  REFUSAL,
+  UNREACHABLE,
   normalizeScores,
-  localAnswer,
   renderAnswer,
 } from "./terminalEngine";
 import TypedLines from "./TypedLines";
@@ -38,46 +34,31 @@ export default function Shell() {
 
   const runAsk = useCallback(async (q) => {
     setBusy(true);
-    const chat = smallTalk(q);
-    if (chat) {
-      await new Promise((r) => setTimeout(r, 250));
-      push({ kind: "answer", text: chat });
-      setBusy(false);
-      return;
-    }
-    const hits = scoreChunks(q);
-
-    // Nothing relevant in Saket's documents -> refuse; the model is never asked.
-    if (!isGrounded(q, hits)) {
-      await new Promise((r) => setTimeout(r, 350));
-      push({ kind: "answer", text: REFUSAL });
-      setBusy(false);
-      return;
-    }
-
-    const scored = normalizeScores(hits).slice(0, 3);
-    await new Promise((r) => setTimeout(r, 500));
-    push({ kind: "retrieval", items: scored });
-
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 22000);
+    const timer = setTimeout(() => controller.abort(), 25000);
     try {
-      // Only the question is sent: the server retrieves from the knowledge base itself.
+      // The Python backend does everything: small talk, BM25 retrieval over Saket's documents,
+      // the refusal gate, the model call and citation checks. The page sends only the question.
       const response = await fetch(CHAT_API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: q.slice(0, 300) }),
         signal: controller.signal,
       });
-      if (!response.ok) throw new Error("api unavailable");
+      if (response.status === 429) {
+        push({ kind: "answer", text: "Too many questions in a short time — please wait a minute and try again." });
+        return;
+      }
+      if (!response.ok) throw new Error(`api ${response.status}`);
       const data = await response.json();
-      push({ kind: "answer", text: data && data.answer ? data.answer.trim() : localAnswer(scored) });
+      if (data.sources && data.sources.length) push({ kind: "retrieval", items: normalizeScores(data.sources).slice(0, 3) });
+      push({ kind: "answer", text: String(data.answer || "").trim() || UNREACHABLE });
     } catch (e) {
-      push({ kind: "answer", text: localAnswer(scored) });
+      push({ kind: "answer", text: UNREACHABLE });
     } finally {
       clearTimeout(timer);
+      setBusy(false);
     }
-    setBusy(false);
   }, [push]);
 
   const runCommand = useCallback(

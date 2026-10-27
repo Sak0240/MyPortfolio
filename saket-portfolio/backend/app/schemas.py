@@ -1,0 +1,74 @@
+"""Typed contracts for everything that crosses a boundary: the HTTP API, the knowledge base file,
+the LLM answer and the analytics log."""
+
+from __future__ import annotations
+
+from datetime import datetime, timezone
+from enum import Enum
+from typing import Annotated
+
+from pydantic import BaseModel, ConfigDict, Field, StringConstraints, field_validator
+
+MAX_QUESTION = 300
+DOC_ID = r"^DOC-\d{1,3}$"
+
+
+# ---------- knowledge base ----------
+class KnowledgeChunk(BaseModel):
+    """One retrievable passage. `id` is what the model cites, e.g. [DOC-7]."""
+
+    model_config = ConfigDict(frozen=True)
+
+    id: Annotated[str, StringConstraints(pattern=DOC_ID)]
+    source: Annotated[str, StringConstraints(min_length=1, max_length=120)]
+    title: Annotated[str, StringConstraints(min_length=1, max_length=120)]
+    text: Annotated[str, StringConstraints(min_length=20, max_length=3000)]
+
+
+# ---------- HTTP API ----------
+class ChatRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")  # the client may send a question and nothing else
+
+    question: str = Field(min_length=1, max_length=MAX_QUESTION)
+
+    @field_validator("question")
+    @classmethod
+    def clean(cls, v: str) -> str:
+        v = "".join(ch if ch.isprintable() or ch in "\n\t" else " " for ch in v)  # no control characters
+        v = " ".join(v.split())
+        if not v:
+            raise ValueError("question is empty")
+        return v
+
+
+class Source(BaseModel):
+    id: str
+    title: str
+    source: str
+    score: float
+
+
+class ChatResponse(BaseModel):
+    answer: str
+    sources: list[Source] = Field(default_factory=list)
+    grounded: bool
+
+
+# ---------- analytics ----------
+class Outcome(str, Enum):
+    ANSWERED = "answered"  # model answered from the retrieved context, citations verified
+    SMALLTALK = "smalltalk"  # greeting / thanks, canned reply
+    REFUSED_RETRIEVAL = "refused_retrieval"  # nothing relevant in the documents; the model was never called
+    REFUSED_MODEL = "refused_model"  # model said NOT_IN_DOCS, or its answer failed citation checks
+    ERROR = "error"  # upstream failure or timeout
+
+
+class QuestionEvent(BaseModel):
+    """One logged question. No IP address, no user agent: only what is needed to improve the documents."""
+
+    ts: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    question: str
+    outcome: Outcome
+    top_score: float | None = None
+    top_ids: list[str] = Field(default_factory=list)
+    latency_ms: int = 0
