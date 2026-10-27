@@ -9,6 +9,7 @@ import {
   HELP_TEXT,
   scoreChunks,
   isGrounded,
+  smallTalk,
   REFUSAL,
   normalizeScores,
   localAnswer,
@@ -37,6 +38,13 @@ export default function Shell() {
 
   const runAsk = useCallback(async (q) => {
     setBusy(true);
+    const chat = smallTalk(q);
+    if (chat) {
+      await new Promise((r) => setTimeout(r, 250));
+      push({ kind: "answer", text: chat });
+      setBusy(false);
+      return;
+    }
     const hits = scoreChunks(q);
 
     // Nothing relevant in Saket's documents -> refuse; the model is never asked.
@@ -263,7 +271,9 @@ export default function Shell() {
                       >
                         <span style={{ color: TOKENS.teal, minWidth: 52 }}>{c.id}</span>
                         <ScoreBar value={c.displayScore} />
-                        <span style={{ color: TOKENS.textDim }}>{c.title}</span>
+                        <span style={{ color: TOKENS.textDim, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          {c.title.split(" — ").slice(-1)[0]}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -273,7 +283,7 @@ export default function Shell() {
                 return (
                   <div
                     key={entry.id}
-                    style={{ marginTop: 8, marginBottom: 10, color: TOKENS.text, fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 14.5, lineHeight: 1.75 }}
+                    style={{ marginTop: 8, marginBottom: 10, color: TOKENS.text, fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 14.5, lineHeight: 1.75, whiteSpace: "pre-wrap" }}
                   >
                     {renderAnswer(entry.text)}
                   </div>

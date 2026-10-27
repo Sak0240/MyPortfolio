@@ -2,7 +2,7 @@ import { TOKENS } from "../../theme";
 import { KNOWLEDGE } from "../../data/knowledge";
 import { search, REFUSAL } from "../../lib/retrieval";
 
-export { isGrounded, REFUSAL } from "../../lib/retrieval";
+export { isGrounded, smallTalk, REFUSAL } from "../../lib/retrieval";
 
 export function scoreChunks(query) {
   return search(query, KNOWLEDGE, 3);

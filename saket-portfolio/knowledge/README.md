@@ -14,5 +14,7 @@ your files it says so instead of guessing.
 
 Tips
 - Markdown with `#` headings chunks best; one topic per section.
-- Files starting with `_` and this README are ignored.
+- Files starting with `_`, this README, `*system_prompt*` files and `portfolio_faq.md` are ignored
+  (instructions and question-only lists are not facts; the model's rules live in `api/chat.js`).
+- Phone numbers are replaced with `[phone omitted]` during ingestion.
 - **This repo is public and the chunks ship inside the site** — only add things you are happy to publish.

@@ -13,7 +13,13 @@ const require = createRequire(import.meta.url);
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(ROOT, "src", "data", "knowledge.js");
 const MAX_CHUNK = 1400;
+const TARGET = 1000;
 const EXTS = new Set([".pdf", ".md", ".txt", ".docx"]);
+// Instruction files (e.g. the chatbot's system prompt) steer the model; they are not facts to retrieve.
+// portfolio_faq.md is a list of sample questions with no answers, so it would only pollute retrieval.
+const SKIP_NAME = /system[_-]?prompt|^portfolio_faq\./i;
+// Private contact details stay out of the public knowledge base (email / LinkedIn are already on the site).
+const PHONE = /\+?\d[\d\s().-]{8,}\d/g;
 
 // ---------- readers ----------
 async function readPdf(file) {
@@ -128,37 +134,85 @@ function structuredChunks(raw, source) {
 }
 
 // ---------- generic chunking (markdown / plain text / docx) ----------
-function genericChunks(raw, source) {
-  const text = raw.replace(/\r/g, "");
-  const blocks = text.split(/\n{2,}/).map((b) => b.trim()).filter(Boolean);
-  const chunks = [];
-  let heading = "";
+// One chunk per heading section, titled "Document title — Section", so a Q&A file or a
+// project write-up retrieves by the section that actually answers the question.
+function splitLong(text) {
+  if (text.length <= MAX_CHUNK) return [text];
+  const out = [];
   let buf = "";
-  const flush = () => {
-    if (!buf.trim()) return;
-    const first = buf.trim().split("\n")[0].replace(/^#+\s*/, "").slice(0, 80);
-    chunks.push({ source, title: heading || first, text: (heading ? heading + "\n" : "") + buf.trim() });
-    buf = "";
-  };
-  for (const b of blocks) {
-    const h = b.match(/^#{1,4}\s+(.+)$/);
-    if (h && b.split("\n").length === 1) {
-      flush();
-      heading = h[1].trim();
-      continue;
+  for (const para of text.split(/\n{2,}/)) {
+    if (buf && (buf + "\n\n" + para).length > MAX_CHUNK) {
+      out.push(buf);
+      buf = "";
     }
-    if (buf && (buf + "\n\n" + b).length > MAX_CHUNK) flush();
-    if (b.length > MAX_CHUNK) {
-      const sentences = b.match(/[^.!?]+[.!?]+\s*|[^.!?]+$/g) || [b];
-      for (const s of sentences) {
-        if (buf && (buf + " " + s).length > MAX_CHUNK) flush();
-        buf += (buf ? " " : "") + s.trim();
+    if (para.length > MAX_CHUNK) {
+      for (const sent of para.match(/[^.!?]+[.!?]+\s*|[^.!?]+$/g) || [para]) {
+        if (buf && (buf + " " + sent).length > MAX_CHUNK) {
+          out.push(buf);
+          buf = "";
+        }
+        buf += (buf ? " " : "") + sent.trim();
       }
     } else {
-      buf += (buf ? "\n\n" : "") + b;
+      buf += (buf ? "\n\n" : "") + para;
     }
   }
-  flush();
+  if (buf) out.push(buf);
+  return out;
+}
+
+function genericChunks(raw, source) {
+  const lines = raw.replace(/\r/g, "").split("\n");
+  const sections = [];
+  let h1 = "";
+  let heading = "";
+  let h2 = "";
+  let body = [];
+  const close = () => {
+    const text = body.join("\n").trim();
+    if (text) sections.push({ heading, text });
+    body = [];
+  };
+  for (const line of lines) {
+    const h = line.match(/^(#{1,4})\s+(.+?)\s*$/);
+    if (!h) {
+      body.push(line);
+      continue;
+    }
+    close();
+    if (h[1].length === 1 && !h1) h1 = h[2];
+    if (h[1].length === 2) h2 = h[2];
+    // an H3 under an H2 keeps its parent ("Architecture › 1. User Interface") so a heading-only H2 is not lost
+    heading = h[1].length >= 3 && h2 ? `${h2} › ${h[2]}` : h[2];
+  }
+  close();
+
+  // Merge neighbouring sections into ~TARGET-sized chunks so a multi-step description (e.g. a
+  // project architecture) stays together; the headings remain in the text for matching.
+  const label = (sec) => (sec.heading === h1 || !h1 ? sec.heading || source : `${h1} — ${sec.heading}`);
+  const blocks = sections.flatMap((sec) =>
+    splitLong(sec.text).map((part) => ({
+      heading: sec.heading,
+      sec,
+      text: sec.heading && sec.heading !== h1 ? `## ${sec.heading}\n${part}` : part,
+    }))
+  );
+  const chunks = [];
+  let group = [];
+  const flushGroup = () => {
+    if (!group.length) return;
+    const first = label(group[0].sec);
+    const last = group[group.length - 1].heading;
+    const title = (group.length > 1 && last && last !== group[0].heading ? `${first} … ${last}` : first).slice(0, 110);
+    chunks.push({ source, title, text: `${h1 && !title.startsWith(h1) ? h1 + "\n" : ""}${group.map((g) => g.text).join("\n\n")}` });
+    group = [];
+  };
+  for (const blk of blocks) {
+    const size = group.reduce((n, g) => n + g.text.length + 2, 0);
+    if (group.length && size + blk.text.length > TARGET) flushGroup();
+    group.push(blk);
+  }
+  flushGroup();
   return chunks;
 }
 
@@ -171,7 +225,7 @@ function listKnowledgeFiles() {
     for (const e of fs.readdirSync(d, { withFileTypes: true })) {
       const full = path.join(d, e.name);
       if (e.isDirectory()) walk(full);
-      else if (EXTS.has(path.extname(e.name).toLowerCase()) && !e.name.startsWith("_") && e.name.toLowerCase() !== "readme.md") out.push(full);
+      else if (EXTS.has(path.extname(e.name).toLowerCase()) && !e.name.startsWith("_") && !SKIP_NAME.test(e.name) && e.name.toLowerCase() !== "readme.md") out.push(full);
     }
   };
   walk(dir);
@@ -191,6 +245,7 @@ for (const s of sources) {
     if (ext === ".pdf") raw = cleanPdfText(raw);
     const structured = ext === ".pdf" || /^[A-Z][A-Z &/]{2,38}$/m.test(raw);
     const chunks = structured ? structuredChunks(raw, s.label) : genericChunks(raw, s.label);
+    for (const c of chunks) c.text = c.text.replace(PHONE, "[phone omitted]");
     console.log(`  ${s.label}: ${chunks.length} chunks`);
     all.push(...chunks);
   } catch (e) {

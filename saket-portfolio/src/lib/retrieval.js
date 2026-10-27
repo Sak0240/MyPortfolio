@@ -6,7 +6,7 @@ const STOP = new Set(
     "a an and are as at be by can could did do does for from had has have how i if in into is it its " +
     "me my of on or our so than that the their them then there these they this to was we were what when " +
     "where which who whom why will with would you your about tell please give show list any some " +
-    "saket his he him her she"
+    "saket his he him her she explain explains explained describe walk through"
   ).split(" ")
 );
 
@@ -31,9 +31,10 @@ function stem(w) {
 export function tokenize(text) {
   return String(text)
     .toLowerCase()
+    .replace(/[’']s/g, "")
     .replace(/[^a-z0-9]+/g, " ")
     .split(" ")
-    .filter((t) => t && !STOP.has(t))
+    .filter((t) => t.length > 1 && !STOP.has(t))
     .map(stem);
 }
 
@@ -64,6 +65,24 @@ const SYNONYMS = {
   technology: ["skills"],
   technologies: ["skills"],
   tools: ["skills"],
+  project: ["kwad", "briowin", "catalogsage"],
+  projects: ["kwad", "briowin", "catalogsage"],
+  role: ["engineer", "kwad"],
+  current: ["kwad"],
+  currently: ["kwad"],
+  position: ["engineer", "kwad"],
+  made: ["built", "develop"],
+  make: ["built", "develop"],
+  created: ["built", "develop"],
+  create: ["built", "develop"],
+  achievement: ["award", "reduc", "improv"],
+  achievements: ["award", "reduc", "improv"],
+  accomplishments: ["award", "reduc", "improv"],
+  impact: ["reduc", "improv", "achiev"],
+  yourself: ["summary", "engineer", "experience"],
+  background: ["summary", "engineer", "experience", "bachelor"],
+  introduce: ["summary", "engineer", "experience"],
+  skills: ["python", "langchain"],
 };
 
 const K1 = 1.4;
@@ -92,7 +111,11 @@ export function search(query, chunks, k = 4) {
   const base = tokenize(query);
   const extra = [];
   for (const w of String(query).toLowerCase().split(/[^a-z0-9]+/)) if (SYNONYMS[w]) extra.push(...SYNONYMS[w].map(stem));
-  const qTokens = [...new Set([...base, ...extra])];
+  // synonyms count for half so they help recall without outranking the words actually asked
+  const weights = new Map();
+  for (const t of extra) weights.set(t, 0.5);
+  for (const t of base) weights.set(t, 1);
+  const qTokens = [...weights.keys()];
   if (base.length === 0 || chunks.length === 0) return [];
   let index = indexCache.get(chunks);
   if (!index) {
@@ -108,7 +131,7 @@ export function search(query, chunks, k = 4) {
       const f = d.tf.get(t);
       if (!f) continue;
       const idf = Math.log(1 + (n - (df.get(t) || 0) + 0.5) / ((df.get(t) || 0) + 0.5));
-      score += (idf * (f * (K1 + 1))) / (f + K1 * (1 - B + (B * d.len) / avgLen));
+      score += weights.get(t) * ((idf * (f * (K1 + 1))) / (f + K1 * (1 - B + (B * d.len) / avgLen)));
       matched.push(t);
     }
     if (score > 0) scored.push({ ...chunks[i], rawScore: score, matched });
@@ -130,4 +153,23 @@ export function isGrounded(query, hits, minScore = 0.8) {
 }
 
 export const REFUSAL =
-  "That isn't covered in Saket's documents (his resume and notes), so I can't answer it. Try asking about his projects, skills, experience, or education.";
+  "The available portfolio documentation does not specify that detail, so I can't confirm it. Try asking about Saket's projects, skills, experience, or education.";
+
+const GREETING =
+  /^(?:hi|hii+|hello|hey|heya|hiya|yo|sup|namaste|good\s+(?:morning|afternoon|evening))(?:\s+(?:there|team|bot|saket|everyone|friend|buddy))?\s*[!.,?]*\s*$/i;
+const THANKS = /^(?:thanks|thank\s+you|thx|ty|cheers)(?:\s+(?:a\s+lot|so\s+much|saket|bot))?\s*[!.,?]*\s*$/i;
+const BYE = /^(?:bye|goodbye|see\s+you|cya|good\s*night)(?:\s+(?:saket|bot))?\s*[!.,?]*\s*$/i;
+const ABOUT_BOT = /^(?:who\s+are\s+you|what\s+are\s+you|what\s+can\s+you\s+do|what\s+can\s+i\s+ask|how\s+does\s+this\s+work)\s*[!.,?]*\s*$/i;
+
+const INTRO =
+  "I'm an assistant that only knows what's in Saket's resume and notes. Ask about his projects, skills, experience, or education — for example: \"What did Saket build at KWAD?\" or \"Which cloud tools does he use?\"";
+
+/** Friendly canned replies for greetings / thanks / "what are you" — no model call needed. */
+export function smallTalk(question) {
+  const q = String(question).trim();
+  if (GREETING.test(q)) return `Hi there! ${INTRO}`;
+  if (ABOUT_BOT.test(q)) return INTRO;
+  if (THANKS.test(q)) return "You're welcome! Ask me anything else about Saket's work.";
+  if (BYE.test(q)) return "Thanks for stopping by — the rest of the portfolio is just a scroll away.";
+  return null;
+}
