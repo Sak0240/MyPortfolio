@@ -55,7 +55,7 @@ export default function Nav({ navSolid }) {
         <button
           type="button"
           className="pill-ghost nav-ask"
-          onClick={() => openAsk()}
+          onClick={(e) => openAsk(undefined, e.currentTarget)}
           aria-label="Ask Saket's AI assistant"
           style={{ cursor: "pointer" }}
         >

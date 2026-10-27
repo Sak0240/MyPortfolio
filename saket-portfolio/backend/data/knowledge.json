@@ -127,204 +127,210 @@
   },
   {
     "id": "DOC-22",
+    "source": "companies.md",
+    "title": "Companies — KWAD Corporation Pvt. Ltd.",
+    "text": "## KWAD Corporation Pvt. Ltd.\nKWAD Corporation Private Limited (KWAD Corporation Pvt. Ltd.) is a software consulting and IT services company based in Pune, Maharashtra, India. It builds software and AI-powered applications for clients, including in fintech and healthcare.\n\nThis section describes the company itself. Saket's own role and projects at KWAD Corporation are described in his experience and project notes."
+  },
+  {
+    "id": "DOC-23",
     "source": "experience.md",
     "title": "Professional Experience — KWAD Corporation Pvt. Ltd. … KWAD Corporation Pvt. Ltd. › Responsibilities",
     "text": "## KWAD Corporation Pvt. Ltd.\nRole: AI Engineer / Software Engineer  \nDomain: Fintech and AI-powered applications\n\n## KWAD Corporation Pvt. Ltd. › Responsibilities\n- Developed AI-powered applications for financial operations, compliance investigation, and document processing.\n- Built backend services using Python and FastAPI.\n- Worked with LLMs, RAG pipelines, structured outputs, prompt engineering, and retrieval systems.\n- Developed multi-step AI workflows using LangGraph.\n- Integrated LLM APIs through LiteLLM.\n- Worked with PostgreSQL, pgvector, embeddings, and semantic retrieval.\n- Implemented validation mechanisms to improve the reliability of model-generated outputs.\n- Worked on automated testing, deployment workflows, and cloud-based application infrastructure."
   },
   {
-    "id": "DOC-23",
+    "id": "DOC-24",
     "source": "experience.md",
     "title": "Professional Experience — KWAD Corporation Pvt. Ltd. › Financial Operations and Compliance AI",
     "text": "## KWAD Corporation Pvt. Ltd. › Financial Operations and Compliance AI\nWorked on an agentic RAG application designed to help operations and compliance teams investigate B2B financial transactions using natural language. The system combines relevant transaction information, retrieved evidence, and tool-based operations to support investigations.\n\nMy work involved AI workflow orchestration, retrieval, tool integration, backend APIs, response grounding, validation, and evaluation."
   },
   {
-    "id": "DOC-24",
+    "id": "DOC-25",
     "source": "experience.md",
     "title": "Professional Experience — KWAD Corporation Pvt. Ltd. › Clinical Document Intelligence … Briowin Private Limite",
     "text": "## KWAD Corporation Pvt. Ltd. › Clinical Document Intelligence\nWorked on a document-processing platform concept for extracting structured information from clinical records, including scanned documents, handwritten pages, and multilingual records. The proposed workflow uses document parsing, OCR, LLM-based extraction, structured validation, and evidence verification.\n\nThe goal is to reduce manual data entry while ensuring extracted information can be checked against its source. Describe the implementation status and metrics according to what has actually been built and measured.\n\n## Briowin Private Limited\nRole: Software Engineer / Automation Engineer  \nDomain: E-commerce"
   },
   {
-    "id": "DOC-25",
+    "id": "DOC-26",
     "source": "experience.md",
     "title": "Professional Experience — Briowin Private Limited › CatalogSage — AI-Powered Product Catalog Assistant",
     "text": "## Briowin Private Limited › CatalogSage — AI-Powered Product Catalog Assistant\nWorked on an AI assistant for retrieving information from a product catalog containing more than 300 SKUs. Users can ask natural-language questions about products and retrieve relevant catalog information.\n\nMy work involved Python, FastAPI, LLM integration, retrieval workflows, and tool-based connections to catalog services. The project used retrieval techniques to improve the relevance of product information returned to users."
   },
   {
-    "id": "DOC-26",
+    "id": "DOC-27",
     "source": "experience.md",
     "title": "Professional Experience — General Engineering Approach",
     "text": "## General Engineering Approach\n1. Understand the business problem and user requirements.\n2. Identify information sources and expected outputs.\n3. Select an appropriate model, retrieval method, and workflow.\n4. Build backend APIs and integrate required tools.\n5. Validate model outputs using schemas and application rules.\n6. Evaluate quality with representative test cases.\n7. Monitor failures and improve the application iteratively.\n\nI distinguish between an AI prototype, a tested application, and a production deployment. A working demonstration alone does not establish production readiness."
   },
   {
-    "id": "DOC-27",
+    "id": "DOC-28",
     "source": "financial_ai_project.md",
     "title": "AI Compliance and Financial Operations Assistant — Project Overview … Technologies",
     "text": "## Project Overview\nThis project helps financial operations and compliance teams investigate B2B transactions through natural-language questions. Instead of manually searching multiple records, users can ask questions and receive responses based on relevant transaction data and supporting evidence.\n\n## Problem\nFinancial investigations may require checking transaction records, applying business rules, reviewing supporting evidence, and understanding relationships between records. A basic chatbot may generate an answer without checking the underlying data, creating reliability risks.\n\n## Solution\nAn agentic RAG application combines retrieval, backend tools, workflow orchestration, and validation to support financial investigations.\n\n## Technologies\n- Python, FastAPI\n- LangChain, LangGraph, LiteLLM\n- OpenAI API\n- PostgreSQL, pgvector, embeddings\n- Docker, Kubernetes, AWS EKS\n- GitHub Actions"
   },
   {
-    "id": "DOC-28",
+    "id": "DOC-29",
     "source": "financial_ai_project.md",
     "title": "AI Compliance and Financial Operations Assistant — Architecture › 1. User Interface and API … Architecture › 4",
     "text": "## Architecture › 1. User Interface and API\nThe user submits a natural-language question. FastAPI receives the request and performs required authentication and authorization checks.\n\n## Architecture › 2. Workflow Orchestration\nLangGraph manages the multi-step workflow. Depending on the question, the workflow can classify the request, select a path, invoke tools, process results, and prepare a response.\n\n## Architecture › 3. Data Retrieval\nThe application retrieves relevant information from available data sources. PostgreSQL stores relational data, while pgvector supports vector-based similarity search where appropriate.\n\n## Architecture › 4. Tool Execution\nThe workflow can call approved backend tools to retrieve transaction information or apply deterministic business rules. The LLM should not independently invent transaction facts; tool results and retrieved evidence provide the information used to construct the answer."
   },
   {
-    "id": "DOC-29",
+    "id": "DOC-30",
     "source": "financial_ai_project.md",
     "title": "AI Compliance and Financial Operations Assistant — Architecture › 5. Response Generation … Why LangGraph?",
     "text": "## Architecture › 5. Response Generation\nThe LLM uses available information to generate a natural-language response.\n\n## Architecture › 6. Validation and Grounding\nThe application checks whether the response is supported by evidence and follows the expected output format. When evidence is insufficient, the system should avoid presenting unsupported conclusions as facts.\n\n## Architecture › 7. Evaluation and Monitoring\nRepresentative test cases can evaluate answer relevance, evidence usage, tool selection, and response correctness. Tracing and regression tests help identify problems introduced by changes to prompts, retrieval settings, or workflows.\n\n## Why LangGraph?\nLangGraph is useful when an AI application requires multiple steps, conditional routing, state management, tool execution, retries, or human intervention. A simple prompt may be sufficient for a straightforward question; a graph-based workflow is useful when explicit control is needed."
   },
   {
-    "id": "DOC-30",
+    "id": "DOC-31",
     "source": "financial_ai_project.md",
     "title": "AI Compliance and Financial Operations Assistant — Why RAG? … Important Design Considerations",
     "text": "## Why RAG?\nRAG retrieves relevant information before generating an answer. It is useful when responses must reflect specific business records or domain knowledge that may not be contained in the model's training data.\n\n## Why PostgreSQL and pgvector?\nPostgreSQL supports structured relational data, while pgvector enables vector similarity search within PostgreSQL.\n\n## Why LiteLLM?\nLiteLLM provides a common interface for supported LLM providers and can simplify model integration and selection, depending on configuration.\n\n## Important Design Considerations\n- Validate user permissions before retrieving sensitive records.\n- Enforce tenant isolation.\n- Treat retrieved content as data, not trusted instructions.\n- Restrict tools to explicitly permitted operations.\n- Validate tool arguments and structured outputs.\n- Record enough information to investigate failures.\n- Evaluate retrieval quality and answer correctness separately.\n- Avoid conclusions when supporting evidence is missing."
   },
   {
-    "id": "DOC-31",
+    "id": "DOC-32",
     "source": "financial_ai_project.md",
     "title": "AI Compliance and Financial Operations Assistant — Interview Questions",
     "text": "## Interview Questions\n**What problem does this project solve?**  \nIt helps financial operations and compliance teams investigate transaction information using natural language instead of manually searching records.\n\n**Why is this an agentic system?**  \nThe application can follow a multi-step workflow, select conditional paths, invoke tools, and process results before producing a response.\n\n**How is it different from a basic chatbot?**  \nIt can retrieve business data, invoke approved tools, and validate its output against evidence.\n\n**How do you reduce hallucinations?**  \nUse relevant retrieval, trusted tool results, deterministic rules, explicit instructions, evidence checks, and evaluation tests. These reduce risk but do not guarantee every answer is correct.\n\n**What happens when evidence is insufficient?**  \nThe system should say the available information is insufficient rather than invent an answer.\n\n**How would you evaluate it?**  \nUse test questions with expected answers and supporting evidence. Measure retrieval relevance, answer correctness, groundedness, tool selection, schema validity, and failure rates.\n\n**What is the difference between a tool and RAG?**  \nRAG retrieves relevant information, commonly from a document or knowledge collection. A tool executes a defined operation, such as querying an authorized database or applying a business rule."
   },
   {
-    "id": "DOC-32",
+    "id": "DOC-33",
     "source": "financial_ai_project.md",
     "title": "AI Compliance and Financial Operations Assistant — Interview Questions",
     "text": "## Interview Questions\n**What are the main risks?**  \nIncorrect retrieval, unsupported answers, unauthorized data access, prompt injection, invalid tool arguments, and failures in underlying data sources."
   },
   {
-    "id": "DOC-33",
+    "id": "DOC-34",
     "source": "interview_qa.md",
     "title": "Interview Questions and Answers — Tell Me About Yourself … Explain RAG in Simple Words",
     "text": "## Tell Me About Yourself\nI completed my Bachelor's in Computer Engineering from Savitribai Phule Pune University. I have 2.5+ years of experience in software engineering, with a focus on Generative AI and LLM applications.\n\nI have worked on AI-powered applications in fintech and e-commerce, including an agentic RAG system for financial investigations, a product catalog assistant, and document intelligence workflows.\n\nMy main technologies are Python, FastAPI, LangGraph, LangChain, LiteLLM, PostgreSQL, and vector search. I focus on building applications that retrieve relevant information, use tools where required, and validate their outputs.\n\n## Explain RAG in Simple Words\nRAG means Retrieval-Augmented Generation. Before answering a question, the application searches its knowledge base for relevant information and gives that information to the LLM as context. For example, a portfolio chatbot can search my resume and project documentation before answering questions about my experience."
   },
   {
-    "id": "DOC-34",
+    "id": "DOC-35",
     "source": "interview_qa.md",
     "title": "Interview Questions and Answers — What Is Agentic AI? … What Is the Difference Between RAG and Fine-Tuning?",
     "text": "## What Is Agentic AI?\nAgentic AI refers to AI applications that can work through a task using defined steps, tools, and decisions rather than generating only one response. An agent might classify a financial question, retrieve transaction data, call an approved tool, and use the results to prepare an answer.\n\n## What Is the Difference Between RAG and Fine-Tuning?\nRAG provides relevant external information to the model at inference time. Fine-tuning changes model parameters through additional training. RAG is often useful when information changes frequently or must be retrieved from private documents. Fine-tuning is useful for adapting model behavior or task performance when the training approach and data support it."
   },
   {
-    "id": "DOC-35",
+    "id": "DOC-36",
     "source": "interview_qa.md",
     "title": "Interview Questions and Answers — What Is the Difference Between LangChain and LangGraph? … What Is Hallucinat",
     "text": "## What Is the Difference Between LangChain and LangGraph?\nLangChain provides components for building LLM applications, such as prompts, retrievers, and tool integrations. LangGraph provides orchestration for stateful, multi-step workflows with conditional transitions. They can be used together.\n\n## What Is the Difference Between an LLM and an Embedding Model?\nAn LLM generates or interprets language. An embedding model converts text into numerical vectors for similarity search. Some model families offer both generation and embedding capabilities, but the tasks are different.\n\n## What Is Hallucination?\nHallucination occurs when a model generates information that is unsupported or incorrect. It can be reduced through relevant retrieval, explicit instructions, constrained outputs, tool-based data access, validation, and evaluation. Adding RAG does not eliminate it."
   },
   {
-    "id": "DOC-36",
+    "id": "DOC-37",
     "source": "interview_qa.md",
     "title": "Interview Questions and Answers — How Do You Evaluate a RAG Application? … How Do You Handle Incorrect Structu",
     "text": "## How Do You Evaluate a RAG Application?\nI create test questions with expected answers and relevant source documents. I evaluate whether retrieval finds the correct information, whether the answer is supported by that information, and whether the final output is correct and useful. I also test missing-information cases and irrelevant retrieval results.\n\n## What Is Grounding?\nGrounding means linking a model's output to reliable information available in the application. For example, a clinical extraction system can retain the source page and text supporting an extracted value.\n\n## How Do You Handle Incorrect Structured Output?\nI validate the output against a schema. If validation fails, the application can retry with appropriate error information or route the case for review. Even when schema validation succeeds, I separately check whether the content is correct."
   },
   {
-    "id": "DOC-37",
+    "id": "DOC-38",
     "source": "interview_qa.md",
     "title": "Interview Questions and Answers — What Is Function Calling? … What Is Prompt Injection?",
     "text": "## What Is Function Calling?\nFunction calling lets a model request an operation using a defined function and structured arguments. The application executes the function only after validating the arguments and checking permissions.\n\n## What Is Prompt Injection?\nPrompt injection is an attempt to manipulate an AI application through instructions embedded in user input or retrieved content. Mitigations include treating retrieved documents as untrusted data, restricting tool permissions, validating inputs, and separating model-generated decisions from authorization checks."
   },
   {
-    "id": "DOC-38",
+    "id": "DOC-39",
     "source": "interview_qa.md",
     "title": "Interview Questions and Answers — How Do You Prevent an Agent from Calling the Same Tool Repeatedly? … How Do",
     "text": "## How Do You Prevent an Agent from Calling the Same Tool Repeatedly?\nI inspect the execution trace and identify repeated calls, their arguments, and returned results. I check whether the workflow lacks a stopping condition, tool errors cause repeated retries, or the agent fails to use previous results. Possible fixes include limiting iterations, validating arguments, detecting repeated calls, adding stop conditions, and testing against a regression dataset.\n\n## How Do You Choose Between an LLM and a Traditional ML Model?\nI consider the task, data, expected accuracy, latency, cost, and output requirements. For stable classification tasks with sufficient labeled data, a traditional model may be more predictable and economical. An LLM may be more useful when contextual interpretation or varied inputs are important. A hybrid approach can use rules or traditional models for straightforward cases and an LLM for ambiguous cases."
   },
   {
-    "id": "DOC-39",
+    "id": "DOC-40",
     "source": "interview_qa.md",
     "title": "Interview Questions and Answers — How Do You Debug Poor Retrieval? … What Is the Difference Between Latency an",
     "text": "## How Do You Debug Poor Retrieval?\nI inspect the original documents, text extraction, chunking, metadata, embedding model, query, and retrieved results. I test changes individually and compare retrieval metrics on a representative dataset.\n\n## What Is the Difference Between Precision and Recall?\nPrecision measures how many retrieved or predicted items are relevant or correct. Recall measures how many of the relevant or correct items were successfully retrieved or identified. The exact interpretation depends on the task and evaluation setup.\n\n## What Is the Difference Between Latency and Throughput?\nLatency is the time taken to complete an operation or request. Throughput is the number of operations or requests processed during a period."
   },
   {
-    "id": "DOC-40",
+    "id": "DOC-41",
     "source": "interview_qa.md",
     "title": "Interview Questions and Answers — How Do You Make an AI Application More Reliable? … How Do You Explain a Tech",
     "text": "## How Do You Make an AI Application More Reliable?\nI use input validation, appropriate retrieval, controlled tool access, schema validation, source-grounding checks, automated tests, evaluation datasets, monitoring, and human review for uncertain cases.\n\n## How Do You Handle Missing Information?\nI distinguish between what the available evidence supports and what is unknown. If evidence is insufficient, I state the limitation rather than inventing a value.\n\n## How Do You Explain a Technical Project to a Nontechnical Person?\nI explain the problem first, then what the application does, how it helps the user, and how success is measured. I introduce technical details only when they help explain the solution."
   },
   {
-    "id": "DOC-41",
+    "id": "DOC-42",
     "source": "profile.md",
     "title": "Professional Profile — Saket Deshmukh — About Me … Education",
     "text": "## About Me\nI am a Software Engineer specializing in Generative AI, Large Language Models (LLMs), Retrieval-Augmented Generation (RAG), and Agentic AI systems. I have 2.5+ years of professional experience building software applications, AI-powered automation, and backend systems across fintech, healthcare, and e-commerce use cases.\n\nMy primary technologies include Python, FastAPI, LangChain, LangGraph, LiteLLM, PostgreSQL, pgvector, and cloud technologies. I focus on AI applications that retrieve relevant information, call tools, validate outputs, and produce evidence-grounded responses.\n\n## Education\nBachelor of Engineering in Computer Engineering, Savitribai Phule Pune University. Graduated in 2023."
   },
   {
-    "id": "DOC-42",
+    "id": "DOC-43",
     "source": "profile.md",
     "title": "Professional Profile — Saket Deshmukh — Primary Technical Areas … Technologies",
     "text": "## Primary Technical Areas\n- Generative AI and LLM applications\n- RAG and Agentic AI\n- Python backend development, FastAPI, REST APIs\n- Structured data extraction, document intelligence, and OCR\n- Vector search, hybrid retrieval, and embeddings\n- Prompt engineering, context engineering, LLM evaluation, and observability\n- Docker, Kubernetes, cloud deployment, automated testing, and CI/CD\n\n## Technologies\nProgramming: Python, SQL, Bash.\nAI frameworks: LangChain, LangGraph, LiteLLM, FastAPI, Pydantic.\nLLM platforms: OpenAI API, Amazon Bedrock, DeepSeek API, vLLM, Ollama.\nRetrieval and databases: PostgreSQL, pgvector, FAISS, BM25, embeddings, hybrid search, MySQL.\nDocument processing: Amazon Textract, OCR, PyMuPDF, vision models, structured extraction.\nCloud and DevOps: AWS, Amazon S3, Amazon SQS, Amazon EKS, Docker, Kubernetes, GitHub Actions, Jenkins, Terraform, Ansible."
   },
   {
-    "id": "DOC-43",
+    "id": "DOC-44",
     "source": "profile.md",
     "title": "Professional Profile — Saket Deshmukh — Professional Interests … Communication Preferences",
     "text": "## Professional Interests\nI am interested in reliable AI applications, practical AI agents, retrieval quality, LLM evaluation, document-heavy workflow automation, and deployable, maintainable AI systems.\n\n## Communication Preferences\nI prefer simple, practical explanations. When explaining a project, I focus on the problem, architecture, technology choices, implementation, challenges, and results."
   },
   {
-    "id": "DOC-44",
+    "id": "DOC-45",
     "source": "project_decisions.md",
     "title": "Project Decisions and Engineering Reasoning — Purpose … Why Use Structured Outputs?",
     "text": "## Purpose\nThis document records reasoning behind technical decisions in my projects. The answers below describe general engineering principles relevant to my projects. They should not be interpreted as records of specific experiments unless those experiments were actually performed.\n\n## Why Use RAG Instead of Sending Every Document to an LLM?\nRAG retrieves relevant information instead of requiring the application to include every document in each request. It can reduce unnecessary context, improve access to relevant evidence, and support larger knowledge collections. The best approach depends on document size, retrieval quality, context limits, cost, and latency.\n\n## Why Use Structured Outputs?\nStructured outputs make model responses easier to validate and process programmatically. A clinical extraction workflow might require fields such as test name, value, unit, and date. The schema must match the application's requirements, and factual validation remains necessary."
   },
   {
-    "id": "DOC-45",
+    "id": "DOC-46",
     "source": "project_decisions.md",
     "title": "Project Decisions and Engineering Reasoning — Why Use Deterministic Validation Alongside an LLM? … Why Use a W",
     "text": "## Why Use Deterministic Validation Alongside an LLM?\nAn LLM is useful for interpreting language and context, but it may generate incorrect values. Deterministic checks are better suited to enforce rules such as required fields, allowed formats, valid dates, and known constraints. A combined approach uses the LLM for interpretation and application code for explicit rules.\n\n## Why Use a Workflow Graph?\nA graph can make complex AI workflows easier to control. Nodes can handle classification, retrieval, tool execution, validation, and response generation. Conditional transitions allow the workflow to choose the next step based on the current state. For simple tasks, a single model call may be sufficient."
   },
   {
-    "id": "DOC-46",
+    "id": "DOC-47",
     "source": "project_decisions.md",
     "title": "Project Decisions and Engineering Reasoning — Why Use Hybrid Retrieval? … Why Keep Tools Restricted?",
     "text": "## Why Use Hybrid Retrieval?\nVector search can retrieve conceptually similar information, while lexical search can retrieve content with matching terms. Hybrid retrieval can combine these strengths, especially when a query contains descriptive language and exact names or identifiers. Confirm benefits using a representative evaluation dataset.\n\n## Why Include Human Review?\nHuman review is useful when the application encounters ambiguous evidence, conflicting values, low-quality OCR, or high-impact decisions. The system should identify uncertain cases and provide source information for the reviewer.\n\n## Why Keep Tools Restricted?\nAn AI application should not receive broader permissions than it needs. Tools should validate arguments, enforce authorization, and limit operations to approved actions. Sensitive actions should not depend solely on the LLM's judgment."
   },
   {
-    "id": "DOC-47",
+    "id": "DOC-48",
     "source": "project_decisions.md",
     "title": "Project Decisions and Engineering Reasoning — How Should a New AI Feature Be Evaluated? … How Should Model Cos",
     "text": "## How Should a New AI Feature Be Evaluated?\n1. Define the task and expected behavior.\n2. Build a representative test dataset.\n3. Establish baseline performance.\n4. Select metrics that match the task.\n5. Test normal cases, edge cases, and failure cases.\n6. Review incorrect outputs.\n7. Change one major factor at a time where practical.\n8. Compare results against the baseline.\n9. Keep regression tests for previously solved failures.\n\n## How Should Model Cost Be Reduced?\nPotential methods include choosing a suitable model for each task, reducing unnecessary context, caching repeated results where appropriate, limiting redundant tool calls, and using smaller models for simpler tasks. Evaluate each optimization against quality, latency, reliability, and total operating cost."
   },
   {
-    "id": "DOC-48",
+    "id": "DOC-49",
     "source": "project_decisions.md",
     "title": "Project Decisions and Engineering Reasoning — How Should Latency Be Reduced? … How Should Production Readiness",
     "text": "## How Should Latency Be Reduced?\nPotential methods include profiling the workflow, reducing unnecessary sequential model calls, optimizing retrieval, caching suitable results, and running independent operations concurrently where safe. Measure actual latency before choosing an optimization.\n\n## How Should Hallucinations Be Investigated?\n1. Identify the exact question and incorrect response.\n2. Inspect retrieved context and tool outputs.\n3. Check whether the required evidence was available.\n4. Determine whether the failure came from retrieval, interpretation, generation, or validation.\n5. Add a targeted test case.\n6. Apply a specific fix.\n7. Re-run the test and broader regression suite.\n\n## How Should Production Readiness Be Assessed?\nConsider correctness, security, authorization, error handling, observability, performance, scalability, cost, data privacy, and recovery from failures. A successful demonstration is not enough to establish production readiness."
   },
   {
-    "id": "DOC-49",
+    "id": "DOC-50",
     "source": "project_decisions.md",
     "title": "Project Decisions and Engineering Reasoning — How Should Metrics Be Reported?",
     "text": "## How Should Metrics Be Reported?\nMetrics should be tied to a defined measurement method, test dataset, and evaluation period. A retrieval-quality claim should specify the baseline, evaluation questions, relevance criteria, and metric used. If a metric has not been measured, describe it as a target or expected benefit rather than an achieved result."
   },
   {
-    "id": "DOC-50",
+    "id": "DOC-51",
     "source": "technical_skills.md",
     "title": "Technical Skills and Interview Reference — Python … Prompt Engineering",
     "text": "## Python\nPython is my primary language for backend development and AI applications. Common use cases include API development, document processing, retrieval pipelines, data validation, and LLM integration.\n\n## FastAPI\nFastAPI is a Python framework for building APIs. It can receive requests, validate inputs, execute processing workflows, and return responses.\n\n## LLMs\nLarge Language Models generate and interpret text based on the input and context provided. They are useful for summarization, structured extraction, classification, question answering, and tool selection. Their outputs can be incorrect, so important results should be validated.\n\n## Prompt Engineering\nPrompt engineering involves designing instructions and context to guide model behavior. A useful prompt defines the task, expected output, constraints, and how to handle missing information."
   },
   {
-    "id": "DOC-51",
+    "id": "DOC-52",
     "source": "technical_skills.md",
     "title": "Technical Skills and Interview Reference — Structured Outputs … Vector Search",
     "text": "## Structured Outputs\nStructured outputs constrain a model's response to a predefined format, such as JSON. They simplify downstream processing, but values still need factual validation.\n\n## RAG\nRetrieval-Augmented Generation retrieves relevant information and provides it to an LLM as context for generating a response. A typical workflow includes document processing, chunking, embeddings, indexing, retrieval, and answer generation. RAG does not guarantee factual correctness.\n\n## Embeddings\nEmbeddings represent text as numerical vectors, allowing systems to compare text based on semantic similarity and retrieve related information.\n\n## Vector Search\nVector search systems store or index embeddings and retrieve items based on similarity. pgvector enables vector operations in PostgreSQL. FAISS is a library for efficient similarity search over vectors."
   },
   {
-    "id": "DOC-52",
+    "id": "DOC-53",
     "source": "technical_skills.md",
     "title": "Technical Skills and Interview Reference — BM25 … MCP",
     "text": "## BM25\nBM25 is a lexical retrieval method that ranks documents based on query-term relevance. It can work well when exact terms, names, codes, or product identifiers matter.\n\n## Hybrid Search\nHybrid search combines multiple retrieval approaches, such as vector similarity and BM25. Results can be combined using a ranking strategy such as Reciprocal Rank Fusion.\n\n## LangChain\nLangChain provides components and integrations for LLM applications, including model interfaces, retrievers, prompts, and tools.\n\n## LangGraph\nLangGraph supports stateful workflows with nodes, conditional edges, and controlled transitions. It is useful for multi-step AI applications requiring explicit orchestration.\n\n## LiteLLM\nLiteLLM provides a common interface for supported model providers and can help applications integrate multiple models consistently.\n\n## MCP\nThe Model Context Protocol defines a standardized approach for connecting AI applications with external tools and data sources."
   },
   {
-    "id": "DOC-53",
+    "id": "DOC-54",
     "source": "technical_skills.md",
     "title": "Technical Skills and Interview Reference — Function Calling … RAGAS and TruLens",
     "text": "## Function Calling\nFunction calling allows a model to request execution of a defined function or tool using structured arguments. The application validates the request, enforces permissions, executes the operation, and returns the result.\n\n## Guardrails\nGuardrails reduce risks such as invalid inputs, unsafe outputs, unsupported claims, and unauthorized tool use. They may include schema validation, permission checks, content checks, and deterministic rules.\n\n## LLM Evaluation\nLLM evaluation measures how well an AI application performs on defined tasks. Metrics may include correctness, groundedness, answer relevance, retrieval quality, schema validity, and tool-selection accuracy.\n\n## RAGAS and TruLens\nRAGAS and TruLens are tools and frameworks used to evaluate aspects of LLM applications and RAG pipelines. Their metrics and integrations differ; they are not the same product. Interpret scores according to metric definitions and evaluation data."
   },
   {
-    "id": "DOC-54",
+    "id": "DOC-55",
     "source": "technical_skills.md",
     "title": "Technical Skills and Interview Reference — LangSmith … AWS",
     "text": "## LangSmith\nLangSmith supports tracing, debugging, evaluation, and monitoring workflows for LLM applications.\n\n## OCR\nOptical Character Recognition converts text in images or scanned documents into machine-readable text. OCR output can contain errors, especially with poor image quality, handwriting, or complex layouts.\n\n## Pydantic\nPydantic validates data using defined models and types. It is useful for API requests and structured model outputs.\n\n## PostgreSQL\nPostgreSQL is a relational database for structured application data. It can also support vector search through pgvector.\n\n## Docker\nDocker packages applications and dependencies into containers for consistent execution across environments.\n\n## Kubernetes\nKubernetes orchestrates containers and supports deployment, scaling, networking, and application recovery.\n\n## AWS\nAWS provides cloud infrastructure and managed services. Relevant services include S3 for object storage, SQS for message queuing, and EKS for managed Kubernetes."
   },
   {
-    "id": "DOC-55",
+    "id": "DOC-56",
     "source": "technical_skills.md",
     "title": "Technical Skills and Interview Reference — Technical Problem-Solving Approach",
     "text": "## Technical Problem-Solving Approach\nI identify required behavior and failure cases, choose the simplest suitable solution, implement validation, test representative scenarios, inspect failures, and improve the system based on evidence."

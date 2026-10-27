@@ -39,6 +39,8 @@
   {"q": "Tell me about Saket", "source": "Resume", "contains": "Summary"},
   {"q": "What is Saket's current role?", "contains": "KWAD"},
   {"q": "Summarize Saket's work experience", "contains": "KWAD"},
+  {"q": "What is KWAD Corporation?", "source": "companies.md", "contains": "Pune"},
+  {"q": "tell me about KWAD company", "source": "companies.md", "contains": "software consulting"},
   {"q": "what is the capital of France", "refuse": true},
   {"q": "write me a poem", "refuse": true},
   {"q": "how much salary does saket want", "refuse": true},

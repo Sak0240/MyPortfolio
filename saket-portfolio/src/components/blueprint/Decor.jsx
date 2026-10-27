@@ -6,29 +6,32 @@ const INK = TOKENS.ink;
 const abs = { position: "absolute", pointerEvents: "none" };
 
 /** Textured orange sphere (grainy, like the reference artwork). */
-export function OrangeSphere({ size = 360, style }) {
+export function OrangeSphere({ size = 360, style, idSuffix = "", ...rest }) {
+  const base = "sphereBase" + idSuffix;
+  const grain = "sphereGrain" + idSuffix;
+  const mottle = "sphereMottle" + idSuffix;
   return (
-    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 200 200" style={{ ...abs, ...style }}>
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 200 200" style={{ ...abs, ...style }} {...rest}>
       <defs>
-        <radialGradient id="sphereBase" cx="38%" cy="34%" r="75%">
+        <radialGradient id={base} cx="38%" cy="34%" r="75%">
           <stop offset="0%" stopColor="#FF8A3D" />
           <stop offset="60%" stopColor="#FF6420" />
           <stop offset="100%" stopColor="#FF4F12" />
         </radialGradient>
-        <filter id="sphereGrain" x="0" y="0" width="100%" height="100%">
+        <filter id={grain} x="0" y="0" width="100%" height="100%">
           <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="noise" />
           <feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 2.4 -1.15" result="speckle" />
           <feComposite in="speckle" in2="SourceGraphic" operator="in" />
         </filter>
-        <filter id="sphereMottle" x="0" y="0" width="100%" height="100%">
+        <filter id={mottle} x="0" y="0" width="100%" height="100%">
           <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="3" seed="3" result="noise" />
           <feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 0.78  0 0 0 0 0.55  0 0 0 2.2 -0.95" result="blotch" />
           <feComposite in="blotch" in2="SourceGraphic" operator="in" />
         </filter>
       </defs>
-      <circle cx="100" cy="100" r="100" fill="url(#sphereBase)" />
-      <circle cx="100" cy="100" r="100" fill="#fff" filter="url(#sphereMottle)" opacity="0.55" />
-      <circle cx="100" cy="100" r="100" fill="#fff" filter="url(#sphereGrain)" opacity="0.7" />
+      <circle cx="100" cy="100" r="100" fill={"url(#" + base + ")"} />
+      <circle cx="100" cy="100" r="100" fill="#fff" filter={"url(#" + mottle + ")"} opacity="0.55" />
+      <circle cx="100" cy="100" r="100" fill="#fff" filter={"url(#" + grain + ")"} opacity="0.7" />
     </svg>
   );
 }

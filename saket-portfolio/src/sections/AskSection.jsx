@@ -36,12 +36,12 @@ export default function AskSection() {
           <div className="ask-showcase-body">
             <p className="ask-showcase-label">Try one of these</p>
             {STARTERS.map((q) => (
-              <button key={q} type="button" className="ask-showcase-line" onClick={() => openAsk(q)}>
+              <button key={q} type="button" className="ask-showcase-line" onClick={(e) => openAsk(q, e.currentTarget)}>
                 <span aria-hidden="true">$</span> {q}
               </button>
             ))}
             <div className="ask-showcase-cta">
-              <button type="button" className="ask-hero-btn" onClick={() => openAsk()}>
+              <button type="button" className="ask-hero-btn" onClick={(e) => openAsk(undefined, e.currentTarget)}>
                 <span className="ask-spark" aria-hidden="true">
                   ✦
                 </span>

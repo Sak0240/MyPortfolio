@@ -80,7 +80,7 @@ export default function Hero() {
     >
       {/* blueprint artwork */}
       <div className="hero-decor-lg" aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-        <OrangeSphere size={400} style={{ left: -215, top: "24%" }} />
+        <OrangeSphere data-hero-sphere size={400} style={{ left: -215, top: "24%" }} />
         <CircleRig size={600} spin style={{ left: -310, top: "calc(24% - 100px)" }} />
         <PixelMark size={46} style={{ left: 196, top: 88 }} />
         <Square size={16} style={{ left: 22, top: "calc(24% - 62px)" }} />
@@ -177,7 +177,7 @@ export default function Hero() {
 
         {/* CTAs: the AI console first, then the page */}
         <div style={{ marginTop: 40, display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: 18 }}>
-          <button type="button" className="ask-hero-btn" onClick={() => openAsk()}>
+          <button type="button" className="ask-hero-btn" onClick={(e) => openAsk(undefined, e.currentTarget)}>
             <span className="ask-spark" aria-hidden="true">
               ✦
             </span>
